@@ -1,29 +1,24 @@
-import json
-import random
-from time import sleep
-
 from channels.generic.websocket import WebsocketConsumer
-from django.db.models import signals
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .models import *
 
 
-# @receiver(signals.post_save, sender=Cart)
+@receiver(post_save, sender=Order)
 class WSConsumer(WebsocketConsumer):
+    order = Order.objects.all()
+    result = [{
+
+        'phone': i.phone,
+        'address': i.address,
+        'entrance': i.entrance,
+        'floor_number': i.floor_number,
+        'apartment_number': i.apartment_number,
+        'status': i.status
+    } for i in order]
+
     def connect(self):
+        print(self)
         self.accept()
-        cart = Order.objects.all()
 
-        result = [{
-
-            'phone': i.phone,
-            'cart': i.cart,
-            'address': i.address,
-            'entrance': i.entrance,
-            'floor_number': i.floor_number,
-            'apartment_number': i.apartment_number,
-            'status': i.status
-        } for i in cart]
-        self.send()
-        sleep(1)
