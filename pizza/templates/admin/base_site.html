@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrahead %}
+<script src="{% static 'js/core/jquery.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#id_phone').inputmask("9-999-999-99-99");
+    });
+
+
+
+</script>
+{% endblock %}
