@@ -285,9 +285,10 @@ let custom = new Vue({
         addProd(prod, price, i) {
             if (prod.trues) {
                 prod.style = 'prodDel';
-                this.final_cost.push({id: i, prod: prod.prod, qty: 1, cost: price});
+                this.final_cost.push({prod: prod.prod, qty: 1, cost: price});
             } else {
-            const idx = this.final_cost.findIndex(src => src.id === i);
+            const idx = this.final_cost.indexOf(this.final_cost.find(src => src.prod === prod.prod));
+            console.log(idx)
                 if (idx !== -1) {
                     prod.style = 'prodPlus';
                 this.final_cost.splice(idx, 1);
