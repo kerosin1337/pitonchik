@@ -12,9 +12,6 @@ from .serializers import *
 from .utils import *
 
 
-
-
-
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
@@ -49,15 +46,8 @@ class cartAPI(ReadOnlyModelViewSet):
         return Cart.objects.filter(owner=self.request.user.id, in_order=False)
 
 
-def index(request):
-    p = Products.objects.order_by()
-    c = Category.objects.order_by()
-    context = {
-        'product': p,
-        'category': c,
-    }
-
-    return render(request, 'main.html', context)
+class index(TemplateView):
+    template_name = 'main.html'
 
 
 class login(LoginView):

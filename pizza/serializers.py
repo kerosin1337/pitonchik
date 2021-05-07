@@ -6,11 +6,7 @@ from .models import *
 class categorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = (
-            'name',
-            'slug',
-            'objects'
-        )
+        fields = '__all__'
 
 
 class productSerializer(ModelSerializer):

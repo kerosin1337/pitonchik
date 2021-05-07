@@ -22,13 +22,12 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        {% for i in category %}
-            <h2 id="" class="mt-4 pl-3 pr-3">{{ i }}</h2>
 
-            {% verbatim %}
 
-            <div class="row pl-3 pr-3 active" id="prod">
-
+        {% verbatim %}
+        <div id="prod">
+            <h2 id="" class="mt-4 pl-3 pr-3">qwe</h2>
+            <div class="row pl-3 pr-3 active">
                 <div class="col-sm col-md-3 mb-4" v-for="(pizza, i) in products">
                     <div class="card m-0 shadow-lg  bg-white rounded">
 
@@ -62,50 +61,9 @@
                     </div>
                 </div>
             </div>
-            {% endverbatim %}
+        </div>
+        {% endverbatim %}
 
-        {% endfor %}
     </main>
 
-
-{% endblock %}
-
-<!--                {% for pizza in product %}-->
-    <!--                    {% if i == pizza.category %}-->
-        <!--                        <div class="col-sm col-md-3 mb-4">-->
-        <!--                            <div class="card m-0 shadow-lg  bg-white rounded">-->
-        <!--                                <img src="{{pizza.image.url}}" class="ml-3 mt-3 mr-3" alt="...">-->
-        <!--                                <div class="card-body">-->
-        <!--                                    <h4 class="card-title text-warning font-weight-bold">{{ pizza.name }}</h4>-->
-        <!--                                    <p class="card-text text-warning">{{ pizza.description }}</p>-->
-        <!--                                    <form action="{% url 'req' ct_model=pizza.get_model_name slug=pizza.slug %}"-->
-        <!--                                          method="post">-->
-        <!--                                        {% csrf_token %}-->
-        <!--                                        <div class="d-flex justify-content-between mb-3">-->
-        <!--                                            <input type="radio" class="btn-check" id="{{ pizza.id }}{{ 25 }}"-->
-        <!--                                                   name="size"-->
-        <!--                                                   value="25" checked>-->
-        <!--                                            <label class="btn btn-outline-info p-0 mr-0" for="{{ pizza.id }}{{ 25 }}"-->
-        <!--                                                   style="width: 33%"-->
-        <!--                                            >25</label>-->
-        <!--                                            <input type="radio" class="btn-check" id="{{ pizza.id }}{{ 30 }}"-->
-        <!--                                                   name="size"-->
-        <!--                                                   value="30">-->
-        <!--                                            <label class="btn btn-outline-info p-0 mr-0" for="{{ pizza.id }}{{ 30 }}"-->
-        <!--                                                   style="width: 33%"-->
-        <!--                                            >30</label>-->
-        <!--                                            <input type="radio" class="btn-check" id="{{ pizza.id }}{{ 35 }}"-->
-        <!--                                                   name="size"-->
-        <!--                                                   value="35">-->
-        <!--                                            <label class="btn btn-outline-info p-0 mr-0" for="{{ pizza.id }}{{ 35 }}"-->
-        <!--                                                   style="width: 33%"-->
-        <!--                                            >35</label>-->
-        <!--                                        </div>-->
-        <!--                                        <button type="submit" class="btn btn-info">Выбрать</button>-->
-        <!--                                        <span class="text-danger">от {{ pizza.price }}</span>-->
-        <!--                                    </form>-->
-        <!--                                </div>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    {% endif %}-->
-    <!--                {% endfor %}-->
+{% endblock content %}

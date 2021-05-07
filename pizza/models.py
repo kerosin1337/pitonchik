@@ -96,19 +96,27 @@ class UserData(models.Model):
 #
 #     def __str__(self):
 # return self.types
-
+# PIZZA = 'pizza'
+# SNACKS = 'snacks'
+# DRINK = 'drink'
+# CATEGORY_CHOICES = (
+#     (PIZZA, 'Пицца'),
+#     (SNACKS, 'Закуски'),
+#     (DRINK, 'Напитки'),
+# )
+# category = models.CharField(
+#     max_length=100,
+#     verbose_name='Категория',
+#     choices=CATEGORY_CHOICES,
+# )
 
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name='Имя категории')
-    slug = models.SlugField(unique=True)
-
-    # objects = CategoryManager()
 
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('category_detail', kwargs={'slug': self.slug})
+
 
 
 class Products(models.Model):

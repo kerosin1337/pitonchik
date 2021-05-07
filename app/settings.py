@@ -31,7 +31,7 @@ LOGIN_REDIRECT_URL = '/'
 # AUTH_USER_MODEL = 'pizza.UserData'
 
 INSTALLED_APPS = [
-    'channels',
+    # 'channels',
     'pizza.apps.PizzaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -98,6 +98,7 @@ TEMPLATES = [
         },
     },
 ]
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 WSGI_APPLICATION = 'app.wsgi.application'
 ASGI_APPLICATION = 'app.asgi.application'

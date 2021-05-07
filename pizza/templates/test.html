@@ -114,11 +114,10 @@
 
     {% endverbatim %}
 
-    <script>
-        let socket = new WebSocket('ws://localhost:8000/ws/some_url/');
-        socket.onmessage = function(event){
-            let data = JSON.parse(event.data);
-            console.log(JSON.parse(data))
-        }
-    </script>
+{#    <script>#}
+{#        let socket = new WebSocket('ws://localhost:8000/ws/some_url/');#}
+{#        socket.onmessage = function(event){#}
+{#            console.log(JSON.parse(event.data))#}
+{#        }#}
+{#    </script>#}
 {% endblock %}

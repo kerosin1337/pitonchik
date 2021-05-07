@@ -17,6 +17,9 @@ let prod = new Vue({
                 t.products = response.data;
                 t.products.forEach(function (item) {
                     t.newPrice.push(item.price)
+                    item.category.name.forEach(function (j) {
+                        console.log(j)
+                    })
                 });
             });
 
@@ -287,11 +290,11 @@ let custom = new Vue({
                 prod.style = 'prodDel';
                 this.final_cost.push({prod: prod.prod, qty: 1, cost: price});
             } else {
-            const idx = this.final_cost.indexOf(this.final_cost.find(src => src.prod === prod.prod));
-            console.log(idx)
+                const idx = this.final_cost.indexOf(this.final_cost.find(src => src.prod === prod.prod));
+                console.log(idx)
                 if (idx !== -1) {
                     prod.style = 'prodPlus';
-                this.final_cost.splice(idx, 1);
+                    this.final_cost.splice(idx, 1);
                 }
             }
 
