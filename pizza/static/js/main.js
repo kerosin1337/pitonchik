@@ -14,12 +14,9 @@ let prod = new Vue({
         const t = this;
         axios.get('/api/products')
             .then(function (response) {
-                t.products = response.data;
-                t.products.forEach(function (item) {
+t.products = response.data;
+                response.data.forEach(function (item) {
                     t.newPrice.push(item.price)
-                    item.category.name.forEach(function (j) {
-                        console.log(j)
-                    })
                 });
             });
 
@@ -353,6 +350,9 @@ let custom = new Vue({
             this.final_cost.forEach(function (item) {
                 price += item.cost * item.qty
             });
+            console.log(price)
+            console.log(this.dough)
+            console.log(this.size)
             return Math.ceil(price * this.dough * this.size);
         },
         async post() {
