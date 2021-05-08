@@ -31,7 +31,7 @@ LOGIN_REDIRECT_URL = '/'
 # AUTH_USER_MODEL = 'pizza.UserData'
 
 INSTALLED_APPS = [
-    # 'channels',
+    'channels',
     'pizza.apps.PizzaConfig',
     'django.contrib.admin',
     'django.contrib.auth',

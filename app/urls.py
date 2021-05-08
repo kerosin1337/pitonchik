@@ -30,7 +30,8 @@ urlpatterns = [
     path('basket/order/', views.order.as_view(), name='order'),
     path('basket/accept/', views.OrderAccept.as_view(), name='accept'),
     path('payed-online-order/', views.OrderPayment.as_view(), name='payment'),
-    path('test/', views.test.as_view()),
+    path('custom/', views.Custom.as_view()),
+    path('staff/', views.staff, name='staff')
 ]
 
 if settings.DEBUG:

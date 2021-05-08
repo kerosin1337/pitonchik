@@ -180,8 +180,12 @@ let buy = new Vue({
         select: ''
     },
     methods: {
-        qwee() {
-            console.log(123)
+        async socket() {
+            console.log(1);
+            let socketWS = new WebSocket('ws://localhost:8000/order/');
+            socketWS.onopen = () => socketWS.send(JSON.stringify({
+                'message': '3ddqwd'
+            }))
         }
     },
     watch: {
@@ -330,13 +334,13 @@ let custom = new Vue({
             const idx = this.final_cost.indexOf(i);
             this.final_cost.splice(idx, 1);
             alert(i.prod === this.meat[0].prod)
-            if (this.meat.indexOf(this.meat.find(src => src.prod === i.prod))){
+            if (this.meat.indexOf(this.meat.find(src => src.prod === i.prod))) {
                 console.log(213)
             }
-            if (this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod))){
+            if (this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod))) {
                 console.log(this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod)))
             }
-            if (this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod))){
+            if (this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod))) {
                 console.log(this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod)))
             }
             // this.save();

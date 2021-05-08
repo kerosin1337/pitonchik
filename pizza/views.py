@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views.generic import *
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
+from .consumers import OrderWS
 from .forms import *
 from .mixins import *
 from .serializers import *
@@ -228,6 +229,7 @@ class order(CartMixin, View):
 
 class OrderAccept(CartMixin, View):
     def post(self, request, *args, **kwargs):
+        # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
         req = request.POST
         order, created = Order.objects.get_or_create(
             customer=self.cart.owner,
@@ -263,8 +265,12 @@ class OrderPayment(CartMixin, View):
             return HttpResponseRedirect(reverse('index'))
 
 
-class test(TemplateView):
-    template_name = 'test.html'
+class Custom(TemplateView):
+    template_name = 'custom.html'
 
-    def post(self, request):
-        print(self.request.POST)
+
+def staff(request):
+    if request.user.is_superuser or request.user.is_staff:
+        return render(request, 'staffOrder.html')
+    else:
+        return HttpResponseRedirect(reverse('index'))

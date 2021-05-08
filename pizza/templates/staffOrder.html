@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+    <script>
+        let socket = new WebSocket('ws://localhost:8000/order/');
+        socket.onopen = function () {
+            console.log("Opening a connection...");
+            window.identified = false;
+        };
+        socket.onmessage = function (event) {
+            console.log(event);
+            console.log(JSON.parse(event.data))
+        }
+    </script>
+{% endblock content %}

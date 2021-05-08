@@ -113,7 +113,7 @@
                         {#                            {% endif %}#}
                         {% verbatim %}
                         <div class="form-group" id="payment">
-                            <button type="" class="btn btn-primary" :disabled="choice" @click="qwee()">
+                            <button type="button" class="btn btn-primary"  @click="socket()">
                                 Перейти к оплате
                             </button>
                             <select class="form-select w-50 d-inline align-middle" name="buying_type" v-model="select"
