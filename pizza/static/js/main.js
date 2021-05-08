@@ -6,6 +6,7 @@ const Store = {
 let prod = new Vue({
     el: '#prod',
     data: {
+        categorys: [],
         products: [],
         newPrice: [],
         csrf: getCookie('csrftoken'),
@@ -14,10 +15,20 @@ let prod = new Vue({
         const t = this;
         axios.get('/api/products')
             .then(function (response) {
-t.products = response.data;
+                t.products = response.data;
                 response.data.forEach(function (item) {
-                    t.newPrice.push(item.price)
+                    t.newPrice.push(item.price);
+//                    t.categorys.push(item.category.name)
                 });
+//                let q;
+//                t.categorys = t.categorys.sort().reduce(function(a, b){ if (b != a[0]) a.unshift(b); return a }, [])
+//                t.categorys.forEach(function (item, i) {
+//                    t.products.forEach(function (item2) {
+//                        if (item === item2.category.name) {
+//                        t.categorys[i] = {'category': item, 'products': item2}
+//                        }
+//                    })
+//                })
             });
 
     },
@@ -288,7 +299,6 @@ let custom = new Vue({
                 this.final_cost.push({prod: prod.prod, qty: 1, cost: price});
             } else {
                 const idx = this.final_cost.indexOf(this.final_cost.find(src => src.prod === prod.prod));
-                console.log(idx)
                 if (idx !== -1) {
                     prod.style = 'prodPlus';
                     this.final_cost.splice(idx, 1);
@@ -319,6 +329,16 @@ let custom = new Vue({
         removeProd(i) {
             const idx = this.final_cost.indexOf(i);
             this.final_cost.splice(idx, 1);
+            alert(i.prod === this.meat[0].prod)
+            if (this.meat.indexOf(this.meat.find(src => src.prod === i.prod))){
+                console.log(213)
+            }
+            if (this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod))){
+                console.log(this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod)))
+            }
+            if (this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod))){
+                console.log(this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod)))
+            }
             // this.save();
         },
         changeQty(i, num) {
@@ -350,9 +370,6 @@ let custom = new Vue({
             this.final_cost.forEach(function (item) {
                 price += item.cost * item.qty
             });
-            console.log(price)
-            console.log(this.dough)
-            console.log(this.size)
             return Math.ceil(price * this.dough * this.size);
         },
         async post() {

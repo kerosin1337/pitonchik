@@ -120,15 +120,13 @@ class Category(models.Model):
 
 
 class Products(models.Model):
-    # PIZZA = 'new'
-    # SNACKS = 'in_progress'
-    # DRINK = 'is_ready'
-    # CATEGORY_CHOICES = (
-    #     (PIZZA, 'Пицца'),
-    #     (SNACKS, 'Закуски'),
-    #     (DRINK, 'Напитки'),
-    # )
-    category = models.ForeignKey(Category, verbose_name='category', on_delete=models.CASCADE, null=True)
+    CATEGORY_CHOICES = (
+        ('Пицца', 'Пицца'),
+        ('Закуски', 'Закуски'),
+        ('Напитки', 'Напитки'),
+    )
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    # category = models.ForeignKey(Category, verbose_name='category', on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=128)
     price = models.DecimalField(max_digits=4, decimal_places=0, default=299)
