@@ -269,8 +269,7 @@ class Custom(TemplateView):
     template_name = 'custom.html'
 
 
-def staff(request):
-    if request.user.is_superuser or request.user.is_staff:
-        return render(request, 'staffOrder.html')
-    else:
-        return HttpResponseRedirect(reverse('index'))
+def room(request, room_name):
+    return render(request, 'staffOrder.html', {
+        'room_name': room_name
+    })
