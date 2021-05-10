@@ -117,8 +117,6 @@ class Category(models.Model):
         return self.name
 
 
-
-
 class Products(models.Model):
     CATEGORY_CHOICES = (
         ('Пицца', 'Пицца'),
@@ -176,9 +174,6 @@ class Cart(models.Model):
     for_anonymous_user = models.BooleanField(default=False)
     date_create = models.DateTimeField(auto_now_add=True)
     qty = models.PositiveIntegerField(default=0)
-
-    def __del__(self):
-        Cart.objects.filter(date_create__lte=datetime.now() - timedelta(hours=12)).delete()
 
     def __str__(self):
         return str(self.id)

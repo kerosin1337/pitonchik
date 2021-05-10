@@ -10,10 +10,7 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket('ws://'
-            + 'localhost:8000'
-            + '/ws/chat/'
-            + roomName
-            + '/');
+            + 'localhost:8000/order/');
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
