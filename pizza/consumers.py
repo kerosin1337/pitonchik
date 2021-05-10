@@ -25,15 +25,22 @@ class OrderWS(WebsocketConsumer):
 
     def connect(self):
         print(1)
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_name = self.scope['url_route']
         self.room_group_name = 'chat_%s' % self.room_name
+        print(self.room_name)
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
         )
-
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': self.result
+            }
+        )
         self.accept()
 
     def disconnect(self, close_code):

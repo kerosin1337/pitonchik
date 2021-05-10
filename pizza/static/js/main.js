@@ -483,3 +483,8 @@ $(document).ready(function () {
 
     $('#tel').inputmask("9-999-999-99-99");
 });
+
+$(document).on('submit', 'form#main', function () {
+    const chatSocket = new WebSocket(
+        'ws://localhost:8000/order/');
+});

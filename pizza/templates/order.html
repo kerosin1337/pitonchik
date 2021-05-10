@@ -9,7 +9,7 @@
                 <div class="col-md-4 ">
                     <form method="post" class="mt-5 shadow-lg p-3 bg-white rounded"
                           action="{% url 'accept' %}"
-                          autocomplete="off">
+                          autocomplete="off" id="main">
                         {% csrf_token %}
                         {% verbatim %}
                         <div>
@@ -113,7 +113,7 @@
                         {#                            {% endif %}#}
                         {% verbatim %}
                         <div class="form-group" id="payment">
-                            <button type="button" class="btn btn-primary"  @click="socket()">
+                            <button type="submit" class="btn btn-primary" :disabled="choice">
                                 Перейти к оплате
                             </button>
                             <select class="form-select w-50 d-inline align-middle" name="buying_type" v-model="select"
