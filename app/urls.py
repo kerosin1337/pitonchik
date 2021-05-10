@@ -31,7 +31,7 @@ urlpatterns = [
     path('basket/accept/', views.OrderAccept.as_view(), name='accept'),
     path('payed-online-order/', views.OrderPayment.as_view(), name='payment'),
     path('custom/', views.Custom.as_view()),
-    path('chat/<str:room_name>/', views.room, name='staff')
+    path('staff/', views.room, name='staff')
 ]
 
 if settings.DEBUG:

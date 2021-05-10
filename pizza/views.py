@@ -1,5 +1,6 @@
 import json
 
+import requests
 import stripe
 from django.contrib.auth.views import *
 from django.shortcuts import render
@@ -251,13 +252,13 @@ class OrderAccept(CartMixin, View):
 
 class OrderPayment(CartMixin, View):
     def post(self, request, *args, **kwargs):
+        order = Order.objects.get(customer=self.cart.owner_id, cart=self.cart)
+        order.status = 'in_progress'
+        order.save()
         # for i in self.cart.products.all().filter(product__is_custom=True):
         #     i.product.delete()
         self.cart.in_order = True
         self.cart.save()
-        order = Order.objects.get(customer=self.cart.owner_id, cart=self.cart)
-        order.status = 'in_progress'
-        order.save()
         return HttpResponseRedirect(reverse('index'))
 
     def get(self, request, *args, **kwargs):
@@ -269,7 +270,5 @@ class Custom(TemplateView):
     template_name = 'custom.html'
 
 
-def room(request, room_name):
-    return render(request, 'staffOrder.html', {
-        'room_name': room_name
-    })
+def room(request):
+    return render(request, 'staffOrder.html')

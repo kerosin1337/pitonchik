@@ -488,7 +488,7 @@ $(document).on('submit', 'form#main', function () {
     const chatSocket = new WebSocket(
         'ws://localhost:8000/order/');
 });
-$(document).on('submit', 'form#payment-form', function () {
-    const chatSocket = new WebSocket(
-        'ws://localhost:8000/order/');
-});
+// $(document).on('submit', 'form#payment-form', function () {
+//     const chatSocket = new WebSocket(
+//         'ws://localhost:8000/order/');
+// });
