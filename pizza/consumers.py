@@ -17,11 +17,11 @@ class OrderWS(WebsocketConsumer):
         order = Order.objects.all()
         result = [{
             'customer': self.user(i),
-            'products': [{'product': {
+            'products': [{
                 'product': j.product.name,
                 'final_price': int(j.final_price),
                 'qty': j.qty
-            }} for j in i.cart.products.all()],
+            } for j in i.cart.products.all()],
             'final_price': int(i.cart.final_price),
             'phone': i.phone,
             'address': i.address,
