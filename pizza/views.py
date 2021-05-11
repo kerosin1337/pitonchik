@@ -48,6 +48,11 @@ class cartAPI(ReadOnlyModelViewSet):
         return Cart.objects.filter(owner=self.request.user.id, in_order=False)
 
 
+class orderAPI(ModelViewSet):
+    serializer_class = orderSerializer
+    queryset = Order.objects.order_by()
+
+
 class index(TemplateView):
     template_name = 'main.html'
 

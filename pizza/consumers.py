@@ -17,7 +17,7 @@ class OrderWS(WebsocketConsumer):
         order = Order.objects.all()
         result = [{
             'customer': self.user(i),
-            'products': [{str(j): {
+            'products': [{'product': {
                 'product': j.product.name,
                 'final_price': int(j.final_price),
                 'qty': j.qty

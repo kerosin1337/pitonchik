@@ -181,7 +181,6 @@ let buy = new Vue({
     },
     methods: {
         async socket() {
-            console.log(1);
             let socketWS = new WebSocket('ws://localhost:8000/order/');
             socketWS.onopen = () => socketWS.send(JSON.stringify({
                 'message': '3ddqwd'
@@ -425,22 +424,41 @@ let custom = new Vue({
     }
 })
 let staff = new Vue({
-    el: '#main',
+    el: '#staff',
     data: {
         orders: []
     },
-    created: function() {
-        const chatSocket = new WebSocket('ws://localhost:8000/order/');
-
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data.message);
-            staff.orders = data.message
-        };
-        chatSocket.onclose = function (e) {
-            location.reload();
-            console.error('Chat socket closed unexpectedly');
-        };
+    methods: {
+        bg(status) {
+            if (status === 'new')
+                return 'alert-dark'
+            if (status === 'in_progress')
+                return 'alert-primary'
+            if (status === 'is_ready')
+                return 'alert-warning'
+            if (status === 'completed')
+                return 'alert-success'
+        },
+        ordersSort() {
+            let newOrders = [];
+            this.orders.forEach(function (item) {
+                if (item.status === 'new')
+                    newOrders.push(item)
+            });
+            this.orders.forEach(function (item) {
+                if (item.status === 'in_progress')
+                    newOrders.push(item)
+            });
+            this.orders.forEach(function (item) {
+                if (item.status === 'is_ready')
+                    newOrders.push(item)
+            });
+            this.orders.forEach(function (item) {
+                if (item.status === 'completed')
+                    newOrders.push(item)
+            });
+            return newOrders;
+        }
     }
 })
 

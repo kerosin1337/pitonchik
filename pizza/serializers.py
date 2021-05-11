@@ -3,14 +3,7 @@ from rest_framework.serializers import ModelSerializer
 from .models import *
 
 
-class categorySerializer(ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
-
-
 class productSerializer(ModelSerializer):
-    # category = categorySerializer(read_only=True)
 
     class Meta:
         model = Products
@@ -24,7 +17,6 @@ class contentTypeSerializer(ModelSerializer):
 
 
 class cartProductsSerializer(ModelSerializer):
-    # content_type = contentTypeSerializer(read_only=True)
     product = productSerializer(read_only=True)
 
     class Meta:
@@ -33,7 +25,6 @@ class cartProductsSerializer(ModelSerializer):
             'user',
             'size',
             'price',
-            # 'content_type',
             'product',
             'qty',
             'final_price',
@@ -54,6 +45,25 @@ class cartSerializer(ModelSerializer):
             'for_anonymous_user',
             'date_create',
             'qty'
+        )
+
+
+class orderSerializer(ModelSerializer):
+    cart = cartSerializer(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            'customer',
+            'phone',
+            'cart',
+            'address',
+            'entrance',
+            'floor_number',
+            'apartment_number',
+            'status',
+            'buying_type',
+            'comment'
         )
 
 

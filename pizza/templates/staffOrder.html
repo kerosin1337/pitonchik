@@ -3,15 +3,41 @@
 {% load static %}
 {% block content %}
     {% verbatim %}
-    <main id="main" class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="col-md-8" v-for="i in orders">
+    <main id="staff" class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="col-md-8" v-for="(i, id) in ordersSort()">
             <div class="card mb-3">
-                <div class="alert alert-success" role="alert">
-                    <h6 class="alert-heading d-inline" v-for="j in i.products">
-                        {{ j.product }}
-                        {{ j.final_price }}
-                        {{ j.qty }}
-                    </h6>
+                <div class="alert" role="alert" :class="bg(i.status)">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" :id="'heading' + id">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        :data-bs-target="'#collapse' + id" aria-expanded="true"
+                                        :aria-controls="'collapse' + id">
+                                    Корзина
+                                </button>
+                            </h2>
+                            <div :id="'collapse' + id" class="accordion-collapse collapse"
+                                 :aria-labelledby="'heading' + id"
+                                 data-bs-parent="#accordionExample">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Наименование</th>
+                                        <th scope="col">Кол-во</th>
+                                        <th scope="col">Цена</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="j in i.products">
+                                        <td>{{ j.product.product }}</td>
+                                        <td>{{ j.product.final_price }}</td>
+                                        <td>{{ j.product.qty }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <p>Заказчик: {{ i.customer }}</p>
                     <p>Статус: {{ i.status }}</p>
                     <p>Цена: {{ i.final_price }}</p>
@@ -21,7 +47,16 @@
     </main>
     {% endverbatim %}
     <script>
+        const chatSocket = new WebSocket('ws://localhost:8000/order/');
 
-
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data.message);
+            staff.orders = data.message
+        };
+        chatSocket.onclose = function (e) {
+            location.reload();
+            console.error('Chat socket closed unexpectedly');
+        };
     </script>
 {% endblock content %}

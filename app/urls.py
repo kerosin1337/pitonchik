@@ -11,6 +11,7 @@ router.register('api/products', views.productsAPI)
 router.register('api/cart_products', views.cartProductsAPI, basename='cart_products')
 router.register('api/user', views.userAPI, basename='user')
 router.register('api/cart', views.cartAPI, basename='cart')
+router.register('api/order', views.orderAPI, basename='order')
 
 # router.register('api/u', views.user, basename='u')
 
