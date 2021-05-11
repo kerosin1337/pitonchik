@@ -424,6 +424,26 @@ let custom = new Vue({
         // },
     }
 })
+let staff = new Vue({
+    el: '#main',
+    data: {
+        orders: []
+    },
+    created: function() {
+        const chatSocket = new WebSocket('ws://localhost:8000/order/');
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data.message);
+            staff.orders = data.message
+        };
+        chatSocket.onclose = function (e) {
+            location.reload();
+            console.error('Chat socket closed unexpectedly');
+        };
+    }
+})
+
 
 function getCookie(name) {
     let cookieValue = null;
