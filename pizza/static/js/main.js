@@ -349,12 +349,10 @@ let custom = new Vue({
             }
             // this.save();
         },
-        changeQty(i, num) {
+        changeQty(i, num, classes) {
             const idx = this.final_cost.indexOf(i);
-            this.final_cost[idx].qty += num;
-            if (this.final_cost[idx].qty === 0) {
-                this.final_cost.splice(idx, 1)
-            }
+            this.final_cost[idx].qty = num;
+
             // this.save();
         },
         doughChoice(event) {
