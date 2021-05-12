@@ -6,7 +6,7 @@
     <main id="staff" class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
         <div class="col-md-8" v-for="(i, id) in ordersSort()">
             <div class="card mb-3">
-                <div class="alert" role="alert" :class="bg(i.status)">
+                <div class="alert" role="alert" style="margin-bottom: 0!important;" :class="bg(i.status)">
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" :id="'heading' + id">

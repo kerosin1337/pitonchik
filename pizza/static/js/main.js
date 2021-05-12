@@ -332,15 +332,20 @@ let custom = new Vue({
         removeProd(i) {
             const idx = this.final_cost.indexOf(i);
             this.final_cost.splice(idx, 1);
-            alert(i.prod === this.meat[0].prod)
-            if (this.meat.indexOf(this.meat.find(src => src.prod === i.prod))) {
-                console.log(213)
+            if (this.meat.indexOf(this.meat.find(src => src.prod === i.prod)) >= 0) {
+                const idx = this.meat.indexOf(this.meat.find(src => src.prod === i.prod));
+                this.meat[idx].style = 'prodPlus';
+                this.meat[idx].trues = !this.meat[idx].trues;
             }
-            if (this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod))) {
-                console.log(this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod)))
+            if (this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod)) >= 0) {
+                const idx = this.cheese.indexOf(this.cheese.find(src => src.prod === i.prod))
+                this.cheese[idx].style = 'prodPlus'
+                this.cheese[idx].trues = !this.cheese[idx].trues;
             }
-            if (this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod))) {
-                console.log(this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod)))
+            if (this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod)) >= 0) {
+                const idx = this.vegetable.indexOf(this.vegetable.find(src => src.prod === i.prod));
+                this.vegetable[idx].style = 'prodPlus';
+                this.vegetable[idx].trues = !this.vegetable[idx].trues;
             }
             // this.save();
         },
