@@ -149,6 +149,7 @@ let app2 = new Vue({
                 err.seen = false;
             } else {
                 err.seen = true
+                console.log(this.dist)
             }
         },
         changeS() {
