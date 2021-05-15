@@ -30,7 +30,7 @@
             <h2 class="mt-4 pl-3 pr-3">{{products[0].category}}</h2>
             <div class="col-sm col-md-3 mb-4" v-for="(pizza, i) in products" v-if="pizza.category === 'Пицца'">
                 <div class="card m-0 shadow-lg  bg-white rounded">
-                    <img :src="pizza.image" class="ml-3 mt-3 mr-3" alt="...">
+                    <img :src="pizza.image" class="ml-3 mt-3 mr-3">
                     <div class="card-body">
                         <h4 class="card-title text-warning font-weight-bold">{{ pizza.name }}</h4>
                         <p class="card-text text-warning">{{ pizza.description }}</p>

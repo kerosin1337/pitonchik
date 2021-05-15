@@ -188,6 +188,22 @@ class basket(CartMixin, View):
         }
         return render(request, 'basket.html', context)
 
+    def post(self, request, *args, **kwargs):
+        coupon = Coupon.objects.all()
+        # for i, obj in enumerate(coupon):
+        #     if obj.code == request.POST['code']:
+        #         print(list(obj.users.all()).index(request.user))
+        #         self.cart.final_price = int(self.cart.final_price) * (100 - obj.sale) / 100
+        #         self.cart.save()
+        # for j in obj.users.all():
+        #     print(j.id, self.cart.owner_id)
+        #     if obj.code == request.POST['code'] and j.id != self.cart.owner_id:
+        #         obj.users.add(self.cart.owner)
+        #         self.cart.final_price = int(self.cart.final_price) * (100 - obj.sale) / 100
+        #         self.cart.save()
+        #         obj.save()
+        #         return HttpResponseRedirect(reverse('basket'))
+
 
 class order(CartMixin, View):
     def get(self, request, *args, **kwargs):

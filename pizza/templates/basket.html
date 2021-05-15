@@ -59,7 +59,11 @@
                     </div>
                 </div>
             </div>
-
+            <form action="" method="post">
+                <input type="hidden" :value="csrf" name="csrfmiddlewaretoken">
+                <input type="text" name="code">
+                <input type="submit">
+            </form>
             <div class="d-flex mt-5 mb-5">
                 <div>
                     <a href="/basket/order" class="btn btn-outline-info" v-if="Object.keys(cart.products).length">Оформить заказ</a>
@@ -75,7 +79,7 @@
         </div>
         {% endverbatim %}
 
-
+        
     </main>
 
 

@@ -225,3 +225,12 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15, verbose_name='Купон')
+    sale = models.IntegerField(verbose_name='Скидка')
+    users = models.ManyToManyField(UserData, blank=True, null=True, related_name='related_coupon')
+
+    def __str__(self):
+        return '{}, {}%'.format(self.code, self.sale)
