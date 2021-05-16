@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -174,6 +174,8 @@ class Cart(models.Model):
     for_anonymous_user = models.BooleanField(default=False)
     date_create = models.DateTimeField(auto_now_add=True)
     qty = models.PositiveIntegerField(default=0)
+    is_coupon_activate = models.BooleanField(default=False)
+    coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.id)
@@ -228,9 +230,9 @@ class Order(models.Model):
 
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=15, verbose_name='Купон')
-    sale = models.IntegerField(verbose_name='Скидка')
-    users = models.ManyToManyField(UserData, blank=True, null=True, related_name='related_coupon')
+    code = models.CharField(max_length=15, verbose_name='Купон', unique=True)
+    sale = models.IntegerField(verbose_name='Скидка', validators=[MinValueValidator(1), MaxValueValidator(100)])
+    # users = models.ManyToManyField(UserData, blank=True, null=True, related_name='related_coupon')
 
     def __str__(self):
         return '{}, {}%'.format(self.code, self.sale)

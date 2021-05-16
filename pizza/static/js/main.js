@@ -11,26 +11,16 @@ let prod = new Vue({
         newPrice: [],
         csrf: getCookie('csrftoken'),
     },
-    created: function () {
+    created: async function () {
         const t = this;
-        axios.get('/api/products')
-            .then(function (response) {
-                t.products = response.data;
-                response.data.forEach(function (item) {
+        await fetch('/api/products/', {method: 'GET'})
+            .then(async response => {
+                let data = await response.json();
+                t.products = data;
+                data.forEach(function (item) {
                     t.newPrice.push(item.price);
-//                    t.categorys.push(item.category.name)
                 });
-//                let q;
-//                t.categorys = t.categorys.sort().reduce(function(a, b){ if (b != a[0]) a.unshift(b); return a }, [])
-//                t.categorys.forEach(function (item, i) {
-//                    t.products.forEach(function (item2) {
-//                        if (item === item2.category.name) {
-//                        t.categorys[i] = {'category': item, 'products': item2}
-//                        }
-//                    })
-//                })
-            });
-
+            })
     },
     methods: {
         // getPizzaUrl(ct_model, slug) {
@@ -65,29 +55,24 @@ let qty = new Vue({
         cartProducts: [],
         count: 0
     },
-    created: function () {
+    created: async function () {
         const t = this;
-        axios.get('/api/cart')
-            .then(function (response) {
-                t.cartProducts = response.data[0];
-                // t.cartProducts.products.forEach(function (item) {
-                //     t.count += item.qty
-                // })
-                t.count = t.cartProducts.qty
-            });
+        await fetch('/api/cart/', {method: 'GET'})
+            .then(async response => {
+                let data = await response.json();
+                t.cartProducts = data[0];
+                t.count = t.cartProducts.qty;
+            })
     },
     methods: {
-        reload() {
+        async reload() {
             const t = this;
-            t.count = 0;
-            axios.get('/api/cart')
-                .then(function (response) {
-                    t.cartProducts = response.data[0];
-                    // t.cartProducts.products.forEach(function (item) {
-                    //     t.count += item.qty
-                    // })
-                    t.count = t.cartProducts.qty
-                });
+            await fetch('/api/cart/', {method: 'GET'})
+                .then(async response => {
+                    let data = await response.json();
+                    t.cartProducts = data[0];
+                    t.count = t.cartProducts.qty;
+                })
         }
     }
 })
@@ -120,11 +105,8 @@ let app2 = new Vue({
     // },
     methods: {
         searchStreet() {
-            const requestOptions = {
-                method: 'GET'
-            }
 //         fetch(`https:nominatim.openstreetmap.org/search?country=Россия&city=Томск&format=json&limit=3&street=${this.search}`, requestOptions)
-            fetch(`https:nominatim.openstreetmap.org/search?q=Томск+${this.search}&format=json&limit=3`, requestOptions)
+            fetch(`https:nominatim.openstreetmap.org/search?q=Томск+${this.search}&format=json&limit=3`, {method: 'GET'})
                 .then(async response => {
                         this.streets = await response.json();
                         if (this.streets.length === 0) {
@@ -208,15 +190,41 @@ let basket = new Vue({
     data: {
         cart: [],
         csrf: getCookie('csrftoken'),
+        code: '',
+        status: ''
     },
-    created: function () {
+    created: async function () {
         const t = this;
-        axios.get('/api/cart')
-            .then(function (response) {
-                t.cart = response.data[0];
+        await fetch('/api/cart/', {method: 'GET'})
+            .then(async response => {
+                let data = await response.json()
+                t.cart = data[0];
             })
     },
     methods: {
+        async coupon(code) {
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this.csrf
+                },
+                body: JSON.stringify({
+                    'code': code,
+                })
+            }
+            const t = this;
+            const result = await fetch('/basket/', requestOptions)
+                .then(async response => {
+                    let data = await response.json();
+                    t.status = data.data;
+                    await fetch('/api/cart/', {method: 'GET'})
+                        .then(async response => {
+                            let data = await response.json()
+                            t.cart = data[0];
+                        })
+                })
+        },
         async deleteProduct(slug, size) {
             const requestOptions = {
                 method: 'POST',
@@ -232,13 +240,13 @@ let basket = new Vue({
             const t = this;
             const result = await fetch('/remove-from-cart/' + slug + '/', requestOptions)
                 .then(async () =>
-                    await axios.get('/api/cart')
-                        .then(function (response) {
-                            t.cart = response.data[0];
+                    await fetch('/api/cart/', {method: 'GET'})
+                        .then(async response => {
+                            let data = await response.json();
+                            t.cart = data[0];
                             qty.reload()
                         })
-                );
-
+                )
         },
         async changeQTY(slug, size, qtyN, num) {
             const requestOptions = {
@@ -255,13 +263,13 @@ let basket = new Vue({
             }
             const t = this;
             const result = await fetch('/change-qty/' + slug + '/', requestOptions)
-                .then(
-                    async () =>
-                        await axios.get('/api/cart')
-                            .then(function (response) {
-                                t.cart = response.data[0];
-                                qty.count += num;
-                            })
+                .then(async () =>
+                    await fetch('/api/cart/', {method: 'GET'})
+                        .then(async response => {
+                            let data = await response.json();
+                            t.cart = data[0];
+                            qty.count += num;
+                        })
                 );
         }
     }

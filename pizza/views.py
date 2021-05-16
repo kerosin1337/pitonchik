@@ -2,22 +2,25 @@ import json
 
 import requests
 import stripe
-from django.contrib.auth.views import *
+from django.contrib.auth.views import LoginView, auth_login, LogoutView
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
 from django.views.generic import *
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .consumers import OrderWS
-from .forms import *
-from .mixins import *
-from .serializers import *
-from .utils import *
-
+from .forms import RegForm
+from .mixins import CartMixin
+from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer
+from .models import UserData, Products, CartProduct, Cart, Order, Coupon
 
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
 #     model = User
+from .utils import recalc_cart
+
 
 class userAPI(ModelViewSet):
     serializer_class = userSerializer
@@ -190,8 +193,38 @@ class basket(CartMixin, View):
 
     def post(self, request, *args, **kwargs):
         coupon = Coupon.objects.all()
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        if self.cart.coupon:
+            return JsonResponse({'data': 'Промокод использован.', 'status': 1})
+        else:
+            for i, obj in enumerate(coupon):
+                if obj.code == body['code']:
+                    self.cart.coupon = obj
+                    self.cart.save()
+                    recalc_cart(self.cart)
+            return JsonResponse({'data': 'Такого промокода нет.', 'status': 4})
+
+        # if self.cart.is_coupon_activate:
+        #     return JsonResponse({'data': 'Вы уже использовали промокод.', 'status': 1})
         # for i, obj in enumerate(coupon):
-        #     if obj.code == request.POST['code']:
+        #     if obj.code == body['code']:
+        #         if len(obj.users.all()) == 0:
+        #             self.cart.final_price = int(self.cart.final_price) * (100 - obj.sale) / 100
+        #             self.cart.is_coupon_activate = True
+        #             obj.users.add(self.cart.owner)
+        #             self.cart.save()
+        #             return JsonResponse({'data': 'Промокод активирован.', 'status': 2})
+        #         # for j in obj.users.all():
+        #         #     if j == self.cart.owner:
+        #         #         return JsonResponse({'data': 'Вы уже использовали этот промокод'})
+        #         for j in obj.users.all():
+        #             if j != self.cart.owner:
+        #                 self.cart.final_price = int(self.cart.final_price) * (100 - obj.sale) / 100
+        #                 self.cart.is_coupon_activate = True
+        #                 obj.users.add(self.cart.owner)
+        #                 self.cart.save()
+        #                 return JsonResponse({'data': 'Промокод активирован.', 'status': 3})
         #         print(list(obj.users.all()).index(request.user))
         #         self.cart.final_price = int(self.cart.final_price) * (100 - obj.sale) / 100
         #         self.cart.save()

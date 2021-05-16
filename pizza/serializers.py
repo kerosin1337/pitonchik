@@ -44,7 +44,8 @@ class cartSerializer(ModelSerializer):
             'in_order',
             'for_anonymous_user',
             'date_create',
-            'qty'
+            'qty',
+            'is_coupon_activate'
         )
 
 
