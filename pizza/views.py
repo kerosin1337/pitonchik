@@ -8,7 +8,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import *
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-
+from rest_framework.generics import *
+from rest_framework.permissions import IsAdminUser
 from .consumers import OrderWS
 from .forms import RegForm
 from .mixins import CartMixin
@@ -25,17 +26,18 @@ from .utils import recalc_cart
 class userAPI(ModelViewSet):
     serializer_class = userSerializer
     model = UserData
+    # permission_classes = [IsAdminUser, ]
 
     def get_queryset(self):
         return UserData.objects.filter(user=self.request.user.id)
 
 
-class productsAPI(ModelViewSet):
+class productsAPI(ReadOnlyModelViewSet):
     queryset = Products.objects.filter(is_custom=False)
     serializer_class = productSerializer
 
 
-class cartProductsAPI(ModelViewSet):
+class cartProductsAPI(ReadOnlyModelViewSet):
     serializer_class = cartProductsSerializer
     model = CartProduct
 
@@ -51,7 +53,7 @@ class cartAPI(ReadOnlyModelViewSet):
         return Cart.objects.filter(owner=self.request.user.id, in_order=False)
 
 
-class orderAPI(ModelViewSet):
+class orderAPI(ReadOnlyModelViewSet):
     serializer_class = orderSerializer
     queryset = Order.objects.order_by()
 
