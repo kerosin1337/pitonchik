@@ -23,7 +23,7 @@ from .models import UserData, Products, CartProduct, Cart, Order, Coupon
 from .utils import recalc_cart
 
 
-class userAPI(ModelViewSet):
+class userAPI(ReadOnlyModelViewSet):
     serializer_class = userSerializer
     model = UserData
     # permission_classes = [IsAdminUser, ]
