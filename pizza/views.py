@@ -1,26 +1,24 @@
 import json
 
-import requests
 import stripe
 from django.contrib.auth.views import LoginView, auth_login, LogoutView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import *
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.generics import *
-from rest_framework.permissions import IsAdminUser
-from .consumers import OrderWS
+from django.views import generic
+from rest_framework.viewsets import ReadOnlyModelViewSet
+
 from .forms import RegForm
 from .mixins import CartMixin
-from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer
 from .models import UserData, Products, CartProduct, Cart, Order, Coupon
+from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer
+from .utils import recalc_cart
+
 
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
 #     model = User
-from .utils import recalc_cart
 
 
 class userAPI(ReadOnlyModelViewSet):
@@ -58,7 +56,7 @@ class orderAPI(ReadOnlyModelViewSet):
     queryset = Order.objects.order_by()
 
 
-class index(TemplateView):
+class index(generic.TemplateView):
     template_name = 'main.html'
 
 
@@ -79,7 +77,7 @@ class login(LoginView):
             return '/'
 
 
-class register(CreateView):
+class register(generic.CreateView):
     template_name = 'register.html'
     model = UserData
     form_class = RegForm
@@ -93,12 +91,11 @@ class register(CreateView):
             return HttpResponseRedirect(reverse('register'))
 
 
-# LoginRequiredMixin
-class LogoutView(LogoutView):
+class Logout(LogoutView):
     template_name = 'logout.html'
 
 
-class Profile(CartMixin, View):
+class Profile(CartMixin, generic.View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('index'))
@@ -113,7 +110,7 @@ class Profile(CartMixin, View):
         return render(request, 'profile.html', context)
 
 
-class AddToCartView(CartMixin, View):
+class AddToCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
@@ -143,7 +140,7 @@ class AddToCartView(CartMixin, View):
         return HttpResponseRedirect(reverse('index'))
 
 
-class DeleteFromCartView(CartMixin, View):
+class DeleteFromCartView(CartMixin, generic.View):
 
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
@@ -161,7 +158,7 @@ class DeleteFromCartView(CartMixin, View):
         return HttpResponseRedirect('/basket/')
 
 
-class ChangeQTYView(CartMixin, View):
+class ChangeQTYView(CartMixin, generic.View):
 
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
@@ -185,7 +182,7 @@ def deleteCart(request):
     return HttpResponseRedirect(reverse('basket'))
 
 
-class basket(CartMixin, View):
+class basket(CartMixin, generic.View):
 
     def get(self, request, *args, **kwargs):
         context = {
@@ -240,7 +237,7 @@ class basket(CartMixin, View):
         #         return HttpResponseRedirect(reverse('basket'))
 
 
-class order(CartMixin, View):
+class order(CartMixin, generic.View):
     def get(self, request, *args, **kwargs):
         try:
             stripe.api_key = 'sk_test_51IgOVCHac5lTiSCzjs3ZKXz3C9o6WtQ0w03byY1RGR0fbrVbt0vOAcePoe7AfXPKYlIE9OJAsr2thd6cf3s8hBkE00LLZ5Sn4N'
@@ -284,7 +281,7 @@ class order(CartMixin, View):
 #     return HttpResponseRedirect(reverse('index'))
 
 
-class OrderAccept(CartMixin, View):
+class OrderAccept(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
         req = request.POST
@@ -300,13 +297,13 @@ class OrderAccept(CartMixin, View):
         return HttpResponseRedirect(reverse('order'))
 
     def get(self, request, *args, **kwargs):
-        try:
-            self.post(self, request, *args, **kwargs)
-        except AttributeError:
-            return HttpResponseRedirect(reverse('index'))
+        # try:
+        #     self.post(self, request, *args, **kwargs)
+        # except AttributeError:
+        return HttpResponseRedirect(reverse('index'))
 
 
-class OrderPayment(CartMixin, View):
+class OrderPayment(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         order = Order.objects.get(customer=self.cart.owner_id, cart=self.cart)
         order.status = 'in_progress'
@@ -322,7 +319,7 @@ class OrderPayment(CartMixin, View):
             return HttpResponseRedirect(reverse('index'))
 
 
-class Custom(TemplateView):
+class Custom(generic.TemplateView):
     template_name = 'custom.html'
 
 
