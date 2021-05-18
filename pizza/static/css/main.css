@@ -96,12 +96,12 @@ input:active, input:focus {
 }
 
 .prod:hover .filter {
-transition: .5s;
+    transition: .5s;
     filter: blur(.8px)
 }
 
 .prod:hover .prodPlus {
-transition: .5s;
+    transition: .5s;
     cursor: pointer;
     display: block;
     background-color: #2dce89;
@@ -115,7 +115,7 @@ transition: .5s;
 }
 
 .prod:hover .prodPlus::before {
-transition: .5s;
+    transition: .5s;
     width: 4px;
     height: 16px;
     margin-top: -8px;
@@ -128,7 +128,7 @@ transition: .5s;
 }
 
 .prod:hover .prodPlus::after {
-transition: .5s;
+    transition: .5s;
     width: 16px;
     height: 4px;
     margin-top: -2px;
@@ -136,7 +136,7 @@ transition: .5s;
 }
 
 .prodPlus:before, .prodPlus:after {
-transition: .5s;
+    transition: .5s;
     content: "";
     position: absolute;
     top: 50%;
@@ -146,7 +146,7 @@ transition: .5s;
 
 
 .prod:hover .prodDel {
-transition: .5s;
+    transition: .5s;
     transform: rotate(45deg);
     cursor: pointer;
     display: block;
@@ -161,7 +161,7 @@ transition: .5s;
 }
 
 .prod:hover .prodDel::before {
-transition: .5s;
+    transition: .5s;
     width: 4px;
     height: 16px;
     margin-top: -8px;
@@ -174,7 +174,7 @@ transition: .5s;
 }
 
 .prod:hover .prodDel::after {
-transition: .5s;
+    transition: .5s;
     width: 16px;
     height: 4px;
     margin-top: -2px;
@@ -182,7 +182,7 @@ transition: .5s;
 }
 
 .prodPlus:before, .prodDel:after {
-transition: .5s;
+    transition: .5s;
     content: "";
     position: absolute;
     top: 50%;
