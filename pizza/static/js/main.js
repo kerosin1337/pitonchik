@@ -473,21 +473,17 @@ let staff = new Vue({
         },
         ordersSort() {
             let newOrders = [];
-            this.orders.forEach(function (item) {
-                if (item.status === 'new')
-                    newOrders.push(item)
+            this.orders.filter(item => item.status === 'new').forEach(function (item) {
+                newOrders.push(item)
             });
-            this.orders.forEach(function (item) {
-                if (item.status === 'in_progress')
-                    newOrders.push(item)
+            this.orders.filter(item => item.status === 'in_progress').forEach(function (item) {
+                newOrders.push(item)
             });
-            this.orders.forEach(function (item) {
-                if (item.status === 'is_ready')
-                    newOrders.push(item)
+            this.orders.filter(item => item.status === 'is_ready').forEach(function (item) {
+                newOrders.push(item)
             });
-            this.orders.forEach(function (item) {
-                if (item.status === 'completed')
-                    newOrders.push(item)
+            this.orders.filter(item => item.status === 'completed').forEach(function (item) {
+                newOrders.push(item)
             });
             return newOrders;
         }
