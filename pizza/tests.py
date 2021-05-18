@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import *
+from .models import Products
 from faker import Faker
 
 fake = Faker()

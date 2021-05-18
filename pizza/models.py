@@ -1,12 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
-from datetime import datetime, timedelta
 
 User = get_user_model()
 
@@ -20,15 +16,6 @@ def validate_image(image):
     # limit_kb = 150
     # if file_size > limit_kb * 1024:
     #     raise ValidationError("Max size of file is %s KB" % limit)
-
-
-def get_product_url(obj, viewname):
-    ct_model = obj.__class__._meta.model_name
-    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
-
-
-def get_models_for_count(*model_names):
-    return [models.Count(model_name) for model_name in model_names]
 
 
 # class UserData(AbstractUser):
@@ -140,9 +127,6 @@ class Products(models.Model):
 
     def get_model_name(self):
         return self.__class__.__name__.lower()
-
-    def get_absolute_url(self):
-        return get_product_url(self, 'product_detail')
 
 
 class CartProduct(models.Model):

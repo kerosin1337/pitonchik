@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from .models import *
+from . import models
 
 admin.site.site_header = 'У Альбертовича'
-admin.site.register(UserData)
-admin.site.register(Category)
-admin.site.register(Products)
-admin.site.register(CartProduct)
-admin.site.register(Cart)
-admin.site.register(Order)
-admin.site.register(Coupon)
+admin.site.register(models.UserData)
+admin.site.register(models.Category)
+admin.site.register(models.Products)
+admin.site.register(models.CartProduct)
+admin.site.register(models.Cart)
+admin.site.register(models.Order)
+admin.site.register(models.Coupon)

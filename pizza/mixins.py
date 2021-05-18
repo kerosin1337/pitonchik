@@ -1,6 +1,6 @@
 from django.views.generic import View
 
-from .models import *
+from .models import Cart, UserData
 
 
 class CartMixin(View):

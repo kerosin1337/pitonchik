@@ -4,9 +4,7 @@
 /*!*    font-size: 24px;*!*/
 /*!*    font-weight: bold;*!*/
 /*!*}*!*/
-* {
-    transition: .5s;
-}
+
 
 .nav:nth-child(1) {
 
@@ -89,15 +87,21 @@ input:active, input:focus {
     transition: .5s;
 }
 
+.customPizza {
+    transition: .5s;
+}
+
 .prod:hover {
     background-color: #ced4da
 }
 
 .prod:hover .filter {
+transition: .5s;
     filter: blur(.8px)
 }
 
 .prod:hover .prodPlus {
+transition: .5s;
     cursor: pointer;
     display: block;
     background-color: #2dce89;
@@ -111,6 +115,7 @@ input:active, input:focus {
 }
 
 .prod:hover .prodPlus::before {
+transition: .5s;
     width: 4px;
     height: 16px;
     margin-top: -8px;
@@ -123,6 +128,7 @@ input:active, input:focus {
 }
 
 .prod:hover .prodPlus::after {
+transition: .5s;
     width: 16px;
     height: 4px;
     margin-top: -2px;
@@ -130,6 +136,7 @@ input:active, input:focus {
 }
 
 .prodPlus:before, .prodPlus:after {
+transition: .5s;
     content: "";
     position: absolute;
     top: 50%;
@@ -139,6 +146,7 @@ input:active, input:focus {
 
 
 .prod:hover .prodDel {
+transition: .5s;
     transform: rotate(45deg);
     cursor: pointer;
     display: block;
@@ -153,6 +161,7 @@ input:active, input:focus {
 }
 
 .prod:hover .prodDel::before {
+transition: .5s;
     width: 4px;
     height: 16px;
     margin-top: -8px;
@@ -165,6 +174,7 @@ input:active, input:focus {
 }
 
 .prod:hover .prodDel::after {
+transition: .5s;
     width: 16px;
     height: 4px;
     margin-top: -2px;
@@ -172,6 +182,7 @@ input:active, input:focus {
 }
 
 .prodPlus:before, .prodDel:after {
+transition: .5s;
     content: "";
     position: absolute;
     top: 50%;

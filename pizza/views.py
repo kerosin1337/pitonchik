@@ -177,9 +177,11 @@ class ChangeQTYView(CartMixin, generic.View):
         return HttpResponseRedirect('/basket/')
 
 
-def deleteCart(request):
-    Cart.objects.filter(owner=request.user.id).delete()
-    return HttpResponseRedirect(reverse('basket'))
+class deleteCart(CartMixin):
+    # Cart.objects.filter(owner=request.user.id).delete()
+    def get(self, request, *args, **kwargs):
+        self.cart.delete()
+        return HttpResponseRedirect(reverse('basket'))
 
 
 class basket(CartMixin, generic.View):
@@ -329,4 +331,7 @@ class Custom(generic.TemplateView):
 
 
 def room(request):
-    return render(request, 'staffOrder.html')
+    if request.user.is_superuser or request.user.is_staff:
+        return render(request, 'staffOrder.html')
+    else:
+        return HttpResponseRedirect(reverse('index'))

@@ -15,6 +15,7 @@ class cartProductsSerializer(ModelSerializer):
     class Meta:
         model = CartProduct
         fields = (
+            'id',
             'user',
             'size',
             'price',
@@ -37,6 +38,7 @@ class cartSerializer(ModelSerializer):
     class Meta:
         model = Cart
         fields = (
+            'id',
             'owner',
             'products',
             'total_products',
@@ -55,6 +57,7 @@ class orderSerializer(ModelSerializer):
     class Meta:
         model = Order
         fields = (
+            'id',
             'customer',
             'phone',
             'cart',

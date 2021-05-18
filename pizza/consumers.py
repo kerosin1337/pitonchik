@@ -1,8 +1,8 @@
 import json
-from time import sleep
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+
 from .models import Order
 
 
