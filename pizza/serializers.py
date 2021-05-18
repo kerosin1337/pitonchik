@@ -1,18 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import *
+from .models import Products, CartProduct, Cart, UserData, User, Order, Coupon
 
 
 class productSerializer(ModelSerializer):
-
     class Meta:
         model = Products
-        fields = '__all__'
-
-
-class contentTypeSerializer(ModelSerializer):
-    class Meta:
-        model = ContentType
         fields = '__all__'
 
 
@@ -31,8 +24,15 @@ class cartProductsSerializer(ModelSerializer):
         )
 
 
+class couponSerializer(ModelSerializer):
+    class Meta:
+        model = Coupon
+        fields = '__all__'
+
+
 class cartSerializer(ModelSerializer):
     products = cartProductsSerializer(read_only=True, many=True)
+    coupon = couponSerializer(read_only=True)
 
     class Meta:
         model = Cart

@@ -24,6 +24,7 @@ from .utils import recalc_cart
 class userAPI(ReadOnlyModelViewSet):
     serializer_class = userSerializer
     model = UserData
+
     # permission_classes = [IsAdminUser, ]
 
     def get_queryset(self):
@@ -170,8 +171,7 @@ class ChangeQTYView(CartMixin, generic.View):
             user=self.cart.owner, cart=self.cart, product=product,
             size=body['size']
         )
-        qty = body['qty']
-        cart_product.qty = qty
+        cart_product.qty = body['qty']
         cart_product.save()
         recalc_cart(self.cart)
         return HttpResponseRedirect('/basket/')
@@ -204,6 +204,11 @@ class basket(CartMixin, generic.View):
                     recalc_cart(self.cart)
             return JsonResponse({'data': 'Такого промокода нет.', 'status': 4})
 
+    def delete(self, request, *args, **kwargs):
+        self.cart.coupon = None
+        self.cart.save()
+        recalc_cart(self.cart)
+        return HttpResponseRedirect(reverse('index'))
         # if self.cart.is_coupon_activate:
         #     return JsonResponse({'data': 'Вы уже использовали промокод.', 'status': 1})
         # for i, obj in enumerate(coupon):

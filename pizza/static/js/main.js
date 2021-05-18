@@ -225,6 +225,26 @@ let basket = new Vue({
                         })
                 })
         },
+        async delCoupon() {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': this.csrf
+                }
+            }
+            const t = this;
+            const result = await fetch('/basket/', requestOptions)
+                .then(async response => {
+                    // let data = await response.json();
+                    // t.status = data.data;
+                    await fetch('/api/cart/', {method: 'GET'})
+                        .then(async response => {
+                            let data = await response.json()
+                            t.cart = data[0];
+                        })
+                })
+        },
         async deleteProduct(slug, size) {
             const requestOptions = {
                 method: 'POST',
