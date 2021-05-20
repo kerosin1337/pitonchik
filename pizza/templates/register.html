@@ -1,43 +1,36 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 {% load bootstrap4 %}
 {% load static %}
 {% block content %}
 
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="row justify-content-sm-center">
             <form method="post" class="col-md-5 mt-3 shadow-lg p-3 mb-5 bg-white rounded">
                 <h2>Регистрация</h2>
-                {% if user.is_authenticated %}
-                    <p>You are already signed in.</p>
-                    <script>
-                        window.location = '/'
-                    </script>
-                {% else %}
-                    {% csrf_token %}
+                {% csrf_token %}
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                                <button class="close" type="button" data-dismiss="alert" aria-label="close">×</button>
-                                {{ message }}
-                            </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button class="close" type="button" data-dismiss="alert" aria-label="close">×</button>
+                            {{ message }}
+                        </div>
 
-                        {% endfor %}
-                    {% endif %}
-
-
-                    {% bootstrap_form form layout='vertical' %}
-                    <div class="form-group">
-                        <div class="g-recaptcha" aria-required="false"
-                             data-sitekey="6Le0OZUaAAAAADXVeLwGl4sUytvh5xd72Y_GDLf-"></div>
-                    </div>
-
-                    <input type="hidden" name="next" value="{{ next }}">
-                    {% buttons submit='Зарегистрироваться' %}
-                    {% endbuttons %}
-                    </form>
-
+                    {% endfor %}
                 {% endif %}
+
+
+                {% bootstrap_form form layout='vertical' %}
+                <div class="form-group">
+                    <div class="g-recaptcha" aria-required="false"
+                         data-sitekey="6Le0OZUaAAAAADXVeLwGl4sUytvh5xd72Y_GDLf-"></div>
+                </div>
+
+                <input type="hidden" name="next" value="{{ next }}">
+                {% buttons submit='Зарегистрироваться' %}
+                {% endbuttons %}
+            </form>
+
         </div>
     </div>
 

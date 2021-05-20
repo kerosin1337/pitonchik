@@ -77,6 +77,10 @@ class login(LoginView):
         else:
             return '/'
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('index'))
+        return super().get(request, *args, **kwargs)
 
 class register(generic.CreateView):
     template_name = 'register.html'
