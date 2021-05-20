@@ -82,6 +82,7 @@ class login(LoginView):
             return HttpResponseRedirect(reverse('index'))
         return super().get(request, *args, **kwargs)
 
+
 class register(generic.CreateView):
     template_name = 'register.html'
     model = UserData
