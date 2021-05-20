@@ -91,6 +91,11 @@ class register(generic.CreateView):
         else:
             return HttpResponseRedirect(reverse('register'))
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('index'))
+        return super().get(request, *args, **kwargs)
+
 
 class Logout(LogoutView):
     template_name = 'logout.html'
