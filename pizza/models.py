@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
@@ -11,16 +12,11 @@ def validate_image(image):
     file_size = image.file.size
     limit_mb = 2
     if file_size > limit_mb * 1024 * 1024:
-        raise ValidationError("Max size of file is %s MB" % limit_mb)
+        raise ValidationError("Максимальный размер файла %s MB" % limit_mb)
     # file_size = image.file.size
     # limit_kb = 150
     # if file_size > limit_kb * 1024:
     #     raise ValidationError("Max size of file is %s KB" % limit)
-
-
-# class UserData(AbstractUser):
-#     class Meta(AbstractUser.Meta):
-#         pass
 
 
 class UserData(models.Model):
