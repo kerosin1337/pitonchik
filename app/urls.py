@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from pizza import views, decorators
 from rest_framework.routers import SimpleRouter
@@ -22,7 +23,7 @@ urlpatterns = [
     path('basket/', views.basket.as_view(), name='basket'),
     path('login/', decorators.check_recaptcha(views.login.as_view()), name='login'),
     path('register/', decorators.check_recaptcha(views.register.as_view()), name='register'),
-    path('logout/', views.Logout.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', views.Profile.as_view(), name='user_profile'),
     path('add/<str:slug>/', views.AddToCartView.as_view(), name='req'),
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
@@ -35,14 +36,12 @@ urlpatterns = [
     path('staff/', views.room, name='staff')
 ]
 
-# if settings.DEBUG:
-#     # urlpatterns += [
-#     #     url(r'^media/(?P<path>.*)$', serve, {
-#     #         'document_root': settings.MEDIA_ROOT,
-#     #     }),
-#     # ]
-#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    #     # urlpatterns += [
+    #     #     url(r'^media/(?P<path>.*)$', serve, {
+    #     #         'document_root': settings.MEDIA_ROOT,
+    #     #     }),
+    #     # ]
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += router.urls

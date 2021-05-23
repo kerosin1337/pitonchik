@@ -1,7 +1,7 @@
 import json
 
 import stripe
-from django.contrib.auth.views import LoginView, auth_login, LogoutView
+from django.contrib.auth.views import LoginView, auth_login
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -102,8 +102,8 @@ class register(generic.CreateView):
         return super().get(request, *args, **kwargs)
 
 
-class Logout(LogoutView):
-    template_name = 'logout.html'
+# class Logout(LogoutView):
+#     template_name = 'logout.html'
 
 
 class Profile(CartMixin, generic.View):
