@@ -49,7 +49,8 @@ class cartAPI(ReadOnlyModelViewSet):
     model = Cart
 
     def get_queryset(self):
-        return Cart.objects.filter(owner=self.request.user.id, in_order=False)
+        return Cart.objects.filter(owner=self.request.user.id, in_order=False) \
+               or Cart.objects.filter(owner=UserData.objects.get(session=self.request.session.session_key), in_order=False)
 
 
 class orderAPI(ReadOnlyModelViewSet):

@@ -1,11 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import User
+from .models import UserData
 
 
 class RegForm(UserCreationForm):
     class Meta:
-        model = User
+        model = UserData
         fields = ['username']
 
 

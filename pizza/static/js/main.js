@@ -242,6 +242,7 @@ let basket = new Vue({
                         .then(async response => {
                             let data = await response.json()
                             t.cart = data[0];
+                            t.status = '';
                         })
                 })
         },

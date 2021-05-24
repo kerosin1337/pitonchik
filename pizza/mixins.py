@@ -6,17 +6,15 @@ from .models import Cart, UserData
 class CartMixin(View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            customer = UserData.objects.filter(user=request.user, id=request.user.id).first()
+            customer = UserData.objects.filter(id=request.user.id).first()
             if not customer:
-                customer = UserData.objects.create(
-                    user=request.user, id=request.user.id
-                )
+                customer = UserData.objects.create(id=request.user.id)
             cart = Cart.objects.filter(owner=customer, in_order=False).first()
             if not cart:
                 cart = Cart.objects.create(owner=customer)
         else:
-            for i in request.session:
-                print(i)
+            if not request.session.session_key:
+                request.session.save()
             customer = UserData.objects.filter(session=request.session.session_key).first()
             if not customer:
                 customer = UserData.objects.create(session=request.session.session_key)

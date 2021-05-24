@@ -3,9 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
-from django.urls import reverse
 
-User = get_user_model()
+# User = get_user_model()
 
 
 def validate_image(image):
@@ -19,8 +18,8 @@ def validate_image(image):
     #     raise ValidationError("Max size of file is %s KB" % limit)
 
 
-class UserData(models.Model):
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
+class UserData(AbstractUser):
+    # user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
     session = models.CharField(max_length=128, null=True, blank=True)
     phone = models.CharField(max_length=15, verbose_name='Номер телефона', null=True, blank=True)
     # address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
@@ -28,8 +27,11 @@ class UserData(models.Model):
     # distance = models.FloatField(verbose_name='Расстояние', null=True, blank=True)
     orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_order')
 
+    class Meta(AbstractUser.Meta):
+        pass
+
     def __str__(self):
-        return "Покупатель: {}".format(self.user)
+        return "Покупатель: {}".format(self.username or 'anonymous{}'.format(self.id))
 
 
 # class LatestProductsManager:

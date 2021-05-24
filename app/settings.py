@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-# AUTH_USER_MODEL = 'pizza.UserData'
+AUTH_USER_MODEL = 'pizza.UserData'
 
 INSTALLED_APPS = [
     'channels',
