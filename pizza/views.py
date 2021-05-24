@@ -1,6 +1,5 @@
 import json
 
-import requests
 import stripe
 from django.contrib.auth.views import LoginView, auth_login
 from django.http import HttpResponseRedirect, JsonResponse
@@ -126,6 +125,10 @@ class Profile(CartMixin, generic.View):
     def delete(self, request, *args, **kwargs):
         self.cart.owner.delete()
         return HttpResponseRedirect(reverse('index'))
+
+    def put(self, request, *args, **kwargs):
+        print(123)
+        return HttpResponseRedirect('/')
 
 
 class AddToCartView(CartMixin, generic.View):
