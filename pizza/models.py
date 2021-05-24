@@ -20,7 +20,8 @@ def validate_image(image):
 
 
 class UserData(models.Model):
-    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
+    session = models.CharField(max_length=128, null=True, blank=True)
     phone = models.CharField(max_length=15, verbose_name='Номер телефона', null=True, blank=True)
     # address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     #  #                                 blank=True)
