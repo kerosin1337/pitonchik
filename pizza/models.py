@@ -20,7 +20,6 @@ def validate_image(image):
 
 class UserData(AbstractUser):
     # user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE, null=True)
-    session = models.CharField(max_length=128, null=True, blank=True)
     phone = models.CharField(max_length=15, verbose_name='Номер телефона', null=True, blank=True)
     # address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     #  #                                 blank=True)
@@ -158,6 +157,7 @@ class Cart(models.Model):
     date_create = models.DateTimeField(auto_now_add=True)
     qty = models.PositiveIntegerField(default=0)
     coupon = models.ForeignKey('Coupon', on_delete=models.CASCADE, null=True, blank=True)
+    session = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return str(self.id)

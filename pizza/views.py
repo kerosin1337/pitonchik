@@ -1,5 +1,6 @@
 import json
 
+import requests
 import stripe
 from django.contrib.auth.views import LoginView, auth_login
 from django.http import HttpResponseRedirect, JsonResponse
@@ -25,10 +26,8 @@ class userAPI(ReadOnlyModelViewSet):
     serializer_class = userSerializer
     model = UserData
 
-    # permission_classes = [IsAdminUser, ]
-
     def get_queryset(self):
-        return UserData.objects.filter(user=self.request.user.id)
+        return UserData.objects.filter(id=self.request.user.id)
 
 
 class productsAPI(ReadOnlyModelViewSet):
@@ -49,8 +48,12 @@ class cartAPI(ReadOnlyModelViewSet):
     model = Cart
 
     def get_queryset(self):
-        return Cart.objects.filter(owner=self.request.user.id, in_order=False) \
-               or Cart.objects.filter(owner=UserData.objects.get(session=self.request.session.session_key), in_order=False)
+        if self.request.user.is_authenticated:
+            return Cart.objects.filter(owner=self.request.user.id, in_order=False)
+        else:
+            if not self.request.session.session_key:
+                self.request.session.save()
+            return Cart.objects.filter(session=self.request.session.session_key, in_order=False)
 
 
 class orderAPI(ReadOnlyModelViewSet):
@@ -111,15 +114,18 @@ class Profile(CartMixin, generic.View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('index'))
-        user, created = UserData.objects.get_or_create(user=self.cart.owner_id)
-        if created:
-            user = UserData.objects.get(user=self.cart.owner_id)
+        # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
+        user = UserData.objects.get(id=self.cart.owner_id)
         # social = SocialAccount.objects.get(user=request.user) or None
         context = {
             'user': user,
             # 'img': social.extra_data['picture']
         }
         return render(request, 'profile.html', context)
+
+    def delete(self, request, *args, **kwargs):
+        self.cart.owner.delete()
+        return HttpResponseRedirect(reverse('index'))
 
 
 class AddToCartView(CartMixin, generic.View):
@@ -257,25 +263,22 @@ class basket(CartMixin, generic.View):
 
 class order(CartMixin, generic.View):
     def get(self, request, *args, **kwargs):
+        stripe.api_key = 'sk_test_51IgOVCHac5lTiSCzjs3ZKXz3C9o6WtQ0w03byY1RGR0fbrVbt0vOAcePoe7AfXPKYlIE9OJAsr2thd6cf3s8hBkE00LLZ5Sn4N'
+        intent = stripe.PaymentIntent.create(
+            amount=int(self.cart.final_price * 100),
+            currency='rub',
+            metadata={'integration_check': 'accept_a_payment'}
+        )
         try:
-            stripe.api_key = 'sk_test_51IgOVCHac5lTiSCzjs3ZKXz3C9o6WtQ0w03byY1RGR0fbrVbt0vOAcePoe7AfXPKYlIE9OJAsr2thd6cf3s8hBkE00LLZ5Sn4N'
-            intent = stripe.PaymentIntent.create(
-                amount=int(self.cart.final_price * 100),
-                currency='rub',
-                metadata={'integration_check': 'accept_a_payment'}
-            )
-            try:
-                order = Order.objects.get(customer=self.cart.owner, cart=self.cart)
-            except:
-                order = None
-            context = {
-                'order': order,
-                'cart': self.cart,
-                'client_secret': intent.client_secret
-            }
-            return render(request, 'order.html', context)
+            order = Order.objects.get(customer=self.cart.owner, cart=self.cart)
         except:
-            return HttpResponseRedirect(reverse('index'))
+            order = None
+        context = {
+            'order': order,
+            'cart': self.cart,
+            'client_secret': intent.client_secret
+        }
+        return render(request, 'order.html', context)
 
 
 # try:
@@ -312,6 +315,8 @@ class OrderAccept(CartMixin, generic.View):
         )
         if created and self.cart.owner is not None:
             self.cart.owner.orders.add(order)
+            self.cart.owner.phone = req['tel']
+            self.cart.owner.save()
         return HttpResponseRedirect(reverse('order'))
 
     def get(self, request, *args, **kwargs):

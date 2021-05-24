@@ -85,24 +85,20 @@ let app2 = new Vue({
         error: 'Простите, мы доставляем в радиусе 3 км.',
         dist: 0,
         seen: true,
-        // user: Object,
+        phone: '',
     },
-    // created: function () {
-    //     const t = this;
-    //     axios.get('/api/user')
-    //         .then(function (response) {
-    //             if (response.data.length !== 0) {
-    //                 try {
-    //                     t.user = response.data[0];
-    //                     // t.search = arr[0];
-    //                     // t.user.entrance = arr[1];
-    //                     // t.user.floor_number = arr[2];
-    //                     // t.user.apartment_number = arr[3];
-    //                 } catch (e) {
-    //                 }
-    //             }
-    //         });
-    // },
+    created: function () {
+        const t = this;
+        axios.get('/api/user')
+            .then(function (response) {
+                t.phone = response.data[0]?.phone;
+                // t.search = arr[0];
+                // t.user.entrance = arr[1];
+                // t.user.floor_number = arr[2];
+                // t.user.apartment_number = arr[3];
+
+            });
+    },
     methods: {
         searchStreet() {
 //         fetch(`https:nominatim.openstreetmap.org/search?country=Россия&city=Томск&format=json&limit=3&street=${this.search}`, requestOptions)
@@ -555,6 +551,19 @@ $(document).on('submit', 'form#main', function () {
     const chatSocket = new WebSocket(
         'ws://localhost:8000/order/');
 });
+
+$('#delAcc').click(async function () {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    }
+    const t = this;
+    const result = await fetch('/profile/', requestOptions)
+    window.location = '/'
+})
 // $(document).on('submit', 'form#payment-form', function () {
 //     const chatSocket = new WebSocket(
 //         'ws://localhost:8000/order/');
