@@ -39,11 +39,10 @@ let prod = new Vue({
                     'X-CSRFToken': this.csrf
                 },
                 body: JSON.stringify({
-                    size: value,
                     price: this.newPrice[i]
                 })
             }
-            const result = await fetch('/add/' + slug + '/', requestOptions).then(qty.count++)
+            const result = await fetch(`/add/${slug}/?size=${value}`, requestOptions).then(qty.count++)
         }
 
     }
@@ -428,12 +427,11 @@ let custom = new Vue({
                 },
                 body: JSON.stringify({
                     description: descriptionStr,
-                    size: sizeStr,
                     price: this.price(),
                     custom: true
                 })
             }
-            const result = await fetch(`/add/${randStr()}/`, requestOptions).then(qty.count++);
+            const result = await fetch(`/add/${randStr()}/?size=${sizeStr}`, requestOptions).then(qty.count++);
             this.final_cost = []
             // Store.remove('myPizza');
             // Store.remove('mySize');

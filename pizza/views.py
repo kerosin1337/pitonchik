@@ -141,24 +141,27 @@ class AddToCartView(CartMixin, generic.View):
         except:
             custom = None
         if custom:
-            Products.objects.get_or_create(name='Моя пицца', description=body['description'], price=body['price'],
-                                           image='products/custom.png', slug=product_slug, is_custom=True)
-        product = Products.objects.get(slug=product_slug)
+            product, created = Products.objects.get_or_create(name='Моя пицца', description=body['description'],
+                                                              price=body['price'],
+                                                              image='products/custom.png', slug=product_slug,
+                                                              is_custom=True)
+        else:
+            product = Products.objects.get(slug=product_slug)
         cart_product, created = CartProduct.objects.get_or_create(
             user=self.cart.owner, cart=self.cart,
-            size=body['size'], price=body['price'], product=product
+            size=request.GET['size'], price=body['price'], product=product
         )
         if created:
             self.cart.products.add(cart_product)
         else:
             q = CartProduct.objects.get(
                 user=self.cart.owner, cart=self.cart,
-                size=body['size'], price=body['price'], product=product
+                size=request.GET['size'], price=body['price'], product=product
             )
             q.qty += 1
             q.save()
         recalc_cart(self.cart)
-        return HttpResponseRedirect(reverse('index'))
+        return JsonResponse({'data': product}, status=200)
 
 
 class DeleteFromCartView(CartMixin, generic.View):
