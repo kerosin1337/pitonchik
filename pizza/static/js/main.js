@@ -549,7 +549,18 @@ $(document).on('submit', 'form#main', function () {
     const chatSocket = new WebSocket(
         'ws://localhost:8000/order/');
 });
-
+// $(document).on('submit', 'form#change-password', function () {
+//     const requestOptions = {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': getCookie('csrftoken')
+//         }
+//     }
+//     console.log(123)
+//     console.log(self)
+//         alert()
+// });
 $('#delAcc').click(async function () {
     const requestOptions = {
         method: 'DELETE',

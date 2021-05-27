@@ -24,7 +24,7 @@ class UserData(AbstractUser):
     # address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     #  #                                 blank=True)
     # distance = models.FloatField(verbose_name='Расстояние', null=True, blank=True)
-    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', related_name='related_order')
+    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', null=True, blank=True, related_name='related_order')
 
     class Meta(AbstractUser.Meta):
         pass

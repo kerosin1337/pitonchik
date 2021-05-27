@@ -1,7 +1,8 @@
 import json
 
 import stripe
-from django.contrib.auth.views import LoginView, auth_login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, auth_login, PasswordChangeForm, PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -118,17 +119,24 @@ class Profile(CartMixin, generic.View):
         # social = SocialAccount.objects.get(user=request.user) or None
         context = {
             'user': user,
+            'form': PasswordChangeForm(request.user),
             # 'img': social.extra_data['picture']
         }
+
         return render(request, 'profile.html', context)
 
     def delete(self, request, *args, **kwargs):
         self.cart.owner.delete()
         return HttpResponseRedirect(reverse('index'))
 
-    def put(self, request, *args, **kwargs):
-        print(123)
-        return HttpResponseRedirect('/')
+    def update(self, request, *args, **kwargs):
+        print(kwargs)
+        return HttpResponseRedirect(reverse('profile'))
+
+
+class ChangePasswdView(PasswordChangeView):
+    template_name = 'profile.html'
+    success_url = reverse_lazy('profile')
 
 
 class AddToCartView(CartMixin, generic.View):

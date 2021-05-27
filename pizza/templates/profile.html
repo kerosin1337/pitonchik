@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap4 %}
 {% block content %}
 
     <main class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
@@ -23,7 +24,12 @@
                                     <ul class="dropdown-menu p-0">
                                         <li>
                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Изменить данные
+                                                    data-bs-target="#exampleModal3">Изменить данные
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal">Изменить пароль
                                             </button>
                                         </li>
                                         <li>
@@ -34,7 +40,8 @@
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item btn-danger" href="{% url 'logout' %}">Выйти</a>
+                                        <li>
+                                            <a class="dropdown-item btn-danger" href="{% url 'logout' %}">Выйти</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -65,20 +72,23 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Редактирование пароля</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <form id="change-password">
+                        <div class="modal-body">
+                            {% bootstrap_form form layout='vertical' %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
