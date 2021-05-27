@@ -2,11 +2,12 @@ import json
 
 import stripe
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, auth_login, PasswordChangeForm, PasswordChangeView
+from django.contrib.auth.views import LoginView, auth_login, PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
+from django.contrib import messages
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .forms import RegForm
@@ -110,16 +111,13 @@ class register(generic.CreateView):
 #     template_name = 'logout.html'
 
 
-class Profile(CartMixin, generic.View):
+class Profile(CartMixin, generic.View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('index'))
         # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
         user = UserData.objects.get(id=self.cart.owner_id)
         # social = SocialAccount.objects.get(user=request.user) or None
         context = {
             'user': user,
-            'form': PasswordChangeForm(request.user),
             # 'img': social.extra_data['picture']
         }
 
@@ -129,15 +127,13 @@ class Profile(CartMixin, generic.View):
         self.cart.owner.delete()
         return HttpResponseRedirect(reverse('index'))
 
-    def update(self, request, *args, **kwargs):
-        print(kwargs)
-        return HttpResponseRedirect(reverse('profile'))
 
+class ChangePasswdView(PasswordChangeView, LoginRequiredMixin):
+    template_name = 'ChangePassWD.html'
+    success_url = reverse_lazy('user_profile')
 
-class ChangePasswdView(PasswordChangeView):
-    template_name = 'profile.html'
-    success_url = reverse_lazy('profile')
-
+    # def post(self, request, *args, **kwargs):
+    #     print(123)
 
 class AddToCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
@@ -169,7 +165,7 @@ class AddToCartView(CartMixin, generic.View):
             q.qty += 1
             q.save()
         recalc_cart(self.cart)
-        return JsonResponse({'data': product}, status=200)
+        return HttpResponseRedirect('/')
 
 
 class DeleteFromCartView(CartMixin, generic.View):

@@ -2,7 +2,6 @@
 {% load static %}
 {% load bootstrap4 %}
 {% block content %}
-
     <main class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
         <div class="main-body">
             <div class="row gutters-sm">
@@ -23,14 +22,10 @@
                                     </button>
                                     <ul class="dropdown-menu p-0">
                                         <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal3">Изменить данные
-                                            </button>
+
                                         </li>
                                         <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Изменить пароль
-                                            </button>
+
                                         </li>
                                         <li>
                                             <button class="dropdown-item" data-bs-toggle="modal"
@@ -66,43 +61,6 @@
 
                 </div>
 
-            </div>
-        </div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Редактирование пароля</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="change-password">
-                        <div class="modal-body">
-                            {% bootstrap_form form layout='vertical' %}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                            <button type="submit" class="btn btn-primary">Сохранить</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Удаление аккаунта</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Вы уверены?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                        <button type="button" class="btn btn-danger" id="delAcc">Удалить</button>
-                    </div>
-                </div>
             </div>
         </div>
     </main>

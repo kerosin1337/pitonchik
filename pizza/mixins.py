@@ -15,7 +15,8 @@ class CartMixin(View):
         else:
             if not request.session.session_key:
                 request.session.save()
-            cart = Cart.objects.filter(for_anonymous_user=True, in_order=False, session=request.session.session_key).first()
+            cart = Cart.objects.filter(for_anonymous_user=True, in_order=False,
+                                       session=request.session.session_key).first()
             if not cart:
                 cart = Cart.objects.create(for_anonymous_user=True, session=request.session.session_key)
         self.cart = cart

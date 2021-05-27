@@ -26,6 +26,7 @@ urlpatterns = [
     path('register/', decorators.check_recaptcha(views.register.as_view()), name='register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', views.Profile.as_view(), name='user_profile'),
+    path('profile/change-passwd/', views.ChangePasswdView.as_view(), name='change_passwd'),
     path('add/<str:slug>/', views.AddToCartView.as_view(), name='req'),
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
     path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),

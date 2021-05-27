@@ -27,8 +27,9 @@ SECRET_KEY = '*2r1kxcndibn!1-4(&pjeh=j*=i_caflvml^j**(o+7x)&mw2w'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'pizza.UserData'
 
 INSTALLED_APPS = [
