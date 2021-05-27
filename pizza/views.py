@@ -158,10 +158,7 @@ class AddToCartView(CartMixin, generic.View):
         if created:
             self.cart.products.add(cart_product)
         else:
-            q = CartProduct.objects.get(
-                user=self.cart.owner, cart=self.cart,
-                size=request.GET['size'], price=body['price'], product=product
-            )
+            q = CartProduct.objects.get(id=cart_product.id)
             q.qty += 1
             q.save()
         recalc_cart(self.cart)
