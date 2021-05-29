@@ -71,6 +71,7 @@ class login(LoginView):
 
     def form_valid(self, form):
         if self.request.recaptcha_is_valid:
+            Cart.objects.filter(session=self.request.session.session_key).delete()
             auth_login(self.request, form.get_user())
             return HttpResponseRedirect(self.get_redirect_url())
         else:
@@ -96,6 +97,7 @@ class register(generic.CreateView):
 
     def form_valid(self, form):
         if self.request.recaptcha_is_valid:
+            Cart.objects.filter(session=self.request.session.session_key).delete()
             form.save()
             return HttpResponseRedirect(reverse('login'))
         else:
@@ -111,7 +113,7 @@ class register(generic.CreateView):
 #     template_name = 'logout.html'
 
 
-class Profile(CartMixin, generic.View, LoginRequiredMixin):
+class Profile(CartMixin, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
         user = UserData.objects.get(id=self.cart.owner_id)

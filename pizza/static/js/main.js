@@ -86,17 +86,13 @@ let app2 = new Vue({
         seen: true,
         phone: '',
     },
-    created: function () {
+    created: async function () {
         const t = this;
-        axios.get('/api/user')
-            .then(function (response) {
-                t.phone = response.data[0]?.phone;
-                // t.search = arr[0];
-                // t.user.entrance = arr[1];
-                // t.user.floor_number = arr[2];
-                // t.user.apartment_number = arr[3];
-
-            });
+        await fetch('/api/user/', {method: 'GET'})
+                .then(async response => {
+                    let data = await response.json();
+                    t.phone = data[0].phone;
+                })
     },
     methods: {
         searchStreet() {

@@ -1,67 +1,91 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load bootstrap4 %}
 {% block content %}
-    <main class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="main-body">
-            <div class="row gutters-sm">
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-column align-items-center text-center">
-                                <div class="box">
-                                    <img src="{% static 'img/logo.png' %}" class="" width="60%">
-                                </div>
-                                <div class="col-sm-9">
-                                    <h4 class="mt-3 mb-0">{{ user }} {{ user.user.first_name }} {{ user.user.last_name }}</h4>
-                                </div>
-                                <div class="btn-group mt-3">
-                                    <button type="button" class="btn btn-info dropdown-toggle"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                        Действия
-                                    </button>
-                                    <ul class="dropdown-menu p-0">
-                                        <li>
-
-                                        </li>
-                                        <li>
-
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal2">Удалить профиль
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item btn-danger" href="{% url 'logout' %}">Выйти</a>
-                                        </li>
-                                    </ul>
-                                </div>
+<main class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <div class="box">
+                                <img src="{% static 'img/logo.png' %}" class="" width="60%">
+                            </div>
+                            <div class="col-sm-9">
+                                <h4 class="mt-3 mb-0">{{ user }} {{ user.user.first_name }} {{ user.user.last_name }}
+                                </h4>
+                            </div>
+                            <div class="btn-group mt-3">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Действия
+                                </button>
+                                <ul class="dropdown-menu p-0">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'change_passwd' %}">Изменить данные</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'change_passwd' %}">Изменить пароль</a>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">Удалить профиль
+                                        </button>
+                                        <div class="modal" tabindex="-1">
+                                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Удаление
+                                                                профиля</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Вы уверены?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Отмена</button>
+                                                            <button type="button" class="btn btn-danger"
+                                                                id="delAcc">Удалить</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item btn-danger" href="{% url 'logout' %}">Выйти</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="card mb-3">
-                        {# {% if user.orders is not None %}#}
-                        {% for i in user.orders.all %}
-                            <div class="alert alert-success" role="alert">
-                                {% for j in i.cart.products.all %}
-                                    <h4 class="alert-heading d-inline">{{ j.product }}</h4>
-                                {% endfor %}
-                                <p>Статус: {{ i.get_status_display }}</p>
-                                <p>Цена: {{ i.cart.final_price }}</p>
-                            </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    {# {% if user.orders is not None %}#}
+                    {% for i in user.orders.all %}
+                    <div class="alert alert-success" role="alert">
+                        {% for j in i.cart.products.all %}
+                        <h4 class="alert-heading d-inline">{{ j.product }}</h4>
                         {% endfor %}
-                        {# {% endif %}#}
+                        <p>Статус: {{ i.get_status_display }}</p>
+                        <p>Цена: {{ i.cart.final_price }}</p>
                     </div>
-
+                    {% endfor %}
+                    {# {% endif %}#}
                 </div>
 
             </div>
+
         </div>
-    </main>
+    </div>
+</main>
 {% endblock %}
