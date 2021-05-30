@@ -7,7 +7,7 @@
         <h2 class="mt-4 pl-3 pr-3">Корзина</h2>
         {% verbatim %}
         <div id="basket">
-            <h3 class="mt-4 pl-3 pr-3" v-if="Object.keys(cart.products).length === 0">Добавьте что-нибудь из меню</h3>
+            <h4 class="mt-4 pl-3 pr-3" v-if="Object.keys(cart.products).length === 0">Добавьте что-нибудь из меню</h4>
             <div class="border-top border-bottom" v-for="item in cart.products">
                 <div class="row g-0 p-3">
                     <div class="col-md-2 align-self-center">

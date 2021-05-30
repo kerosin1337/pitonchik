@@ -13,7 +13,7 @@ router.register('api/cart_products', views.cartProductsAPI, basename='cart_produ
 router.register('api/user', views.userAPI, basename='user')
 router.register('api/cart', views.cartAPI, basename='cart')
 router.register('api/order', views.orderAPI, basename='order')
-
+router.register('api/category', views.categoryApi, basename='category')
 # router.register('api/u', views.user, basename='u')
 
 urlpatterns = [
@@ -27,12 +27,12 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', views.Profile.as_view(), name='user_profile'),
     path('profile/change-passwd/', views.ChangePasswdView.as_view(), name='change_passwd'),
-    path('add/<str:slug>/', views.AddToCartView.as_view(), name='req'),
+    path('add/<str:slug>/', views.AddToCartView.as_view(), name='add'),
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
     path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),
     path('delete-cart/', views.deleteCart.as_view(), name='delete_cart'),
     path('basket/order/', views.order.as_view(), name='order'),
-    path('basket/accept/', views.OrderAccept.as_view(), name='accept'),
+    # path('basket/accept/', views.OrderAccept.as_view(), name='accept'),
     path('payed-online-order/', views.OrderPayment.as_view(), name='payment'),
     path('custom/', views.Custom.as_view(), name='custom'),
     path('staff/', views.room, name='staff')

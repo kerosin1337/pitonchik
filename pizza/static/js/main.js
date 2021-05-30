@@ -13,6 +13,7 @@ let prod = new Vue({
     },
     created: async function () {
         const t = this;
+
         await fetch('/api/products/', {method: 'GET'})
             .then(async response => {
                 let data = await response.json();
@@ -89,15 +90,15 @@ let app2 = new Vue({
     created: async function () {
         const t = this;
         await fetch('/api/user/', {method: 'GET'})
-                .then(async response => {
-                    let data = await response.json();
-                    t.phone = data[0].phone;
-                })
+            .then(async response => {
+                let data = await response.json();
+                t.phone = data[0]?.phone;
+            })
     },
     methods: {
-        searchStreet() {
+        async searchStreet() {
 //         fetch(`https:nominatim.openstreetmap.org/search?country=Россия&city=Томск&format=json&limit=3&street=${this.search}`, requestOptions)
-            fetch(`https:nominatim.openstreetmap.org/search?q=Томск+${this.search}&format=json&limit=3`, {method: 'GET'})
+            await fetch(`https:nominatim.openstreetmap.org/search?q=Томск+${this.search}&format=json&limit=3`, {method: 'GET'})
                 .then(async response => {
                         this.streets = await response.json();
                         if (this.streets.length === 0) {

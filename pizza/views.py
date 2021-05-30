@@ -7,13 +7,13 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
-from django.contrib import messages
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .forms import RegForm
 from .mixins import CartMixin
-from .models import UserData, Products, CartProduct, Cart, Order, Coupon
-from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer
+from .models import UserData, Products, CartProduct, Cart, Order, Coupon, Category
+from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer, \
+    categorySerializer
 from .utils import recalc_cart
 
 
@@ -29,6 +29,11 @@ class userAPI(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return UserData.objects.filter(id=self.request.user.id)
+
+
+class categoryApi(ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = categorySerializer
 
 
 class productsAPI(ReadOnlyModelViewSet):
@@ -62,8 +67,13 @@ class orderAPI(ReadOnlyModelViewSet):
     queryset = Order.objects.order_by()
 
 
-class index(generic.TemplateView):
-    template_name = 'main.html'
+class index(generic.View):
+    def get(self, request, *args, **kwargs):
+        products = Products.objects.filter(is_custom=False)
+        category = Category.objects.all()
+        return render(request, 'main.html',
+                      {'products': [{'name': i.name, 'products': [j for j in products.filter(category__name=i.name)]}
+                                    for i in category]})
 
 
 class login(LoginView):
@@ -137,6 +147,7 @@ class ChangePasswdView(PasswordChangeView, LoginRequiredMixin):
     # def post(self, request, *args, **kwargs):
     #     print(123)
 
+
 class AddToCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
@@ -200,7 +211,7 @@ class ChangeQTYView(CartMixin, generic.View):
         cart_product.qty = body['qty']
         cart_product.save()
         recalc_cart(self.cart)
-        return HttpResponseRedirect(reverse('cart'))
+        return HttpResponseRedirect(reverse('basket'))
 
 
 class deleteCart(CartMixin):
@@ -220,17 +231,25 @@ class basket(CartMixin, generic.View):
 
     def post(self, request, *args, **kwargs):
         coupon = Coupon.objects.all()
+
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        if self.cart.coupon:
-            return JsonResponse({'data': 'Промокод использован.', 'status': 1})
+        if not request.user.is_authenticated:
+            return JsonResponse({'data': 'Чтобы использовать промокод надо авторизоваться.'})
+        if self.cart.coupon or self.cart.owner.used_coupons.all().filter(
+                related_coupon__used_coupons__code=body['code']):
+            return JsonResponse({'data': 'Этот промокод уже был использован.'})
         else:
-            for i, obj in enumerate(coupon):
-                if obj.code == body['code']:
-                    self.cart.coupon = obj
-                    self.cart.save()
-                    recalc_cart(self.cart)
-            return JsonResponse({'data': 'Такого промокода нет.', 'status': 4})
+            if coupon.filter(code=body['code']):
+                self.cart.coupon = coupon.filter(code=body['code']).first()
+                self.cart.save()
+                recalc_cart(self.cart)
+            # for i, obj in enumerate(coupon):
+            #     if obj.code == body['code']:
+            #         self.cart.coupon = obj
+            #         self.cart.save()
+            #         recalc_cart(self.cart)
+            return JsonResponse({'data': 'Такого промокода нет.'})
 
     def delete(self, request, *args, **kwargs):
         self.cart.coupon = None
@@ -289,6 +308,22 @@ class order(CartMixin, generic.View):
         }
         return render(request, 'order.html', context)
 
+    def post(self, request, *args, **kwargs):
+        # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
+        req = request.POST
+        order, created = Order.objects.get_or_create(
+            customer=self.cart.owner,
+            phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
+            address=req['address'] or None, entrance=req['entrance'] or None,
+            floor_number=req['floor_number'] or None,
+            apartment_number=req['apartment_number'] or None, comment=req['comment'] or None
+        )
+        if created and self.cart.owner is not None:
+            self.cart.owner.orders.add(order)
+            self.cart.owner.phone = req['tel']
+            self.cart.owner.save()
+        return HttpResponseRedirect(reverse('order'))
+
 
 # try:
 #     if request.user.is_authenticated:
@@ -311,28 +346,28 @@ class order(CartMixin, generic.View):
 #     return HttpResponseRedirect(reverse('index'))
 
 
-class OrderAccept(CartMixin, generic.View):
-    def post(self, request, *args, **kwargs):
-        # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
-        req = request.POST
-        order, created = Order.objects.get_or_create(
-            customer=self.cart.owner,
-            phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
-            address=req['address'] or None, entrance=req['entrance'] or None,
-            floor_number=req['floor_number'] or None,
-            apartment_number=req['apartment_number'] or None, comment=req['comment'] or None
-        )
-        if created and self.cart.owner is not None:
-            self.cart.owner.orders.add(order)
-            self.cart.owner.phone = req['tel']
-            self.cart.owner.save()
-        return HttpResponseRedirect(reverse('order'))
-
-    def get(self, request, *args, **kwargs):
-        # try:
-        #     self.post(self, request, *args, **kwargs)
-        # except AttributeError:
-        return HttpResponseRedirect(reverse('index'))
+# class OrderAccept(CartMixin, generic.View):
+#     def post(self, request, *args, **kwargs):
+#         # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
+#         req = request.POST
+#         order, created = Order.objects.get_or_create(
+#             customer=self.cart.owner,
+#             phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
+#             address=req['address'] or None, entrance=req['entrance'] or None,
+#             floor_number=req['floor_number'] or None,
+#             apartment_number=req['apartment_number'] or None, comment=req['comment'] or None
+#         )
+#         if created and self.cart.owner is not None:
+#             self.cart.owner.orders.add(order)
+#             self.cart.owner.phone = req['tel']
+#             self.cart.owner.save()
+#         return HttpResponseRedirect(reverse('order'))
+#
+#     def get(self, request, *args, **kwargs):
+#         # try:
+#         #     self.post(self, request, *args, **kwargs)
+#         # except AttributeError:
+#         return Http404
 
 
 class OrderPayment(CartMixin, generic.View):
@@ -344,6 +379,7 @@ class OrderPayment(CartMixin, generic.View):
         #     i.product.delete()
         self.cart.in_order = True
         self.cart.save()
+        if self.cart.owner and self.cart.coupon: self.cart.owner.used_coupons.add(self.cart.coupon)
         return HttpResponseRedirect(reverse('index'))
 
     def get(self, request, *args, **kwargs):

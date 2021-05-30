@@ -1,13 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
-
 from .models import UserData
 
 
 class RegForm(UserCreationForm):
     class Meta:
         model = UserData
-        fields = ['username']
-
+        fields = ('username', 'phone')
 
 # class OrderForm(forms.ModelForm):
 #     class Meta:

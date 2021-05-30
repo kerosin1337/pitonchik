@@ -27,6 +27,8 @@ class UserData(AbstractUser):
     # distance = models.FloatField(verbose_name='Расстояние', null=True, blank=True)
     orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', null=True, blank=True,
                                     related_name='related_order')
+    used_coupons = models.ManyToManyField('Coupon', null=True, blank=True, verbose_name='Использованные купоны',
+                                          related_name='related_coupon')
 
     class Meta(AbstractUser.Meta):
         pass
@@ -98,7 +100,7 @@ class UserData(AbstractUser):
 # )
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Имя категории')
+    name = models.CharField(max_length=255, verbose_name='Название категории')
 
     def __str__(self):
         return self.name
@@ -109,13 +111,8 @@ class Category(models.Model):
 
 
 class Products(models.Model):
-    CATEGORY_CHOICES = (
-        ('Пицца', 'Пицца'),
-        ('Закуски', 'Закуски'),
-        ('Напитки', 'Напитки'),
-    )
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    # category = models.ForeignKey(Category, verbose_name='category', on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=True,
+                                 related_name='category')
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=128)
     price = models.DecimalField(max_digits=4, decimal_places=0, default=299)
@@ -232,7 +229,7 @@ class Order(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=15, verbose_name='Купон', unique=True)
-    sale = models.IntegerField(verbose_name='Скидка', validators=[MinValueValidator(1), MaxValueValidator(100)])
+    sale = models.IntegerField(verbose_name='Скидка', validators=[MinValueValidator(1), MaxValueValidator(70)])
 
     # users = models.ManyToManyField(UserData, blank=True, null=True, related_name='related_coupon')
 
