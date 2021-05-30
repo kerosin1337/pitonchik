@@ -200,7 +200,7 @@ class ChangeQTYView(CartMixin, generic.View):
         cart_product.qty = body['qty']
         cart_product.save()
         recalc_cart(self.cart)
-        return HttpResponseRedirect('/basket/')
+        return HttpResponseRedirect(reverse('cart'))
 
 
 class deleteCart(CartMixin):

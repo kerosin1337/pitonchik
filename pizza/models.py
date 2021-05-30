@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 
+
 # User = get_user_model()
 
 
@@ -24,7 +25,8 @@ class UserData(AbstractUser):
     # address = models.CharField(max_length=255, verbose_name='Адрес', null=True, blank=True)
     #  #                                 blank=True)
     # distance = models.FloatField(verbose_name='Расстояние', null=True, blank=True)
-    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', null=True, blank=True, related_name='related_order')
+    orders = models.ManyToManyField('Order', verbose_name='Заказы покупателя', null=True, blank=True,
+                                    related_name='related_order')
 
     class Meta(AbstractUser.Meta):
         pass
@@ -101,6 +103,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
 
 class Products(models.Model):
     CATEGORY_CHOICES = (
@@ -123,8 +129,10 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
-    def get_model_name(self):
-        return self.__class__.__name__.lower()
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+        ordering = ['is_custom']
 
 
 class CartProduct(models.Model):
@@ -146,6 +154,10 @@ class CartProduct(models.Model):
         self.final_price = self.qty * self.price
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name = "Промежуточная(Продкут - Корзина)"
+        verbose_name_plural = 'Промежуточные(Продкут - Корзина)'
+
 
 class Cart(models.Model):
     owner = models.ForeignKey('UserData', null=True, verbose_name='Владелец', on_delete=models.CASCADE)
@@ -161,6 +173,10 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = 'Корзины'
 
 
 class Order(models.Model):
@@ -205,10 +221,13 @@ class Order(models.Model):
         default=BUYING_TYPE_SELF
     )
     comment = models.TextField(verbose_name='Комментарий к заказу', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now=True, verbose_name='Дата создания заказа')
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = 'Заказы'
 
 
 class Coupon(models.Model):
@@ -219,3 +238,7 @@ class Coupon(models.Model):
 
     def __str__(self):
         return '{}, {}%'.format(self.code, self.sale)
+
+    class Meta:
+        verbose_name = "Промокод"
+        verbose_name_plural = 'Промокоды'

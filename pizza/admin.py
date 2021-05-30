@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from . import models
 
+
 admin.site.site_header = 'У Альбертовича'
 admin.site.register(models.UserData)
 admin.site.register(models.Category)
