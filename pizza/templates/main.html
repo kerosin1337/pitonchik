@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}Главная{% endblock %}
 {% block content %}
 <main class="container-xxl shadow-lg p-0 bg-white rounded-3 mt-3 mb-3" role="main">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -26,34 +27,62 @@
 
     {% verbatim %}
     <div id="prod">
-        <div class="row pl-3 pr-3 active">
-            <h2 class="mt-4 pl-3 pr-3">{{products[0].category}}</h2>
-            <div class="col-sm col-md-3 mb-4" v-for="(pizza, i) in products">
-                <div class="card m-0 shadow-lg  bg-white rounded">
-                    <img :src="pizza.image" class="ml-3 mt-3 mr-3">
+        <div class="row pl-3 pr-3 active" v-for="(category, i) in products">
+            <h2 class="mt-4 pl-3 pr-3">{{ categorys[i].name }}</h2>
+            <div class="col-sm col-md-3 mb-4" v-for="(product, j) in category">
+                <div class="card m-0 shadow-lg  bg-white rounded" v-if="categorys[i].name === 'Пицца'">
+                    <img :src="product.image" class="ml-3 mt-3 mr-3">
                     <div class="card-body">
-                        <h4 class="card-title text-warning font-weight-bold">{{ pizza.name }}</h4>
-                        <p class="card-text text-warning">{{ pizza.description }}</p>
-                        <form @submit.prevent="post(pizza.slug, $event, i)">
+                        <h4 class="card-title text-warning font-weight-bold">{{ product.name }}</h4>
+                        <p class="card-text text-warning">{{ product.description }}</p>
+                        <form @submit.prevent="post(product.slug, $event, product.id)">
                             <div class="d-flex justify-content-between mb-3">
-                                <input type="radio" class="btn-check" :id="pizza.id + ''  + 25" name="size"
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 25" name="size"
                                        value="25" checked>
-                                <label class="btn btn-outline-info p-0 mr-0" :for="pizza.id + '' +  25"
-                                       style="width: 33%" v-on:click="newPrice.splice(i, 1, pizza.price)"
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + '' +  25"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price)"
                                 >25</label>
-                                <input type="radio" class="btn-check" :id="pizza.id + ''  + 30" name="size"
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 30" name="size"
                                        value="30">
-                                <label class="btn btn-outline-info p-0 mr-0" :for="pizza.id + ''  + 30"
-                                       style="width: 33%" v-on:click="newPrice.splice(i, 1, pizza.price2)"
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + ''  + 30"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price2)"
                                 >30</label>
-                                <input type="radio" class="btn-check" :id="pizza.id + ''  + 35" name="size"
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 35" name="size"
                                        value="35">
-                                <label class="btn btn-outline-info p-0 mr-0" :for="pizza.id + ''  + 35"
-                                       style="width: 33%" v-on:click="newPrice.splice(i, 1, pizza.price3)"
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + ''  + 35"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price3)"
                                 >35</label>
                             </div>
                             <button type="submit" class="btn btn-info">Выбрать</button>
-                            <span class="text-danger">{{ newPrice[i] }}руб.</span>
+                            <span class="text-danger">{{ newPrice[product.id] }}руб.</span>
+                        </form>
+                    </div>
+                </div>
+                <div class="card m-0 shadow-lg  bg-white rounded" v-else>
+                    <img :src="product.image" class="ml-3 mt-3 mr-3">
+                    <div class="card-body">
+                        <h4 class="card-title text-warning font-weight-bold">{{ product.name }}</h4>
+                        <p class="card-text text-warning">{{ product.description }}</p>
+                        <form @submit.prevent="post(product.slug, $event, product.id)">
+                            <div class="d-flex justify-content-between mb-3">
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 25" name="size"
+                                       value="Малая" checked>
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + '' +  25"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price)"
+                                >Малая</label>
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 30" name="size"
+                                       value="Средняя">
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + ''  + 30"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price2)"
+                                >Средняя</label>
+                                <input type="radio" class="btn-check" :id="product.id + ''  + 35" name="size"
+                                       value="Большая">
+                                <label class="btn btn-outline-info p-0 mr-0" :for="product.id + ''  + 35"
+                                       style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price3)"
+                                >Большая</label>
+                            </div>
+                            <button type="submit" class="btn btn-info">Выбрать</button>
+                            <span class="text-danger">{{ newPrice[product.id] }}руб.</span>
                         </form>
                     </div>
                 </div>

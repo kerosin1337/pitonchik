@@ -13,14 +13,19 @@ let prod = new Vue({
     },
     created: async function () {
         const t = this;
-
+        await fetch('/api/category/', {method: 'GET'})
+            .then(async response => {
+                t.categorys = await response.json();
+            });
         await fetch('/api/products/', {method: 'GET'})
             .then(async response => {
                 let data = await response.json();
-                t.products = data;
                 data.forEach(function (item) {
-                    t.newPrice.push(item.price);
+                    t.newPrice[item.id] = item.price;
                 });
+                t.categorys.forEach(function (item) {
+                   t.products.push(data.filter(j => j.category.name === item.name))
+                })
             })
     },
     methods: {

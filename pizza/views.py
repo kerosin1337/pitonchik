@@ -25,7 +25,6 @@ from .utils import recalc_cart
 
 class userAPI(ReadOnlyModelViewSet):
     serializer_class = userSerializer
-    model = UserData
 
     def get_queryset(self):
         return UserData.objects.filter(id=self.request.user.id)
@@ -43,7 +42,6 @@ class productsAPI(ReadOnlyModelViewSet):
 
 class cartProductsAPI(ReadOnlyModelViewSet):
     serializer_class = cartProductsSerializer
-    model = CartProduct
 
     def get_queryset(self):
         return CartProduct.objects.filter(user=self.request.user.id)
@@ -51,7 +49,6 @@ class cartProductsAPI(ReadOnlyModelViewSet):
 
 class cartAPI(ReadOnlyModelViewSet):
     serializer_class = cartSerializer
-    model = Cart
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
