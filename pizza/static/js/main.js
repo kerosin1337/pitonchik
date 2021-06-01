@@ -69,7 +69,8 @@ let qty = new Vue({
                 try {
                     t.count = t.cartProducts.qty
                 } catch (e) {
-                };
+                }
+                ;
             })
     },
     methods: {
@@ -84,7 +85,31 @@ let qty = new Vue({
         }
     }
 })
-
+let promotions = new Vue({
+    el: '#promotions',
+    data: {
+        promotions: [],
+        modalObject: [],
+        category: ''
+    },
+    created: async function () {
+        const t = this;
+        await fetch('/api/promotions/', {method: 'GET'})
+            .then(async response => {
+                t.promotions = await response.json();
+            })
+    },
+    methods: {
+        async modal(id) {
+            const t = this;
+            await fetch(`/api/products/${id}/`, {method: 'GET'})
+                .then(async response => {
+                    t.modalObject = await response.json();
+                    t.category = t.modalObject.category.name
+                })
+        }
+    }
+})
 let app2 = new Vue({
     el: '#street',
     data: {

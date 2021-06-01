@@ -123,7 +123,7 @@ class Products(models.Model):
     is_custom = models.BooleanField(null=True, blank=True, default=False)
 
     def __str__(self):
-        return self.name
+        return 'Продукт: {}, Категория:{}'.format(self.name, self.category)
 
     class Meta:
         verbose_name = 'Продукт'

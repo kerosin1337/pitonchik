@@ -17,14 +17,6 @@ class productSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class promotionsSerializer(ModelSerializer):
-    product = productSerializer(read_only=True)
-
-    class Meta:
-        model = Promotions
-        fields = '__all__'
-
-
 class cartProductsSerializer(ModelSerializer):
     product = productSerializer(read_only=True)
 
@@ -74,6 +66,15 @@ class orderSerializer(ModelSerializer):
             'buying_type',
             'comment'
         )
+
+
+class promotionsSerializer(ModelSerializer):
+    product = productSerializer(read_only=True)
+    coupon = couponSerializer(read_only=True)
+
+    class Meta:
+        model = Promotions
+        fields = '__all__'
 
 
 # class userReal(ModelSerializer):
