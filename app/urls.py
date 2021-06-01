@@ -29,6 +29,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', views.Profile.as_view(), name='user_profile'),
     path('profile/change-passwd/', views.ChangePasswdView.as_view(), name='change_passwd'),
+    path('profile/change-userdata/', views.ChangeUserInfoView.as_view(), name='change_userdata'),
     path('add/<str:slug>/', views.AddToCartView.as_view(), name='add'),
     path('remove-from-cart/<str:slug>/', views.DeleteFromCartView.as_view(), name='delete_from_cart'),
     path('change-qty/<str:slug>/', views.ChangeQTYView.as_view(), name='change_qty'),

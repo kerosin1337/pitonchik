@@ -4,12 +4,12 @@ import stripe
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, auth_login, PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from .forms import RegForm
+from .forms import RegForm, UpdateUserData
 from .mixins import CartMixin
 from .models import UserData, Products, CartProduct, Cart, Order, Coupon, Category, Promotions
 from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer, \
@@ -124,18 +124,28 @@ class register(generic.CreateView):
 class Profile(CartMixin, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
-        user = UserData.objects.get(id=self.cart.owner_id)
         # social = SocialAccount.objects.get(user=request.user) or None
-        context = {
-            'user': user,
-            # 'img': social.extra_data['picture']
-        }
-
-        return render(request, 'profile.html', context)
+        return render(request, 'profile.html', {'user': UserData.objects.get(id=self.cart.owner_id)})
 
     def delete(self, request, *args, **kwargs):
         self.cart.owner.delete()
         return HttpResponseRedirect(reverse('index'))
+
+
+class ChangeUserInfoView(generic.UpdateView, LoginRequiredMixin):
+    model = UserData
+    template_name = 'ChangeUserData.html'
+    form_class = UpdateUserData
+    success_url = reverse_lazy('user_profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
 
 
 class ChangePasswdView(PasswordChangeView, LoginRequiredMixin):
