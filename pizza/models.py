@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
@@ -12,11 +11,11 @@ def validate_image(image):
     file_size = image.file.size
     limit_mb = 2
     if file_size > limit_mb * 1024 * 1024:
-        raise ValidationError("Максимальный размер файла %s MB" % limit_mb)
+        raise ValidationError('Максимальный размер файла %s MB' % limit_mb)
     # file_size = image.file.size
     # limit_kb = 150
     # if file_size > limit_kb * 1024:
-    #     raise ValidationError("Max size of file is %s KB" % limit)
+    #     raise ValidationError('Max size of file is %s KB' % limit)
 
 
 class UserData(AbstractUser):
@@ -34,7 +33,7 @@ class UserData(AbstractUser):
         pass
 
     def __str__(self):
-        return "Покупатель: {}".format(self.username or 'anonymous{}'.format(self.id))
+        return 'Покупатель: {}'.format(self.username or 'anonymous{}'.format(self.id))
 
 
 # class LatestProductsManager:
@@ -132,12 +131,6 @@ class Products(models.Model):
         ordering = ['is_custom']
 
 
-class Promotions(models.Model):
-    title = models.CharField(max_length=128, verbose_name='Название акции')
-    description = models.TextField()
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-
-
 class CartProduct(models.Model):
     user = models.ForeignKey('UserData', verbose_name='Покупатель', on_delete=models.CASCADE, null=True)
     cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')
@@ -151,14 +144,14 @@ class CartProduct(models.Model):
     final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 
     def __str__(self):
-        return "Продукт: {} (для корзины)".format(self.product.name)
+        return 'Продукт: {} (для корзины)'.format(self.product.name)
 
     def save(self, *args, **kwargs):
         self.final_price = self.qty * self.price
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Промежуточная(Продкут - Корзина)"
+        verbose_name = 'Промежуточная(Продкут - Корзина)'
         verbose_name_plural = 'Промежуточные(Продкут - Корзина)'
 
 
@@ -178,7 +171,7 @@ class Cart(models.Model):
         return str(self.id)
 
     class Meta:
-        verbose_name = "Корзина"
+        verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
 
 
@@ -229,7 +222,7 @@ class Order(models.Model):
         return str(self.id)
 
     class Meta:
-        verbose_name = "Заказ"
+        verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
 
@@ -243,5 +236,16 @@ class Coupon(models.Model):
         return '{}, {}%'.format(self.code, self.sale)
 
     class Meta:
-        verbose_name = "Промокод"
+        verbose_name = 'Промокод'
         verbose_name_plural = 'Промокоды'
+
+
+class Promotions(models.Model):
+    title = models.CharField(max_length=128, verbose_name='Название акции')
+    description = models.TextField()
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Акция'
+        verbose_name_plural = 'Акции'

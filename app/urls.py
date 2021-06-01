@@ -9,6 +9,7 @@ from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 
 router.register('api/products', views.productsAPI)
+router.register('api/promotions', views.promotionsAPI)
 router.register('api/category', views.categoryApi, basename='category')
 router.register('api/cart_products', views.cartProductsAPI, basename='cart_products')
 router.register('api/user', views.userAPI, basename='user')

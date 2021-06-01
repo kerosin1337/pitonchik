@@ -11,9 +11,9 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .forms import RegForm
 from .mixins import CartMixin
-from .models import UserData, Products, CartProduct, Cart, Order, Coupon, Category
+from .models import UserData, Products, CartProduct, Cart, Order, Coupon, Category, Promotions
 from .serializers import userSerializer, productSerializer, cartProductsSerializer, cartSerializer, orderSerializer, \
-    categorySerializer
+    categorySerializer, promotionsSerializer
 from .utils import recalc_cart
 
 
@@ -38,6 +38,11 @@ class categoryApi(ReadOnlyModelViewSet):
 class productsAPI(ReadOnlyModelViewSet):
     queryset = Products.objects.filter(is_custom=False)
     serializer_class = productSerializer
+
+
+class promotionsAPI(ReadOnlyModelViewSet):
+    queryset = Promotions.objects.all()
+    serializer_class = promotionsSerializer
 
 
 class cartProductsAPI(ReadOnlyModelViewSet):
@@ -382,9 +387,9 @@ class OrderPayment(CartMixin, generic.View):
         if not self.cart.products.all():
             return HttpResponseRedirect(reverse('index'))
 
+
 class Promotions(generic.View):
     def get(self, request, *args, **kwargs):
-
         return render(request, 'promotions.html')
 
 

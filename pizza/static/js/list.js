@@ -109,7 +109,7 @@ let vegetables = [
     {
         prod: 'Чеснок',
         price: 89,
-        img: 'https://api.papajohns.ru/images/ingredients/garlic.svg',
+        img: '/static/img/custom/chesnok.svg',
         style: 'prodPlus',
         trues: true
     },
