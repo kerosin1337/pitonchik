@@ -24,7 +24,7 @@ let prod = new Vue({
                     t.newPrice[item.id] = item.price;
                 });
                 t.categorys.forEach(function (item) {
-                   t.products.push(data.filter(j => j.category.name === item.name))
+                    t.products.push(data.filter(j => j.category.name === item.name))
                 })
             })
     },
@@ -48,7 +48,7 @@ let prod = new Vue({
                     price: this.newPrice[i]
                 })
             }
-            const result = await fetch(`/add/${slug}/?size=${value}`, requestOptions).then(qty.count++)
+            const result = await fetch(`/add/${slug}/?size=${value}`, requestOptions).then(qty.reload)
         }
 
     }
@@ -66,7 +66,10 @@ let qty = new Vue({
             .then(async response => {
                 let data = await response.json();
                 t.cartProducts = data[0];
-                t.count = t.cartProducts.qty;
+                try {
+                    t.count = t.cartProducts.qty
+                } catch (e) {
+                };
             })
     },
     methods: {
@@ -455,18 +458,49 @@ let custom = new Vue({
 let staff = new Vue({
     el: '#staff',
     data: {
-        orders: []
+        error: '',
+        orders: [],
+        status: ['new', 'in_progress', 'is_ready', 'completed'],
+        csrf: getCookie('csrftoken'),
     },
     methods: {
-        bg(status) {
-            if (status === 'new')
-                return 'alert-dark'
-            if (status === 'in_progress')
-                return 'alert-primary'
-            if (status === 'is_ready')
-                return 'alert-warning'
-            if (status === 'completed')
-                return 'alert-success'
+        bg(status, stChange = false) {
+            if (!stChange && status) {
+                if (status === 'new')
+                    return 'alert-dark'
+                if (status === 'in_progress')
+                    return 'alert-primary'
+                if (status === 'is_ready')
+                    return 'alert-warning'
+                if (status === 'completed')
+                    return 'alert-success'
+            } else {
+                if (status === 'new')
+                    return 'btn-dark'
+                if (status === 'in_progress')
+                    return 'btn-primary'
+                if (status === 'is_ready')
+                    return 'btn-warning'
+                if (status === 'completed')
+                    return 'btn-success'
+            }
+        },
+        async changeStatus(st, id, checkSt) {
+            if (st !== checkSt) {
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': this.csrf
+                    },
+                    body: JSON.stringify({
+                        id: id,
+                        status: st,
+                    })
+                }
+                await fetch(`/staff/`, requestOptions);
+                const chatSocket = new WebSocket('ws://localhost:8000/order/');
+            }
         },
         ordersSort() {
             let newOrders = [];

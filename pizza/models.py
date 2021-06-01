@@ -132,6 +132,12 @@ class Products(models.Model):
         ordering = ['is_custom']
 
 
+class Promotions(models.Model):
+    title = models.CharField(max_length=128, verbose_name='Название акции')
+    description = models.TextField()
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+
+
 class CartProduct(models.Model):
     user = models.ForeignKey('UserData', verbose_name='Покупатель', on_delete=models.CASCADE, null=True)
     cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')

@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('allauth.urls')),
     path('', views.index.as_view(), name='index'),
+    path('promotions/', views.Promotions.as_view(), name='promotions'),
     path('basket/', views.basket.as_view(), name='basket'),
     path('login/', decorators.check_recaptcha(views.login.as_view()), name='login'),
     path('register/', decorators.check_recaptcha(views.register.as_view()), name='register'),
@@ -35,7 +36,7 @@ urlpatterns = [
     # path('basket/accept/', views.OrderAccept.as_view(), name='accept'),
     path('payed-online-order/', views.OrderPayment.as_view(), name='payment'),
     path('custom/', views.Custom.as_view(), name='custom'),
-    path('staff/', views.room, name='staff')
+    path('staff/', views.Staff.as_view(), name='staff')
 ]
 
 if settings.DEBUG:

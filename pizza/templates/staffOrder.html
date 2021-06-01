@@ -5,7 +5,7 @@
 {% block content %}
     {% verbatim %}
     <main id="staff" class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="col-md-8" v-for="(i, id) in ordersSort()">
+        <div class="col-md-8" v-for="(i, id) in ordersSort()" style="transition: 1s">
             <div class="card mb-3">
                 <div class="alert" role="alert" style="margin-bottom: 0!important;" :class="bg(i.status)">
                     <div class="accordion" id="accordionExample">
@@ -40,8 +40,14 @@
                         </div>
                     </div>
                     <p>Заказчик: {{ i.customer }}</p>
-                    <p>Статус: {{ i.status }}</p>
+                    <p>Статус:
+                        <select class="form-select d-inline w-auto" :class="bg(i.status, true)"
+                                @click="changeStatus($event.target.value, i.id, i.status)">
+                            <option v-for="st in status" :selected="st === i.status" :value="st">{{ st }}</option>
+                        </select>
+                    </p>
                     <p>Цена: {{ i.final_price }}</p>
+                    <p v-if="i.comment">Комментарий: <strong>{{ i.comment }}</strong></p>
                 </div>
             </div>
         </div>
@@ -56,8 +62,10 @@
             staff.orders = data.message
         };
         chatSocket.onclose = function (e) {
-            location.reload();
-            console.error('Chat socket closed unexpectedly');
+            for (let i in 10) {
+                location.reload();
+            }
+
         };
     </script>
 {% endblock content %}

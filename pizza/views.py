@@ -228,7 +228,6 @@ class basket(CartMixin, generic.View):
 
     def post(self, request, *args, **kwargs):
         coupon = Coupon.objects.all()
-
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         if not request.user.is_authenticated:
@@ -383,13 +382,27 @@ class OrderPayment(CartMixin, generic.View):
         if not self.cart.products.all():
             return HttpResponseRedirect(reverse('index'))
 
+class Promotions(generic.View):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'promotions.html')
+
 
 class Custom(generic.TemplateView):
     template_name = 'custom.html'
 
 
-def room(request):
-    if request.user.is_superuser or request.user.is_staff:
-        return render(request, 'staffOrder.html')
-    else:
-        return HttpResponseRedirect(reverse('index'))
+class Staff(generic.View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser or request.user.is_staff:
+            return render(request, 'staffOrder.html')
+        else:
+            return HttpResponseRedirect(reverse('index'))
+
+    def post(self, request, *args, **kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        order = Order.objects.filter(id=body['id']).first()
+        order.status = body['status']
+        order.save()
+        return HttpResponseRedirect(reverse('staff'))

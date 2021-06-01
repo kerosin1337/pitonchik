@@ -16,6 +16,7 @@ class OrderWS(WebsocketConsumer):
     def result(self):
         order = Order.objects.all()
         result = [{
+            'id': i.id,
             'customer': self.user(i),
             'products': [{
                 'product': j.product.name,
@@ -28,7 +29,8 @@ class OrderWS(WebsocketConsumer):
             'entrance': i.entrance,
             'floor_number': i.floor_number,
             'apartment_number': i.apartment_number,
-            'status': i.status
+            'status': i.status,
+            'comment': i.comment
         } for i in order]
         return result
 

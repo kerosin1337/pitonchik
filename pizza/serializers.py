@@ -1,16 +1,27 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Products, CartProduct, Cart, UserData, Order, Coupon, Category
+from .models import Products, CartProduct, Cart, UserData, Order, Coupon, Category, Promotions
+
 
 class categorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ('name',)
 
+
 class productSerializer(ModelSerializer):
     category = categorySerializer(read_only=True)
+
     class Meta:
         model = Products
+        fields = '__all__'
+
+
+class promotionsSerializer(ModelSerializer):
+    product = productSerializer(read_only=True)
+
+    class Meta:
+        model = Promotions
         fields = '__all__'
 
 
@@ -42,19 +53,7 @@ class cartSerializer(ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = (
-            'id',
-            'owner',
-            'products',
-            'total_products',
-            'final_price',
-            'in_order',
-            'for_anonymous_user',
-            'date_create',
-            'qty',
-            'coupon',
-            'session'
-        )
+        fields = '__all__'
 
 
 class orderSerializer(ModelSerializer):
