@@ -71,11 +71,7 @@ class orderAPI(ReadOnlyModelViewSet):
 
 class index(generic.View):
     def get(self, request, *args, **kwargs):
-        products = Products.objects.filter(is_custom=False)
-        category = Category.objects.all()
-        return render(request, 'main.html',
-                      {'products': [{'name': i.name, 'products': [j for j in products.filter(category__name=i.name)]}
-                                    for i in category]})
+        return render(request, 'main.html', {'promotions': Promotions.objects.all()})
 
 
 class login(LoginView):
@@ -388,7 +384,7 @@ class OrderPayment(CartMixin, generic.View):
             return HttpResponseRedirect(reverse('index'))
 
 
-class Promotions(generic.View):
+class PromotionsView(generic.View):
     def get(self, request, *args, **kwargs):
         return render(request, 'promotions.html')
 

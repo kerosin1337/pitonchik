@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('allauth.urls')),
     path('', views.index.as_view(), name='index'),
-    path('promotions/', views.Promotions.as_view(), name='promotions'),
+    path('promotions/', views.PromotionsView.as_view(), name='promotions'),
     path('basket/', views.basket.as_view(), name='basket'),
     path('login/', decorators.check_recaptcha(views.login.as_view()), name='login'),
     path('register/', decorators.check_recaptcha(views.register.as_view()), name='register'),

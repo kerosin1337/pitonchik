@@ -168,6 +168,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'pizza/media/'
+MEDIA_URL = 'img/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'pizza/static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'pizza/static')
