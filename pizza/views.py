@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from django.utils.datastructures import MultiValueDictKeyError
 
 from .forms import RegForm, UpdateUserData
 from .mixins import CartMixin
@@ -320,13 +321,20 @@ class order(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
         req = request.POST
-        order, created = Order.objects.get_or_create(
+        try:
+            order, created = Order.objects.get_or_create(
             customer=self.cart.owner,
             phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
-            address=req['address'] or None, entrance=req['entrance'] or None,
-            floor_number=req['floor_number'] or None,
-            apartment_number=req['apartment_number'] or None, comment=req['comment'] or None
+            address=req['address'], entrance=req['entrance'],
+            floor_number=req['floor_number'],
+            apartment_number=req['apartment_number'], comment=req['comment'] or None
         )
+        except MultiValueDictKeyError:
+            order, created = Order.objects.get_or_create(
+            customer=self.cart.owner,
+            phone=req['tel'], cart=self.cart, buying_type=req['buying_type'], comment=req['comment'] or None
+        )
+
         if created and self.cart.owner is not None:
             self.cart.owner.orders.add(order)
             self.cart.owner.phone = req['tel']

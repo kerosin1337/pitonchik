@@ -198,6 +198,9 @@ let buy = new Vue({
     watch: {
         select(q) {
             app2.seen = q !== 'self';
+            if (q === 'self') {
+                this.choice = false
+            }
         }
     }
 })
