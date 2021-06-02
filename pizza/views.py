@@ -6,9 +6,11 @@ from django.contrib.auth.views import LoginView, auth_login, PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from django.views import generic
-from rest_framework.viewsets import ReadOnlyModelViewSet
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views import generic
+from rest_framework.permissions import BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly, IsAdminUser, \
+    IsAuthenticated
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .forms import RegForm, UpdateUserData
 from .mixins import CartMixin
@@ -17,45 +19,54 @@ from .serializers import userSerializer, productSerializer, cartProductsSerializ
     categorySerializer, promotionsSerializer
 from .utils import recalc_cart
 
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework import response, schemas
-from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+
+class IsWhoUser(BasePermission):
+
+    def has_permission(self, request, view):
+        return bool((request.user.is_superuser or request.user.is_staff) or (request.method in SAFE_METHODS))
+
 
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
 #     model = User
 
-class userAPI(ReadOnlyModelViewSet):
+class userAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     serializer_class = userSerializer
 
     def get_queryset(self):
         return UserData.objects.filter(id=self.request.user.id)
 
 
-class categoryApi(ReadOnlyModelViewSet):
+class categoryApi(ModelViewSet):
+    permission_classes = [IsWhoUser]
     queryset = Category.objects.all()
     serializer_class = categorySerializer
 
 
-class productsAPI(ReadOnlyModelViewSet):
+class productsAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     queryset = Products.objects.filter(is_custom=False)
     serializer_class = productSerializer
 
 
-class promotionsAPI(ReadOnlyModelViewSet):
+class promotionsAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     queryset = Promotions.objects.all()
     serializer_class = promotionsSerializer
 
 
-class cartProductsAPI(ReadOnlyModelViewSet):
+class cartProductsAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     serializer_class = cartProductsSerializer
 
     def get_queryset(self):
         return CartProduct.objects.filter(user=self.request.user.id)
 
 
-class cartAPI(ReadOnlyModelViewSet):
+class cartAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     serializer_class = cartSerializer
 
     def get_queryset(self):
@@ -67,7 +78,8 @@ class cartAPI(ReadOnlyModelViewSet):
             return Cart.objects.filter(session=self.request.session.session_key, in_order=False)
 
 
-class orderAPI(ReadOnlyModelViewSet):
+class orderAPI(ModelViewSet):
+    permission_classes = [IsWhoUser]
     serializer_class = orderSerializer
     queryset = Order.objects.order_by()
 
@@ -106,7 +118,7 @@ class register(generic.CreateView):
     form_class = RegForm
     success_url = reverse_lazy('login')
 
-    def form_valid(self, form): 
+    def form_valid(self, form):
         if self.request.recaptcha_is_valid:
             Cart.objects.filter(session=self.request.session.session_key).delete()
             form.save()
@@ -323,17 +335,17 @@ class order(CartMixin, generic.View):
         req = request.POST
         try:
             order, created = Order.objects.get_or_create(
-            customer=self.cart.owner,
-            phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
-            address=req['address'], entrance=req['entrance'],
-            floor_number=req['floor_number'],
-            apartment_number=req['apartment_number'], comment=req['comment'] or None
-        )
+                customer=self.cart.owner,
+                phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
+                address=req['address'], entrance=req['entrance'],
+                floor_number=req['floor_number'],
+                apartment_number=req['apartment_number'], comment=req['comment'] or None
+            )
         except MultiValueDictKeyError:
             order, created = Order.objects.get_or_create(
-            customer=self.cart.owner,
-            phone=req['tel'], cart=self.cart, buying_type=req['buying_type'], comment=req['comment'] or None
-        )
+                customer=self.cart.owner,
+                phone=req['tel'], cart=self.cart, buying_type=req['buying_type'], comment=req['comment'] or None
+            )
 
         if created and self.cart.owner is not None:
             self.cart.owner.orders.add(order)
