@@ -16,12 +16,14 @@ from .serializers import userSerializer, productSerializer, cartProductsSerializ
     categorySerializer, promotionsSerializer
 from .utils import recalc_cart
 
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework import response, schemas
+from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
 #     model = User
-
 
 class userAPI(ReadOnlyModelViewSet):
     serializer_class = userSerializer
@@ -103,7 +105,7 @@ class register(generic.CreateView):
     form_class = RegForm
     success_url = reverse_lazy('login')
 
-    def form_valid(self, form):
+    def form_valid(self, form): 
         if self.request.recaptcha_is_valid:
             Cart.objects.filter(session=self.request.session.session_key).delete()
             form.save()
@@ -330,51 +332,6 @@ class order(CartMixin, generic.View):
             self.cart.owner.phone = req['tel']
             self.cart.owner.save()
         return HttpResponseRedirect(reverse('order'))
-
-
-# try:
-#     if request.user.is_authenticated:
-#         cart = Cart.objects.filter(owner=request.user.id, in_order=False).first()
-#     else:
-#         cart = Cart.objects.filter(for_anonymous_user=True, in_order=False).first()
-#     stripe.api_key = 'sk_test_51IgOVCHac5lTiSCzjs3ZKXz3C9o6WtQ0w03byY1RGR0fbrVbt0vOAcePoe7AfXPKYlIE9OJAsr2thd6cf3s8hBkE00LLZ5Sn4N'
-#     intent = stripe.PaymentIntent.create(
-#         amount=int(cart.final_price * 100),
-#         currency='rub',
-#         metadata={'integration_check': 'accept_a_payment'}
-#     )
-#     context = {
-#         'order': Order.objects.get(cart=cart),
-#         'cart': cart,
-#         'client_secret': intent.client_secret
-#     }
-#     return render(request, 'order.html', context)
-# except AttributeError:
-#     return HttpResponseRedirect(reverse('index'))
-
-
-# class OrderAccept(CartMixin, generic.View):
-#     def post(self, request, *args, **kwargs):
-#         # requests.post('ws://localhost:8000/order/', json={'qwe': 123})
-#         req = request.POST
-#         order, created = Order.objects.get_or_create(
-#             customer=self.cart.owner,
-#             phone=req['tel'], cart=self.cart, buying_type=req['buying_type'],
-#             address=req['address'] or None, entrance=req['entrance'] or None,
-#             floor_number=req['floor_number'] or None,
-#             apartment_number=req['apartment_number'] or None, comment=req['comment'] or None
-#         )
-#         if created and self.cart.owner is not None:
-#             self.cart.owner.orders.add(order)
-#             self.cart.owner.phone = req['tel']
-#             self.cart.owner.save()
-#         return HttpResponseRedirect(reverse('order'))
-#
-#     def get(self, request, *args, **kwargs):
-#         # try:
-#         #     self.post(self, request, *args, **kwargs)
-#         # except AttributeError:
-#         return Http404
 
 
 class OrderPayment(CartMixin, generic.View):

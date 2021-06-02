@@ -107,7 +107,7 @@ let promotions = new Vue({
                     t.modalObject = await response.json();
                     t.category = t.modalObject.category.name
                 })
-        }
+        },
     }
 })
 let app2 = new Vue({
@@ -249,6 +249,16 @@ let basket = new Vue({
                             t.cart = data[0];
                         })
                 })
+        },
+        buttom() {
+            if (this.status === 'Такого промокода нет.' || this.status === 'Промокод активирован') {
+                this.status = 'Промокод активирован';
+                return 'btn-success'
+            } else if (this.status === 'Чтобы использовать промокод надо авторизоваться.') {
+                return 'btn-warning'
+            } else if (this.status === 'Этот промокод уже был использован.') {
+                return 'btn-danger'
+            }
         },
         async delCoupon() {
             const requestOptions = {

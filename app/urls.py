@@ -5,6 +5,9 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from pizza import views, decorators
 from rest_framework.routers import SimpleRouter
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='API "У Альбертовича"')
 
 router = SimpleRouter()
 
@@ -19,6 +22,7 @@ router.register('api/order', views.orderAPI, basename='order')
 
 urlpatterns = [
     # path('api/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', schema_view),
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('allauth.urls')),
     path('', views.index.as_view(), name='index'),
