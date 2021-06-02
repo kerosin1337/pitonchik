@@ -35,13 +35,13 @@
         <div class="row pl-3 pr-3 active" v-for="(category, i) in products">
             <h2 class="mt-4 pl-3 pr-3" v-bind:id="categorys[i].name">{{ categorys[i].name }}</h2>
             <div class="col-sm col-md-3 mb-4" v-for="(product, j) in category">
-                <div class="card m-0 shadow-lg  bg-white rounded" v-if="categorys[i].name === 'Пицца'">
+                <div class="card m-0 shadow-lg  bg-white rounded">
                     <img :src="product.image" class="ml-3 mt-3 mr-3">
                     <div class="card-body">
                         <h4 class="card-title text-warning font-weight-bold">{{ product.name }}</h4>
                         <p class="card-text text-warning">{{ product.description }}</p>
                         <form @submit.prevent="post(product.slug, $event, product.id)">
-                            <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex justify-content-between mb-3" v-if="categorys[i].name === 'Пицца'">
                                 <input type="radio" class="btn-check" :id="product.id + ''  + 25" name="size"
                                        value="25" checked>
                                 <label class="btn btn-outline-info p-0 mr-0" :for="product.id + '' +  25"
@@ -58,18 +58,7 @@
                                        style="width: 33%" v-on:click="newPrice.splice(product.id, 1, product.price3)"
                                 >35</label>
                             </div>
-                            <button type="submit" class="btn btn-info">Выбрать</button>
-                            <span class="text-danger">{{ newPrice[product.id] }}руб.</span>
-                        </form>
-                    </div>
-                </div>
-                <div class="card m-0 shadow-lg  bg-white rounded" v-else>
-                    <img :src="product.image" class="ml-3 mt-3 mr-3">
-                    <div class="card-body">
-                        <h4 class="card-title text-warning font-weight-bold">{{ product.name }}</h4>
-                        <p class="card-text text-warning">{{ product.description }}</p>
-                        <form @submit.prevent="post(product.slug, $event, product.id)">
-                            <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex justify-content-between mb-3" v-if="categorys[i].name === 'Закуски'">
                                 <input type="radio" class="btn-check" :id="product.id + ''  + 25" name="size"
                                        value="Малая" checked>
                                 <label class="btn btn-outline-info p-0 mr-0" :for="product.id + '' +  25"

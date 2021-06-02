@@ -134,12 +134,9 @@ class Products(models.Model):
 class CartProduct(models.Model):
     user = models.ForeignKey('UserData', verbose_name='Покупатель', on_delete=models.CASCADE, null=True)
     cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE, related_name='related_products')
-    size = models.CharField(max_length=20)
+    size = models.CharField(max_length=32)
     price = models.DecimalField(max_digits=4, decimal_places=0)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    # object_id = models.PositiveIntegerField()
-    # content_object = GenericForeignKey('content_type', 'object_id')
     qty = models.PositiveIntegerField(default=1)
     final_price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Общая цена')
 

@@ -35,7 +35,7 @@ let prod = new Vue({
         price(i, j) {
             this.newPrice.splice(i, 1, j)
         },
-        async post(slug, sizePizza, i) {
+        async post(slug, sizePizza, i, promotions = false) {
             // console.log(slug, sizePizza.target.querySelector('input[name="size"]:checked').value)
             value = sizePizza.target.querySelector('input[name="size"]:checked').value
             const requestOptions = {
