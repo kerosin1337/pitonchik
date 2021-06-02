@@ -4,7 +4,7 @@
 {% block title %}Персонал{% endblock %}
 {% block content %}
     {% verbatim %}
-    <main id="staff" class="container-sm mt-5 shadow-lg p-3 mb-5 bg-white rounded">
+    <main id="staff" class="container-xl mt-5 shadow-lg p-3 mb-5 bg-white rounded">
         <div class="col-md-8" v-for="(i, id) in ordersSort()" style="transition: 1s">
             <div class="card mb-3">
                 <div class="alert" role="alert" style="margin-bottom: 0!important;" :class="bg(i.status)">
@@ -58,8 +58,8 @@
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            console.log(data.message);
-            staff.orders = data.message
+            staff.orders = data.message;
+            console.log(staff.orders);
         };
         chatSocket.onclose = function (e) {
             for (let i in 10) {

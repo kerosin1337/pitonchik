@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Products
+from .models import Cart, Category, Products
 from faker import Faker
 
 fake = Faker()
@@ -14,10 +14,11 @@ class ProductsTest(TestCase):
     slug = fake.slug()
 
     def setUp(self):
-        Products.objects.create(category=self.category, name=self.name, description=self.description,
+        category = Category.objects.create(name=self.category)
+        Products.objects.create(category=category, name=self.name, description=self.description,
                                 price=123,
                                 image=self.image, slug=self.slug)
 
     def test_product_equal(self):
-        prod = Products.objects.get(category=self.category)
-        self.assertEqual(prod.category, self.category)
+        prod = Products.objects.get(name=self.name, description=self.description)
+        self.assertEqual(prod.name, self.name)
