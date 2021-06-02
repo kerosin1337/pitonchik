@@ -136,15 +136,25 @@ class register(generic.CreateView):
 #     template_name = 'logout.html'
 
 
-class Profile(CartMixin, LoginRequiredMixin):
+class Profile(CartMixin):
     def get(self, request, *args, **kwargs):
         # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
         # social = SocialAccount.objects.get(user=request.user) or None
         return render(request, 'profile.html', {'user': UserData.objects.get(id=self.cart.owner_id)})
 
-    def delete(self, request, *args, **kwargs):
-        self.cart.owner.delete()
-        return HttpResponseRedirect(reverse('index'))
+
+class DeleteUserView(LoginRequiredMixin, generic.DeleteView):
+    model = UserData
+    success_url = reverse_lazy('login')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
 
 
 class ChangeUserInfoView(generic.UpdateView, LoginRequiredMixin):

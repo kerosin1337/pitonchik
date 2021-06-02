@@ -636,18 +636,18 @@ $(document).on('submit', 'form#main', function () {
 //     console.log(self)
 //         alert()
 // });
-$('#delAcc').click(async function () {
-    const requestOptions = {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        }
-    }
-    const t = this;
-    const result = await fetch('/profile/', requestOptions)
-    window.location = '/'
-})
+// $('#delAcc').click(async function () {
+//     const requestOptions = {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': getCookie('csrftoken')
+//         }
+//     }
+//     const t = this;
+//     const result = await fetch('/profile/', requestOptions)
+//     window.location = '/'
+// })
 // $(document).on('submit', 'form#payment-form', function () {
 //     const chatSocket = new WebSocket(
 //         'ws://localhost:8000/order/');
