@@ -39,33 +39,26 @@
                 {% endif %}
             </div>
         </div>
-
-        <ul class="nav navbar justify-content-between p-0">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}#Пицца">Пиццы</a>
+        {% verbatim %}
+        <ul class="nav navbar justify-content-between p-0" id="category">
+            <li class="nav-item" v-for="item in category">
+                <a class="nav-link" :href="'/#' + item.name">{{ item.name }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}#Закуски">Закуски</a>
+                <a class="nav-link" href="/custom/">Сделать свою пиццу</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}#Напитки">Напитки</a>
+                <a class="nav-link" href="/promotions/">Акции</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'custom' %}">Сделать свою пиццу</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'promotions' %}">Акции</a>
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-info" href="{% url 'basket' %}">Корзина
-                    {% verbatim %}
+                <a class="btn btn-info" href="/basket/">Корзина
                     <span class="badge bg-warning rounded-pill fs-6" id="qty">
-                            {{ count }}
-                        </span>
-                    {% endverbatim %}
+                            {{ qty.count }}
+                    </span>
                 </a>
             </li>
         </ul>
+        {% endverbatim %}
     </nav>
 </header>
 {% block content %}

@@ -3,6 +3,7 @@ const Store = {
     get: (name) => JSON.parse(localStorage.getItem(name)),
     remove: (name) => localStorage.removeItem(name)
 }
+
 let prod = new Vue({
     el: '#prod',
     data: {
@@ -16,6 +17,7 @@ let prod = new Vue({
         await fetch('/api/category/', {method: 'GET'})
             .then(async response => {
                 t.categorys = await response.json();
+                nav.category = t.categorys;
             });
         await fetch('/api/products/', {method: 'GET'})
             .then(async response => {
@@ -53,7 +55,12 @@ let prod = new Vue({
 
     }
 })
-
+let nav = new Vue({
+    el: '#category',
+    data: {
+        category: []
+    }
+})
 let qty = new Vue({
     el: '#qty',
     data: {

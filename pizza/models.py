@@ -118,7 +118,8 @@ class Products(models.Model):
     price2 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     price3 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     image = models.ImageField(upload_to='product/',
-                              validators=[FileExtensionValidator(allowed_extensions=['png']), validate_image])
+                              validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'jpg']),
+                                          validate_image])
     slug = models.SlugField(unique=True)
     is_custom = models.BooleanField(null=True, blank=True, default=False)
 
@@ -240,9 +241,15 @@ class Coupon(models.Model):
 class Promotions(models.Model):
     title = models.CharField(max_length=128, verbose_name='Название акции')
     description = models.TextField()
-    img = models.ImageField(upload_to='promotions/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'jpg']), validate_image])
+    img = models.ImageField(upload_to='promotions/',
+                            validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'jpg']),
+                                        validate_image])
     product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True, blank=True)
+
+    def clean(self):
+        if self.product and self.coupon:
+            raise ValidationError('Либо продукт, либо промокод')
 
     class Meta:
         verbose_name = 'Акция'

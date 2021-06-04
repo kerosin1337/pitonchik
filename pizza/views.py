@@ -8,9 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views import generic
-from rest_framework.permissions import BasePermission, SAFE_METHODS, IsAuthenticatedOrReadOnly, IsAdminUser, \
-    IsAuthenticated
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.viewsets import ModelViewSet
 
 from .forms import RegForm, UpdateUserData
 from .mixins import CartMixin

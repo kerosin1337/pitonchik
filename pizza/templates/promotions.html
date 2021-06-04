@@ -7,7 +7,7 @@
     <main class="container-xxl shadow-lg bg-white rounded p-3 mt-3 mb-3" id="promotions">
         <h2 class="">Акции</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col-lg-4 col-md-6 col-sm-12" v-for="item in promotions">
+            <div class="col-lg-4 col-md-6 col-sm-12" v-for="(item, id) in promotions" :id="id">
                 <div class="card h-100 m-0 shadow-lg bg-white rounded border rounded">
                     <img :src="item.img" class="card-img-top">
                     <div class="card-body">
