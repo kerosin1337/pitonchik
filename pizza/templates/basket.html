@@ -16,7 +16,7 @@
                         <div class=" p-0 d-inline-block" style="">
                             <h3 class="card-title">{{ item.product.name }}</h3>
                             <p class="card-text">{{ item.product.description }}</p>
-                            <p class="card-text">
+                            <p class="card-text" v-if="item.size">
                                 <small class="text-muted">Размер: {{ item.size }}</small>
                             </p>
                         </div>

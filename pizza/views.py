@@ -185,17 +185,7 @@ class AddToCartView(CartMixin, generic.View):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         product_slug = kwargs.get('slug')
-        try:
-            custom = body['custom']
-        except:
-            custom = None
-        if custom:
-            product, created = Products.objects.get_or_create(name='Моя пицца', description=body['description'],
-                                                              price=body['price'],
-                                                              image='img/product/custom.png', slug=product_slug,
-                                                              is_custom=True)
-        else:
-            product = Products.objects.get(slug=product_slug)
+        product = Products.objects.get(slug=product_slug)
         cart_product, created = CartProduct.objects.get_or_create(
             user=self.cart.owner, cart=self.cart,
             size=request.GET['size'], price=body['price'], product=product
@@ -256,6 +246,8 @@ class deleteCart(CartMixin):
 class basket(CartMixin, generic.View):
 
     def get(self, request, *args, **kwargs):
+        if Order.objects.filter(customer_id=self.cart.owner_id, cart__in_order=False).first():
+            return HttpResponseRedirect(reverse('order'))
         context = {
             'cart': self.cart,
         }
@@ -362,6 +354,10 @@ class order(CartMixin, generic.View):
             self.cart.owner.save()
         return HttpResponseRedirect(reverse('order'))
 
+    def delete(self, request, *args, **kwargs):
+        Order.objects.filter(customer_id=self.cart.owner_id, cart__in_order=False).first().delete()
+        return HttpResponseRedirect(reverse('basket'))
+
 
 class OrderPayment(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
@@ -385,8 +381,46 @@ class PromotionsView(generic.View):
         return render(request, 'promotions.html')
 
 
-class Custom(generic.TemplateView):
-    template_name = 'custom.html'
+# body_unicode = request.body.decode('utf-8')
+#         body = json.loads(body_unicode)
+#         product_slug = kwargs.get('slug')
+#         product = Products.objects.get(slug=product_slug)
+#         cart_product, created = CartProduct.objects.get_or_create(
+#             user=self.cart.owner, cart=self.cart,
+#             size=request.GET['size'], price=body['price'], product=product
+#         )
+#         if created:
+#             self.cart.products.add(cart_product)
+#         else:
+#             q = CartProduct.objects.get(id=cart_product.id)
+#             q.qty += 1
+#             q.save()
+#         recalc_cart(self.cart)
+#         return HttpResponseRedirect('/')
+class Custom(CartMixin):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'custom.html')
+
+    def post(self, request, *args, **kwargs):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        product_slug = body['slug']
+        product, created = Products.objects.get_or_create(name='Моя пицца', description=body['description'],
+                                                          price=body['price'],
+                                                          image='img/product/custom.png', slug=product_slug,
+                                                          is_custom=True)
+        cart_product, created = CartProduct.objects.get_or_create(
+            user=self.cart.owner, cart=self.cart,
+            size=body['size'], price=body['price'], product=product
+        )
+        if created:
+            self.cart.products.add(cart_product)
+        else:
+            q = CartProduct.objects.get(id=cart_product.id)
+            q.qty += 1
+            q.save()
+        recalc_cart(self.cart)
+        return HttpResponseRedirect(reverse('custom'))
 
 
 class Staff(generic.View):

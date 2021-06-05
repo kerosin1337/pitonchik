@@ -5,7 +5,9 @@
 /*!*    font-weight: bold;*!*/
 /*!*}*!*/
 
-
+.btn-danger:hover {
+    background-color: #de2e50;
+}
 .nav:nth-child(1) {
 
     height: 146px;

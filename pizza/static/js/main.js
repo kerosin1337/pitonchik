@@ -153,7 +153,6 @@ let app2 = new Vue({
                 )
         },
         choiceStreet(str, lat, lon) {
-
             this.dist = getDistanceFromLatLonInKm(56.4720791, 84.96071130123357, lat, lon);
             if (this.dist < 3) {
                 console.log(this.dist)
@@ -168,7 +167,7 @@ let app2 = new Vue({
         },
         changeS() {
             buy.choice = true;
-        }
+        },
     },
     watch: {
 //        search(q) {
@@ -478,10 +477,12 @@ let custom = new Vue({
                 body: JSON.stringify({
                     description: descriptionStr,
                     price: this.price(),
-                    custom: true
+                    custom: true,
+                    size: sizeStr,
+                    slug: randStr()
                 })
             }
-            const result = await fetch(`/add/${randStr()}/?size=${sizeStr}`, requestOptions).then(nav.reload);
+            const result = await fetch(`/custom/`, requestOptions).then(nav.reload);
             this.final_cost = []
             // Store.remove('myPizza');
             // Store.remove('mySize');
@@ -563,7 +564,7 @@ let staff = new Vue({
             this.orders.filter(item => item.status === 'completed').forEach(function (item) {
                 newOrders.push(item)
             });
-            let size = 3;
+            let size = 10;
             this.pages = Math.ceil(newOrders.length / size);
             for (let i = 0; i < this.pages; i++) {
                 newOrders[i] = newOrders.slice((i * size), (i * size) + size);
@@ -638,6 +639,18 @@ $(document).on('submit', 'form#main', function () {
     const chatSocket = new WebSocket(
         'ws://localhost:8000/order/');
 });
+$('#delOrder').click(async function () {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    }
+    const t = this;
+    const result = await fetch('/basket/order/', requestOptions)
+    window.location = '/'
+})
 // $(document).on('submit', 'form#change-password', function () {
 //     const requestOptions = {
 //         method: 'DELETE',
@@ -650,18 +663,7 @@ $(document).on('submit', 'form#main', function () {
 //     console.log(self)
 //         alert()
 // });
-// $('#delAcc').click(async function () {
-//     const requestOptions = {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRFToken': getCookie('csrftoken')
-//         }
-//     }
-//     const t = this;
-//     const result = await fetch('/profile/', requestOptions)
-//     window.location = '/'
-// })
+
 // $(document).on('submit', 'form#payment-form', function () {
 //     const chatSocket = new WebSocket(
 //         'ws://localhost:8000/order/');
