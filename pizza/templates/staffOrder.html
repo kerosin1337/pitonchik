@@ -46,11 +46,42 @@
                             <option v-for="st in status" :selected="st === i.status" :value="st">{{ st }}</option>
                         </select>
                     </p>
+                    <p>Дата создания: {{ i.created_at }}</p>
+                    <p>Дата обновления: {{ i.updated_at }}</p>
                     <p>Цена: {{ i.final_price }}</p>
                     <p v-if="i.comment">Комментарий: <strong>{{ i.comment }}</strong></p>
                 </div>
             </div>
         </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li>
+                    <button type="button" class="btn btn-primary" @click="page = 0">
+                        В начало
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-primary" @click="page--" :disabled="page === 0">
+                        Назад
+                    </button>
+                </li>
+                <li>
+                    <button class="btn btn-primary">
+                        {{ page + 1 }}
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-primary" @click="page++" :disabled="page === pages-1">
+                        Вперёд
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-primary" @click="page = pages-1">
+                        В конец
+                    </button>
+                </li>
+            </ul>
+        </nav>
     </main>
     {% endverbatim %}
     <script>
@@ -59,7 +90,6 @@
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             staff.orders = data.message;
-            console.log(staff.orders);
         };
         chatSocket.onclose = function (e) {
             for (let i in 10) {

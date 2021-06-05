@@ -215,9 +215,11 @@ class Order(models.Model):
         default=BUYING_TYPE_SELF
     )
     comment = models.TextField(verbose_name='Комментарий к заказу', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания заказа')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения статуса')
 
     def __str__(self):
-        return str(self.id)
+        return 'Заказ №{}'.format(self.id)
 
     class Meta:
         verbose_name = 'Заказ'

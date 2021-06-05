@@ -52,11 +52,16 @@
                         {# {% if user.orders is not None %}#}
                         {% for i in user.orders.all %}
                             <div class="alert alert-success" role="alert">
-                                {% for j in i.cart.products.all %}
-                                    <h4 class="alert-heading d-inline">{{ j.product }}</h4>
-                                {% endfor %}
+                                <h class="alert-heading">{{ i }}
+                                    (
+                                    {% for j in i.cart.products.all %}
+                                        <span>{{ j.product.name }},</span>
+                                    {% endfor %}
+                                    )
+                                </h>
                                 <p>Статус: {{ i.get_status_display }}</p>
                                 <p>Цена: {{ i.cart.final_price }}</p>
+                                <p>Дата: {{ i.updated_at }}</p>
                             </div>
                         {% endfor %}
                         {# {% endif %}#}

@@ -53,19 +53,7 @@ class orderSerializer(ModelSerializer):
 
     class Meta:
         model = Order
-        fields = (
-            'id',
-            'customer',
-            'phone',
-            'cart',
-            'address',
-            'entrance',
-            'floor_number',
-            'apartment_number',
-            'status',
-            'buying_type',
-            'comment'
-        )
+        fields = '__all__'
 
 
 class promotionsSerializer(ModelSerializer):

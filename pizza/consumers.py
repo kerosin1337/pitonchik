@@ -2,6 +2,8 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from datetime import datetime
+from django.utils import dateformat
 
 from .models import Order
 
@@ -30,7 +32,11 @@ class OrderWS(WebsocketConsumer):
             'floor_number': i.floor_number,
             'apartment_number': i.apartment_number,
             'status': i.status,
-            'comment': i.comment
+            'comment': i.comment,
+            'created_at': dateformat.format(i.created_at.astimezone(), 'd E Y, H:i'),
+            'updated_at': dateformat.format(i.updated_at.astimezone(), 'd E Y, H:i'),
+            # 'created_at': i.created_at,
+            # 'updated_at': i.updated_at,
         } for i in order]
         return result
 
