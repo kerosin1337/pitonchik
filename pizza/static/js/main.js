@@ -17,7 +17,6 @@ let prod = new Vue({
         await fetch('/api/category/', {method: 'GET'})
             .then(async response => {
                 t.categorys = await response.json();
-                nav.category = t.categorys;
             });
         await fetch('/api/products/', {method: 'GET'})
             .then(async response => {
@@ -50,25 +49,25 @@ let prod = new Vue({
                     price: this.newPrice[i]
                 })
             }
-            const result = await fetch(`/add/${slug}/?size=${value}`, requestOptions).then(qty.reload)
+            const result = await fetch(`/add/${slug}/?size=${value}`, requestOptions).then(nav.reload)
         }
 
     }
 })
+
 let nav = new Vue({
     el: '#category',
     data: {
-        category: []
-    }
-})
-let qty = new Vue({
-    el: '#qty',
-    data: {
+        category: [],
         cartProducts: [],
         count: 0
     },
     created: async function () {
         const t = this;
+        await fetch('/api/category/', {method: 'GET'})
+            .then(async response => {
+                t.category = await response.json();
+            });
         await fetch('/api/cart/', {method: 'GET'})
             .then(async response => {
                 let data = await response.json();
@@ -92,6 +91,7 @@ let qty = new Vue({
         }
     }
 })
+
 let promotions = new Vue({
     el: '#promotions',
     data: {
@@ -310,7 +310,7 @@ let basket = new Vue({
                         .then(async response => {
                             let data = await response.json();
                             t.cart = data[0];
-                            qty.reload()
+                            nav.reload()
                         })
                 )
         },
@@ -334,7 +334,7 @@ let basket = new Vue({
                         .then(async response => {
                             let data = await response.json();
                             t.cart = data[0];
-                            qty.count += num;
+                            nav.count += num;
                         })
                 );
         }
@@ -481,7 +481,7 @@ let custom = new Vue({
                     custom: true
                 })
             }
-            const result = await fetch(`/add/${randStr()}/?size=${sizeStr}`, requestOptions).then(qty.count++);
+            const result = await fetch(`/add/${randStr()}/?size=${sizeStr}`, requestOptions).then(nav.reload);
             this.final_cost = []
             // Store.remove('myPizza');
             // Store.remove('mySize');

@@ -117,14 +117,14 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=4, decimal_places=0, default=299)
     price2 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     price3 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
-    image = models.ImageField(upload_to='product/',
+    image = models.ImageField(upload_to='img/product/',
                               validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'jpg']),
                                           validate_image])
     slug = models.SlugField(unique=True)
     is_custom = models.BooleanField(null=True, blank=True, default=False)
 
     def __str__(self):
-        return 'Продукт: {}, Категория:{}'.format(self.name, self.category)
+        return 'Продукт: {}, Категория: {}'.format(self.name, self.category)
 
     class Meta:
         verbose_name = 'Продукт'
@@ -156,7 +156,7 @@ class CartProduct(models.Model):
 class Cart(models.Model):
     owner = models.ForeignKey('UserData', null=True, verbose_name='Владелец', on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct, blank=True, related_name='related_cart')
-    total_products = models.PositiveIntegerField(default=0)
+    # total_products = models.PositiveIntegerField(default=0)
     final_price = models.DecimalField(max_digits=9, default=0, decimal_places=2, verbose_name='Общая цена')
     in_order = models.BooleanField(default=False)
     for_anonymous_user = models.BooleanField(default=False)
@@ -241,7 +241,7 @@ class Coupon(models.Model):
 class Promotions(models.Model):
     title = models.CharField(max_length=128, verbose_name='Название акции')
     description = models.TextField()
-    img = models.ImageField(upload_to='promotions/',
+    img = models.ImageField(upload_to='img/promotions/',
                             validators=[FileExtensionValidator(allowed_extensions=['png', 'jpeg', 'jpg']),
                                         validate_image])
     product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)

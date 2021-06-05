@@ -192,7 +192,7 @@ class AddToCartView(CartMixin, generic.View):
         if custom:
             product, created = Products.objects.get_or_create(name='Моя пицца', description=body['description'],
                                                               price=body['price'],
-                                                              image='products/custom.png', slug=product_slug,
+                                                              image='img/product/custom.png', slug=product_slug,
                                                               is_custom=True)
         else:
             product = Products.objects.get(slug=product_slug)

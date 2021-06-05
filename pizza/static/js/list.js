@@ -6,13 +6,13 @@ let meats = [
         style: 'prodPlus',
         trues: true
     },
-    // {
-    //     prod: 'Ароматная свинина',
-    //     price: 99,
-    //     img: '/static/img/custom/',
-    //     style: 'prodPlus',
-    //     trues: true
-    // },
+    {
+        prod: 'Ароматная свинина',
+        price: 99,
+        img: '/static/img/custom/свинина.svg',
+        style: 'prodPlus',
+        trues: true
+    },
     {
         prod: 'Ветчина',
         price: 99,
@@ -34,13 +34,13 @@ let meats = [
         style: 'prodPlus',
         trues: true
     },
-    {
-        prod: 'Колбасы сырокопченные',
-        price: 99,
-        img: '/static/img/custom/говядина.svg',
-        style: 'prodPlus',
-        trues: true
-    },
+    // {
+    //     prod: 'Колбасы сырокопченные',
+    //     price: 99,
+    //     img: '/static/img/custom/свинина.svg',
+    //     style: 'prodPlus',
+    //     trues: true
+    // },
     {
         prod: 'Куриная грудка',
         price: 99,
@@ -109,7 +109,7 @@ let vegetables = [
     {
         prod: 'Чеснок',
         price: 89,
-        img: '/static/img/custom/chesnok.svg',
+        img: '/static/img/custom/чеснок.svg',
         style: 'prodPlus',
         trues: true
     },
