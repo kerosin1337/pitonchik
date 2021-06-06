@@ -30,9 +30,10 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="j in i.products">
-                                        <td>{{ j.product }}</td>
-                                        <td>{{ j.final_price }}</td>
+                                        <td v-if="j.is_custom">{{ j.description }}</td>
+                                        <td v-else>{{ j.product }}</td>
                                         <td>{{ j.qty }}</td>
+                                        <td>{{ j.final_price }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -49,6 +50,7 @@
                     <p>Дата создания: {{ i.created_at }}</p>
                     <p>Дата обновления: {{ i.updated_at }}</p>
                     <p>Цена: {{ i.final_price }}</p>
+                    <p>Способ доставки: {{ i.type_delivery }}</p>
                     <p v-if="i.comment">Комментарий: <strong>{{ i.comment }}</strong></p>
                 </div>
             </div>
@@ -89,6 +91,7 @@
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
+            console.log(data.message);
             staff.orders = data.message;
         };
         chatSocket.onclose = function (e) {

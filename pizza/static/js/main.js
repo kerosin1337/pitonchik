@@ -104,6 +104,9 @@ let promotions = new Vue({
         await fetch('/api/promotions/', {method: 'GET'})
             .then(async response => {
                 t.promotions = await response.json();
+                if (t.promotions.length === 0) {
+                    t.promotions = false;
+                }
             })
     },
     methods: {
@@ -479,7 +482,7 @@ let custom = new Vue({
                     price: this.price(),
                     custom: true,
                     size: sizeStr,
-                    slug: randStr()
+                    slug: randStr(11)
                 })
             }
             const result = await fetch(`/custom/`, requestOptions).then(nav.reload);
@@ -618,11 +621,11 @@ function getListIdx(str, substr) {
     return listIdx
 }
 
-function randStr() {
+function randStr(size = 5) {
     let result = [];
     let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let charactersLength = characters.length;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < size; i++) {
         result.push(characters.charAt(Math.floor(Math.random() *
             charactersLength)));
     }
@@ -649,7 +652,14 @@ $('#delOrder').click(async function () {
     }
     const t = this;
     const result = await fetch('/basket/order/', requestOptions)
-    window.location = '/'
+        .then(async response => {
+            const chatSocket = new WebSocket('ws://localhost:8000/order/');
+            chatSocket.onmessage = function (e) {
+                window.location = '/';
+            };
+        });
+
+
 })
 // $(document).on('submit', 'form#change-password', function () {
 //     const requestOptions = {

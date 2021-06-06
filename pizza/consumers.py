@@ -23,7 +23,9 @@ class OrderWS(WebsocketConsumer):
             'products': [{
                 'product': j.product.name,
                 'final_price': int(j.final_price),
-                'qty': j.qty
+                'qty': j.qty,
+                'is_custom': j.product.is_custom,
+                'description': j.product.description
             } for j in i.cart.products.all()],
             'final_price': int(i.cart.final_price),
             'phone': i.phone,
@@ -33,6 +35,7 @@ class OrderWS(WebsocketConsumer):
             'apartment_number': i.apartment_number,
             'status': i.status,
             'comment': i.comment,
+            'type_delivery': i.buying_type,
             'created_at': dateformat.format(i.created_at.astimezone(), 'd E Y, H:i'),
             'updated_at': dateformat.format(i.updated_at.astimezone(), 'd E Y, H:i'),
             # 'created_at': i.created_at,
