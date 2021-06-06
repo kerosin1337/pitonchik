@@ -1,6 +1,7 @@
 import json
 
 import stripe
+from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, auth_login, PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
@@ -135,11 +136,14 @@ class register(generic.CreateView):
 #     template_name = 'logout.html'
 
 
-class Profile(CartMixin):
+class Profile(generic.View):
     def get(self, request, *args, **kwargs):
         # user, created = UserData.objects.get_or_create(id=self.cart.owner_id)
-        # social = SocialAccount.objects.get(user=request.user) or None
-        return render(request, 'profile.html', {'user': UserData.objects.get(id=self.cart.owner_id)})
+        try:
+            user = SocialAccount.objects.get(user=request.user)
+        except:
+            user = UserData.objects.get(id=request.user.id)
+        return render(request, 'profile.html', {'user': user})
 
 
 class DeleteUserView(LoginRequiredMixin, generic.DeleteView):
