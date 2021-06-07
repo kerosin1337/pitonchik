@@ -149,8 +149,8 @@ class CartProduct(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Промежуточная(Продкут - Корзина)'
-        verbose_name_plural = 'Промежуточные(Продкут - Корзина)'
+        verbose_name = 'Промежуточная(Продукут - Корзина)'
+        verbose_name_plural = 'Промежуточные(Продукут - Корзина)'
 
 
 class Cart(models.Model):
