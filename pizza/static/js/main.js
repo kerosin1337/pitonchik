@@ -509,7 +509,7 @@ let staff = new Vue({
     data: {
         error: '',
         orders: [],
-        status: ['new', 'in_progress', 'is_ready', 'completed'],
+        status: ['new', 'in_progress', 'is_ready', 'completed', 'canceled'],
         csrf: getCookie('csrftoken'),
         page: 0,
         pages: 0
@@ -525,6 +525,8 @@ let staff = new Vue({
                     return 'alert-warning'
                 if (status === 'completed')
                     return 'alert-success'
+                if (status === 'canceled')
+                    return 'alert-danger'
             } else {
                 if (status === 'new')
                     return 'btn-dark'

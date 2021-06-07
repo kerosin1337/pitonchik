@@ -178,6 +178,7 @@ class Order(models.Model):
     STATUS_IN_PROGRESS = 'in_progress'
     STATUS_READY = 'is_ready'
     STATUS_COMPLETED = 'completed'
+    STATUS_CANCELED = 'canceled'
 
     BUYING_TYPE_SELF = 'self'
     BUYING_TYPE_DELIVERY = 'delivery'
@@ -186,7 +187,8 @@ class Order(models.Model):
         (STATUS_NEW, 'Новый заказ'),
         (STATUS_IN_PROGRESS, 'Заказ в обработке'),
         (STATUS_READY, 'Заказ готов'),
-        (STATUS_COMPLETED, 'Заказ выполнен')
+        (STATUS_COMPLETED, 'Заказ выполнен'),
+        (STATUS_CANCELED, 'Отменен')
     )
 
     BUYING_TYPE_CHOICES = (

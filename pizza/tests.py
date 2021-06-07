@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Cart, Category, Products
+from .models import *
 from faker import Faker
 
 fake = Faker()
@@ -12,7 +12,6 @@ class ProductsTest(TestCase):
     price = fake.pydecimal()
     image = fake.file_name('image')
     slug = fake.slug()
-
     def setUp(self):
         category = Category.objects.create(name=self.category)
         Products.objects.create(category=category, name=self.name, description=self.description,
