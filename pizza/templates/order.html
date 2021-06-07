@@ -6,7 +6,7 @@
     <main class="container-fluid mb-5">
         <div class="row justify-content-center">
             {% if order.status != 'new' %}
-                <div class="col-md-4 ">
+                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-4">
                     <form method="post" class="mt-5 shadow-lg p-3 bg-white rounded"
                           autocomplete="off" id="main">
                         {% csrf_token %}
@@ -122,7 +122,7 @@
                             <button type="submit" class="btn btn-primary" :disabled="choice">
                                 Перейти к оплате
                             </button>
-                            <select class="form-select w-50 d-inline align-middle" name="buying_type" v-model="select"
+                            <select class="form-select w-auto d-inline align-middle" name="buying_type" v-model="select"
                                     required>
                                 <option value="" disabled>Тип доставки</option>
                                 <option value="delivery">Доставка</option>
@@ -134,7 +134,7 @@
                 </div>
 
                 {% verbatim %}
-                <aside style="width: auto; height: auto" class="mt-5" id="basket">
+                <aside class="mt-5 col-sm-12 col-md-8 col-lg-5 col-xl-4" id="basket">
                     <table class="table table-white shadow-lg rounded-3">
                         <thead>
                         <tr>
@@ -157,9 +157,6 @@
                 <aside class="col-sm-8 col-md-6 col-lg-4">
                     <form id="payment-form" class="bg-white shadow-lg rounded-3 p-3 mt-5" name="order"
                           method="post">
-                        <div class="d-flex justify-content-end mb-4">
-                            <button class="btn btn-danger p-1" id="delOrder" type="button">Отменить заказ</button>
-                        </div>
                         <div id="card-element">
 
                         </div>
@@ -167,11 +164,12 @@
                         <div id="card-error" role="alert"></div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" id="card-button" class="btn btn-primary p-1 mt-2"
+                            <button type="submit" id="card-button" class="btn btn-primary p-1 mt-2 mr-0"
                                     data-username="{{ request.user }}"
                                     data-secret="{{ client_secret }}">
                                 {{ cart.final_price }}
                             </button>
+                            <button class="btn btn-warning p-1" id="delOrder" type="button">Назад к оформлению</button>
                         </div>
                     </form>
                 </aside>

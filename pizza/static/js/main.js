@@ -509,7 +509,7 @@ let staff = new Vue({
     data: {
         error: '',
         orders: [],
-        status: ['new', 'in_progress', 'is_ready', 'completed', 'canceled'],
+        status: ['new', 'in_progress', 'is_ready', 'completed'],
         csrf: getCookie('csrftoken'),
         page: 0,
         pages: 0
@@ -657,8 +657,8 @@ $('#delOrder').click(async function () {
         .then(async response => {
             const chatSocket = new WebSocket('ws://localhost:8000/order/');
             chatSocket.onmessage = function (e) {
-                window.location = '/';
             };
+            window.location = '/basket/order/';
         });
 
 

@@ -188,7 +188,7 @@ class Order(models.Model):
         (STATUS_IN_PROGRESS, 'Заказ в обработке'),
         (STATUS_READY, 'Заказ готов'),
         (STATUS_COMPLETED, 'Заказ выполнен'),
-        (STATUS_CANCELED, 'Отменен')
+        # (STATUS_CANCELED, 'Отменен')
     )
 
     BUYING_TYPE_CHOICES = (
