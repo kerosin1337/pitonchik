@@ -47,7 +47,7 @@ class Products(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=True,
                                  related_name='category')
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=128)
+    description = models.CharField(max_length=128, blank=True, null=True)
     price = models.DecimalField(max_digits=4, decimal_places=0, default=375)
     price2 = models.DecimalField(max_digits=4, decimal_places=0, null=True, default=579)
     price3 = models.DecimalField(max_digits=4, decimal_places=0, null=True, default=699)
