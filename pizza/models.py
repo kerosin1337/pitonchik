@@ -48,7 +48,7 @@ class Products(models.Model):
                                  related_name='category')
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=128)
-    price = models.DecimalField(max_digits=4, decimal_places=0, default=299)
+    price = models.DecimalField(max_digits=4, decimal_places=0, default=375)
     price2 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     price3 = models.DecimalField(max_digits=4, decimal_places=0, null=True)
     image = models.ImageField(upload_to='img/product/',
