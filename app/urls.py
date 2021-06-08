@@ -3,7 +3,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
-from django.views.decorators.cache import cache_page
 from pizza import views, decorators
 from rest_framework.routers import SimpleRouter
 from rest_framework_swagger.views import get_swagger_view
@@ -26,7 +25,7 @@ urlpatterns = [
     path('api/', schema_view),
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('allauth.urls')),
-    path('', (views.index.as_view()), name='index'),
+    path('', views.index.as_view(), name='index'),
     path('promotions/', views.PromotionsView.as_view(), name='promotions'),
     path('basket/', views.basket.as_view(), name='basket'),
     path('login/', decorators.check_recaptcha(views.login.as_view()), name='login'),
