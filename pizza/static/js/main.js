@@ -267,9 +267,9 @@ let basket = new Vue({
                 this.status = 'Промокод активирован';
                 return 'btn-success'
             } else if (this.status === 'Чтобы использовать промокод надо авторизоваться.') {
-                return 'btn-warning'
-            } else if (this.status === 'Этот промокод уже был использован.') {
                 return 'btn-danger'
+            } else if (this.status === 'Этот промокод уже был использован.') {
+                return 'btn-warning'
             }
         },
         async delCoupon() {
@@ -443,9 +443,9 @@ let custom = new Vue({
             if (event === 0)
                 this.size = 1
             if (event === 1)
-                this.size = 1.2
+                this.size = 1.1
             else if (event === 2)
-                this.size = 1.4
+                this.size = 1.2
             // this.save();
         },
         price() {
@@ -461,9 +461,9 @@ let custom = new Vue({
             let descriptionStr;
             if (this.size === 1)
                 sizeStr = 25
-            else if (this.size === 1.2)
+            else if (this.size === 1.1)
                 sizeStr = 30
-            else if (this.size === 1.4)
+            else if (this.size === 1.2)
                 sizeStr = 35
             if (this.dough === 1)
                 doughStr = 'Тонкое тесто, '
@@ -663,20 +663,3 @@ $('#delOrder').click(async function () {
 
 
 })
-// $(document).on('submit', 'form#change-password', function () {
-//     const requestOptions = {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRFToken': getCookie('csrftoken')
-//         }
-//     }
-//     console.log(123)
-//     console.log(self)
-//         alert()
-// });
-
-// $(document).on('submit', 'form#payment-form', function () {
-//     const chatSocket = new WebSocket(
-//         'ws://localhost:8000/order/');
-// });

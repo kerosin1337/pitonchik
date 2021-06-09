@@ -18,7 +18,7 @@ def check_recaptcha(function):
                 request.recaptcha_is_valid = True
             else:
                 request.recaptcha_is_valid = False
-                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+                messages.error(request, 'reCAPTCHA не пройдена. Попробуйте ещё раз.')
         return function(request, *args, **kwargs)
 
     wrap.__doc__ = function.__doc__

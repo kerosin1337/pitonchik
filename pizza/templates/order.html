@@ -51,7 +51,7 @@
                                                class="form-control"
                                                name="address"
                                                aria-describedby="basic-addon2"
-                                               placeholder="Если нет Вашей улицы, то напишите в комметарии"
+                                               placeholder="Ул. Пушкина, дом 110"
                                                autocomplete="new_address"
                                                required>
                                         <div type="button" class="input-group-text btn shadow--hover"
@@ -134,7 +134,7 @@
                 </div>
 
                 {% verbatim %}
-                <aside class="mt-5 col-sm-12 col-md-8 col-lg-5 col-xl-4" id="basket">
+                <aside class="mt-5 col-sm-12 col-md-8 col-lg-6 col-xl-4" id="basket">
                     <table class="table table-white shadow-lg rounded-3">
                         <thead>
                         <tr>
@@ -147,7 +147,7 @@
                         <tr v-for="item in cart.products">
                             <td>{{ item.product.name }}({{ item.size }})</td>
                             <td>{{ item.qty }}</td>
-                            <td>{{ item.final_price }}</td>
+                            <td>{{ item.final_price }}руб.</td>
                         </tr>
                         </tbody>
                     </table>
@@ -167,7 +167,7 @@
                             <button type="submit" id="card-button" class="btn btn-primary p-1 mt-2 mr-0"
                                     data-username="{{ request.user }}"
                                     data-secret="{{ client_secret }}">
-                                {{ cart.final_price }}
+                                Оплатить: {{ cart.final_price }}руб.
                             </button>
                             <button class="btn btn-warning p-1" id="delOrder" type="button">Назад к оформлению</button>
                         </div>

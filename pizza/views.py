@@ -372,7 +372,8 @@ class OrderPayment(CartMixin, generic.View):
         #     i.product.delete()
         self.cart.in_order = True
         self.cart.save()
-        if self.cart.owner and self.cart.coupon: self.cart.owner.used_coupons.add(self.cart.coupon)
+        if self.cart.owner and self.cart.coupon and not (self.cart.owner.is_superuser or self.cart.owner.is_staff):
+            self.cart.owner.used_coupons.add(self.cart.coupon)
         return HttpResponseRedirect(reverse('index'))
 
     def get(self, request, *args, **kwargs):
@@ -385,22 +386,6 @@ class PromotionsView(generic.View):
         return render(request, 'promotions.html')
 
 
-# body_unicode = request.body.decode('utf-8')
-#         body = json.loads(body_unicode)
-#         product_slug = kwargs.get('slug')
-#         product = Products.objects.get(slug=product_slug)
-#         cart_product, created = CartProduct.objects.get_or_create(
-#             user=self.cart.owner, cart=self.cart,
-#             size=request.GET['size'], price=body['price'], product=product
-#         )
-#         if created:
-#             self.cart.products.add(cart_product)
-#         else:
-#             q = CartProduct.objects.get(id=cart_product.id)
-#             q.qty += 1
-#             q.save()
-#         recalc_cart(self.cart)
-#         return HttpResponseRedirect('/')
 class Custom(CartMixin):
     def get(self, request, *args, **kwargs):
         return render(request, 'custom.html')
