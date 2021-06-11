@@ -185,6 +185,9 @@ class Promotions(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True, blank=True)
 
+    def __str__(self):
+        return 'Акция ({})'.format(self.product or self.coupon)
+
     def clean(self):
         if self.product and self.coupon:
             raise ValidationError('Либо продукт, либо промокод')

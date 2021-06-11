@@ -115,7 +115,8 @@ let promotions = new Vue({
             await fetch(`/api/products/${id}/`, {method: 'GET'})
                 .then(async response => {
                     t.modalObject = await response.json();
-                    t.category = t.modalObject.category.name
+                    prod.newPrice[t.modalObject.id] = t.modalObject.price;
+                    t.category = t.modalObject.category.name;
                 })
         },
     }

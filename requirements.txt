@@ -22,7 +22,6 @@ django-allauth==0.44.0
 django-bootstrap4==3.0.1
 django-rest-swagger==2.2.0
 djangorestframework==3.12.4
-djangorestframework-jwt==1.11.0
 Faker==8.2.1
 geographiclib==1.50
 geopy==2.1.0
@@ -46,7 +45,6 @@ Pillow==8.2.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
-PyJWT==2.1.0
 pyOpenSSL==20.0.1
 python-dateutil==2.8.1
 python3-openid==3.2.0
