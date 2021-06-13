@@ -661,6 +661,4 @@ $('#delOrder').click(async function () {
             };
             window.location = '/basket/order/';
         });
-
-
 })

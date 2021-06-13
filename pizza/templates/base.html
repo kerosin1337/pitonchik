@@ -39,8 +39,16 @@
                 {% endif %}
             </div>
         </div>
-        {% verbatim %}
         <ul class="nav navbar justify-content-between p-0" id="category">
+            {% if request.user.is_staff or request.user.is_superuser %}
+                <li class="nav-item">
+                    <a href="{% url 'admin:index' %}" class="nav-link text-danger font-weight-bold">Админ-панель</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'staff' %}" class="nav-link text-danger font-weight-bold">Стафф</a>
+                </li>
+            {% endif %}
+            {% verbatim %}
             <li class="nav-item" v-for="item in category">
                 <a class="nav-link" :href="'/#' + item.name">{{ item.name }}</a>
             </li>
@@ -57,8 +65,8 @@
                     </span>
                 </a>
             </li>
+            {% endverbatim %}
         </ul>
-        {% endverbatim %}
     </nav>
 </header>
 {% block content %}
