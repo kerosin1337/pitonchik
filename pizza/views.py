@@ -40,7 +40,7 @@ class userAPI(ModelViewSet):
 
 
 class categoryApi(ModelViewSet):
-    permission_classes = [IsWhoUser]
+    # permission_classes = [IsWhoUser]
     queryset = Category.objects.all()
     serializer_class = categorySerializer
 

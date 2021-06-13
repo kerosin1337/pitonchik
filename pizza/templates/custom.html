@@ -10,7 +10,8 @@
             <div class="col d-flex justify-content-center">
                 <div class="card border-0">
                     <div class="d-flex justify-content-center align-middle">
-                        <img src="/static/img/product/custom.png" :style="sizeImg()" class="customPizza">
+                        <img src="/static/img/product/custom.png" :style="sizeImg()" class="customPizza"
+                             alt="Кастомная пицца">
                     </div>
                     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
                         <div class="card-body border border-4 pb-1">
@@ -105,9 +106,10 @@
                     <div class="col-sm col-md-3" v-for="(prod, i) in ingredientsList()">
                         <div class="card p-2 prod">
                             <div class="filter">
-                                <img class="card-img-top" style="height: 80px" :src="prod.img">
+                                <img class="card-img-top" style="height: 80px" :src="prod.img"
+                                     :alt="'Ингредиент: ' + prod.prod">
                                 <div class="card-body p-0">
-                                    <p class="card-text">{{prod.prod}}</p>
+                                    <p class="card-text">{{ prod.prod }}</p>
                                 </div>
                             </div>
                             <div @click="addProd(prod, prod.price, i)"

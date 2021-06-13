@@ -2,7 +2,6 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from datetime import datetime
 from django.utils import dateformat
 
 from .models import Order
@@ -44,7 +43,6 @@ class OrderWS(WebsocketConsumer):
         return result
 
     def connect(self):
-        print(1)
         self.room_group_name = 'chat'
 
         # Join room group

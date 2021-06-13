@@ -10,7 +10,8 @@
             <div class="border-top border-bottom" v-for="item in cart.products">
                 <div class="row g-0 p-3">
                     <div class="col-md-2 align-self-center">
-                        <img :src="item.product.image" width="80%" class="m-auto">
+                        <img :src="item.product.image" width="80%" class="m-auto"
+                             :alt="'Изображение товара: ' + item.product.name">
                     </div>
                     <div class="card-body col-md-6 pr-0 pl-0">
                         <div class=" p-0 d-inline-block" style="">
@@ -68,8 +69,10 @@
                 </div>
             </form>
             <div class="m-3 d-flex" v-else>
-                <h5 class="align-self-center m-0 mr-2">Промокод <b>{{ cart.coupon.code }}({{ cart.coupon.sale }}%)</b> активирован</h5>
-                <button type="button" class="btn-close align-self-center" aria-label="Close" @click="delCoupon()"></button>
+                <h5 class="align-self-center m-0 mr-2">Промокод <b>{{ cart.coupon.code }}({{ cart.coupon.sale }}%)</b>
+                    активирован</h5>
+                <button type="button" class="btn-close align-self-center" aria-label="Close"
+                        @click="delCoupon()"></button>
             </div>
             <div class="d-flex ml-3 mr-3 mb-5">
                 <div>

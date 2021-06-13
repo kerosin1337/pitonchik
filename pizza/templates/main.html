@@ -42,7 +42,7 @@
                 <h2 class="mt-4 pl-3 pr-3" v-bind:id="categorys[i].name">{{ categorys[i].name }}</h2>
                 <div class="col-md-6 col-lg-4 col-xl-3 mb-4" v-for="(product, j) in category">
                     <div class="card h-100 m-0 shadow-lg bg-white rounded">
-                        <img :src="product.image" class="ml-3 mt-3 mr-3">
+                        <img :src="product.image" class="ml-3 mt-3 mr-3" :alt="'Продукт: ' + product.name">
                         <div class="card-body pb-0">
                             <h4 class="card-title text-warning font-weight-bold">{{ product.name }}</h4>
                             <p class="card-text text-warning">{{ product.description }}</p>
