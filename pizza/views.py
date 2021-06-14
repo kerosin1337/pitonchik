@@ -30,7 +30,7 @@ from .utils import recalc_cart
 #     serializer_class = userReal
 #     model = User
 
-class userAPI(ReadOnlyModelViewSet):
+class userAPI(ModelViewSet):
     # permission_classes = [IsWhoUser]
     serializer_class = userSerializer
 
@@ -38,19 +38,19 @@ class userAPI(ReadOnlyModelViewSet):
         return UserData.objects.filter(id=self.request.user.id)
 
 
-class categoryApi(ReadOnlyModelViewSet):
+class categoryApi(ModelViewSet):
     # permission_classes = [IsWhoUser]
     queryset = Category.objects.all()
     serializer_class = categorySerializer
 
 
-class productsAPI(ReadOnlyModelViewSet):
+class productsAPI(ModelViewSet):
     # permission_classes = [IsWhoUser]
     queryset = Products.objects.filter(is_custom=False)
     serializer_class = productSerializer
 
 
-class promotionsAPI(ReadOnlyModelViewSet):
+class promotionsAPI(ModelViewSet):
     # permission_classes = [IsWhoUser]
     queryset = Promotions.objects.all()
     serializer_class = promotionsSerializer
