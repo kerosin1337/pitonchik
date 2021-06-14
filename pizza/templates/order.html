@@ -106,18 +106,7 @@
                             </div>
 
                         </div>
-                        {% endverbatim %}
 
-                        <!--                {# {% if request.user.is_authenticated %}#}-->
-                        <!--                {#-->
-                        <!--                <div class="custom-control custom-checkbox mb-3">#}-->
-                        <!--                    {# <input class="custom-control-input" id="customCheck1" type="checkbox" name="save">#}-->
-                        <!--                    {# <label class="custom-control-label" for="customCheck1">Сохранить данные</label>#}-->
-                        <!--                    {#-->
-                        <!--                </div>-->
-                        <!--                #}-->
-                        <!--                {# {% endif %}#}-->
-                        {% verbatim %}
                         <div class="form-group" id="payment">
                             <button type="submit" class="btn btn-primary" :disabled="choice">
                                 Перейти к оплате
@@ -209,10 +198,8 @@
                 }
             }).then(function (result) {
                 if (result.error) {
-                    // Show error to your customer (e.g., insufficient funds)
                     console.log(result.error.message);
                 } else {
-                    // The payment has been processed!
                     if (result.paymentIntent.status === 'succeeded') {
                         function getCookie(name) {
                             let cookieValue = null;
@@ -220,7 +207,6 @@
                                 const cookies = document.cookie.split(';');
                                 for (let i = 0; i < cookies.length; i++) {
                                     const cookie = cookies[i].trim();
-                                    // Does this cookie string begin with the name we want?
                                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                                         break;
@@ -233,7 +219,6 @@
                         const csrftoken = getCookie('csrftoken');
                         const formData = new FormData(document.forms.order);
 
-                        // добавить к пересылке ещё пару ключ - значение
                         formData.append("first_name", document.getElementById('card-button').dataset.username);
                         formData.append("csrfmiddlewaretoken", csrftoken)
                         const xhr = new XMLHttpRequest();

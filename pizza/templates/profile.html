@@ -62,22 +62,20 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card mb-3 overflow-auto" style="height: 80vh">
-                        {# {% if user.orders is not None %}#}
                         {% for i in user.orders.all %}
                             <div class="alert alert-success" role="alert">
-                                <h class="alert-heading">{{ i }}
+                                <h4 class="alert-heading">{{ i }}
                                     (
                                     {% for j in i.cart.products.all %}
                                         <span>{{ j.product.name }},</span>
                                     {% endfor %}
                                     )
-                                </h>
+                                </h4>
                                 <p>Статус: {{ i.get_status_display }}</p>
                                 <p>Цена: {{ i.cart.final_price }}</p>
                                 <p>Дата: {{ i.updated_at }}</p>
                             </div>
                         {% endfor %}
-                        {# {% endif %}#}
                     </div>
 
                 </div>
