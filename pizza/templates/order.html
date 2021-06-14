@@ -240,7 +240,7 @@
                         xhr.open("POST", "/payed-online-order/");
                         xhr.send(formData);
                         xhr.onreadystatechange = function () {
-                            if (xhr.readyState == 4) {
+                            if (xhr.readyState === 4) {
                                 const chatSocket = new WebSocket('ws://localhost:8000/order/');
                                 window.location.replace("http://127.0.0.1:8000");
                                 alert('Ваш заказ успешно оплачен! Менеджер с Вами свяжется');

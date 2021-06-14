@@ -23,19 +23,7 @@
                                     {{ i.prod }}
                                 </div>
                                 <div class="input-group w-25 justify-content-around">
-                                    <!--<span class="input-group-btn align-self-center">
-                                        <button class="btn btn-warning btn-sm rounded-0" type="button"
-                                                @click="changeQty(i, -1)">-</button>
-                                    </span>
-                                        <div class="align-self-center bg-warning ml-2 mr-2">
-                                        <span class="input-group-btn pl-2 pr-2 text-white">
-                                        {{ i.qty }}
-                                        </span>
-                                        </div>
-                                        <span class="input-group-btn align-self-center">
-                                        <button class="btn btn-warning btn-sm rounded-0" type="button"
-                                                @click="changeQty(i, 1)">+</button>
-                                    </span>-->
+
                                     <button class="btn btn-sm rounded-0" type="button"
                                             @click="changeQty(i, 1)"
                                             :class="{'btn-warning': i.qty === 1, 'btn-outline-warning': i.qty === 2}">X1
