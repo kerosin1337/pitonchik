@@ -1,23 +1,46 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory, Client
+from django.contrib.auth import authenticate, logout
+from django.core.files.uploadedfile import SimpleUploadedFile
+
 from .models import *
-from faker import Faker
-
-fake = Faker()
 
 
-class ProductsTest(TestCase):
-    category = fake.name()
-    name = fake.name()
-    description = fake.text()
-    price = fake.pydecimal()
-    image = fake.file_name('image')
-    slug = fake.slug()
-    def setUp(self):
-        category = Category.objects.create(name=self.category)
-        Products.objects.create(category=category, name=self.name, description=self.description,
-                                price=123,
-                                image=self.image, slug=self.slug)
+class UserTest(TestCase):
 
-    def test_product_equal(self):
-        prod = Products.objects.get(name=self.name, description=self.description)
-        self.assertEqual(prod.name, self.name)
+    def setUp(self) -> None:
+        self.user = UserData.objects.create_user(username='eugene', password='5338')
+
+    def test_correct(self):
+        user = authenticate(username='eugene', password='5338')
+        self.assertTrue((user is not None) and user.is_authenticated)
+
+    def test_wrong_username(self):
+        user = authenticate(username='wrong', password='12test12')
+        self.assertFalse(user is not None and user.is_authenticated)
+
+    def test_wrong_pssword(self):
+        user = authenticate(username='test', password='wrong')
+        self.assertFalse(user is not None and user.is_authenticated)
+
+    def test_logout(self):
+        self.client = Client()
+        self.client.login(username='eugene', password='5338')
+
+
+    def tearDown(self):
+        self.user.delete()
+
+
+class ProductTest(TestCase):
+    def setUp(self) -> None:
+        self.user = UserData.objects.create_user(username='eugene', password='5338')
+        self.category = Category.objects.create(name='test')
+        self.product = Products.objects.create(
+            category=self.category,
+            name='test',
+            description='test',
+            image=SimpleUploadedFile('test.png', content_type='image/jpeg', content=''),
+        )
+
+    def test_category_in_product(self):
+        self.assertEqual(self.category, self.product.category)
