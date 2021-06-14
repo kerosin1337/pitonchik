@@ -161,7 +161,7 @@ class DeleteUserView(LoginRequiredMixin, generic.DeleteView):
 
 class ChangeUserInfoView(generic.UpdateView, LoginRequiredMixin):
     model = UserData
-    template_name = 'ChangeUserData.html'
+    template_name = 'changeUserData.html'
     form_class = UpdateUserData
     success_url = reverse_lazy('user_profile')
 
@@ -176,7 +176,7 @@ class ChangeUserInfoView(generic.UpdateView, LoginRequiredMixin):
 
 
 class ChangePasswdView(PasswordChangeView, LoginRequiredMixin):
-    template_name = 'ChangePassWD.html'
+    template_name = 'changePassWD.html'
     success_url = reverse_lazy('user_profile')
 
     # def post(self, request, *args, **kwargs):

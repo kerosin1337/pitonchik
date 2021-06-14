@@ -1,9 +1,3 @@
-const Store = {
-    set: (name, value) => localStorage.setItem(name, JSON.stringify(value)),
-    get: (name) => JSON.parse(localStorage.getItem(name)),
-    remove: (name) => localStorage.removeItem(name)
-}
-
 let prod = new Vue({
     el: '#prod',
     data: {
@@ -30,14 +24,10 @@ let prod = new Vue({
             })
     },
     methods: {
-        // getPizzaUrl(ct_model, slug) {
-        //     return '/add/'+ ct_model +'/' + slug + '/';
-        // },
         price(i, j) {
             this.newPrice.splice(i, 1, j)
         },
         async post(slug, sizePizza, i, promotions = false) {
-            // console.log(slug, sizePizza.target.querySelector('input[name="size"]:checked').value)
             value = sizePizza.target.querySelector('input[name="size"]:checked').value
             const requestOptions = {
                 method: 'POST',
@@ -141,7 +131,6 @@ let app2 = new Vue({
     },
     methods: {
         async searchStreet() {
-//         fetch(`https:nominatim.openstreetmap.org/search?country=Россия&city=Томск&format=json&limit=3&street=${this.search}`, requestOptions)
             await fetch(`https:nominatim.openstreetmap.org/search?q=Томск+${this.search}&format=json&limit=3`, {method: 'GET'})
                 .then(async response => {
                         this.streets = await response.json();
@@ -150,7 +139,6 @@ let app2 = new Vue({
                         } else {
                             this.streets.forEach(function (item) {
                                 item.display_name = item.display_name.slice(0, getListIdx(item.display_name, ',')[1])
-//                            item.display_name = item.display_name.slice(0, 75)
                             })
                         }
                     }
@@ -173,22 +161,7 @@ let app2 = new Vue({
             buy.choice = true;
         },
     },
-    watch: {
-//        search(q) {
-//            const requestOptions = {
-//                method: 'GET'
-//            }
-//
-//            setInterval(
-//                fetch(`https://nominatim.openstreetmap.org/search?country=Россия&city=Томск&format=json&limit=100&street=${q}`, requestOptions)
-//                .then(async response => {
-//                        this.streets = await response.json()
-//                 }
-//                ), 2000
-//            )
-//
-//        }
-    }
+
 })
 
 let buy = new Vue({
@@ -284,8 +257,7 @@ let basket = new Vue({
             const t = this;
             const result = await fetch('/basket/', requestOptions)
                 .then(async response => {
-                    // let data = await response.json();
-                    // t.status = data.data;
+
                     await fetch('/api/cart/', {method: 'GET'})
                         .then(async response => {
                             let data = await response.json()
@@ -359,20 +331,6 @@ let custom = new Vue({
         filter: 'meat',
         csrf: getCookie('csrftoken'),
     },
-    // mounted() {
-    //     if (localStorage.myPizza)
-    //         this.final_cost = JSON.parse(localStorage.myPizza);
-    //     if (localStorage.mySize)
-    //         this.size = JSON.parse(localStorage.mySize);
-    //     if (localStorage.myDough)
-    //         this.dough = JSON.parse(localStorage.myDough);
-    //     if (localStorage.myMeat)
-    //         this.meat = JSON.parse(localStorage.myMeat);
-    //     if (localStorage.myCheese)
-    //         this.cheese = JSON.parse(localStorage.myCheese);
-    //     if (localStorage.myVegetables)
-    //         this.vegetable = JSON.parse(localStorage.myVegetables);
-    // },
     methods: {
         addProd(prod, price, i) {
             if (prod.trues) {
@@ -387,7 +345,6 @@ let custom = new Vue({
             }
 
             prod.trues = !prod.trues;
-            // this.save();
         },
         ingredientsList() {
             if (this.filter === 'meat') {
@@ -425,20 +382,17 @@ let custom = new Vue({
                 this.vegetable[idx].style = 'prodPlus';
                 this.vegetable[idx].trues = !this.vegetable[idx].trues;
             }
-            // this.save();
         },
         changeQty(i, num, classes) {
             const idx = this.final_cost.indexOf(i);
             this.final_cost[idx].qty = num;
 
-            // this.save();
         },
         doughChoice(event) {
             if (event === 0)
                 this.dough = 1
             else if (event === 1)
                 this.dough = 1.1
-            // this.save();
         },
         sizeChoice(event) {
             if (event === 0)
@@ -447,7 +401,6 @@ let custom = new Vue({
                 this.size = 1.1
             else if (event === 2)
                 this.size = 1.2
-            // this.save();
         },
         price() {
             let price = 225;
@@ -488,21 +441,7 @@ let custom = new Vue({
             }
             const result = await fetch(`/custom/`, requestOptions).then(nav.reload);
             this.final_cost = []
-            // Store.remove('myPizza');
-            // Store.remove('mySize');
-            // Store.remove('myDough');
-            // Store.remove('myMeat');
-            // Store.remove('myCheese');
-            // Store.remove('myVegetables');
         },
-        // save() {
-        //     Store.set('myPizza', this.final_cost);
-        //     Store.set('mySize', this.size);
-        //     Store.set('myDough', this.dough);
-        //     Store.set('myMeat', this.meat);
-        //     Store.set('myCheese', this.cheese);
-        //     Store.set('myVegetables', this.vegetable);
-        // },
     }
 })
 let staff = new Vue({

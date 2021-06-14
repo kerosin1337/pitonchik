@@ -75,7 +75,7 @@ class OrderWS(WebsocketConsumer):
             }
         )
 
-    def chat_message(self):
+    def chat_message(self, event):
         self.send(text_data=json.dumps({
             'message': self.result()
         }))
