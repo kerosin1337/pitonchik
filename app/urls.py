@@ -21,7 +21,6 @@ router.register('api/order', views.orderAPI, basename='order')
 # router.register('api/u', views.user, basename='u')
 
 urlpatterns = [
-    path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', schema_view),
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', include('allauth.urls')),

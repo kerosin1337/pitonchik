@@ -9,8 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views import generic
-from rest_framework.permissions import BasePermission, SAFE_METHODS
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .forms import RegForm, UpdateUserData
 from .mixins import CartMixin
@@ -20,45 +19,45 @@ from .serializers import userSerializer, productSerializer, cartProductsSerializ
 from .utils import recalc_cart
 
 
-class IsWhoUser(BasePermission):
-
-    def has_permission(self, request, view):
-        return bool((request.user.is_superuser or request.user.is_staff) or (request.method in SAFE_METHODS))
-
+# class IsWhoUser(BasePermission):
+#
+#     def has_permission(self, request, view):
+#         return bool((request.user.is_superuser or request.user.is_staff) or (request.method in SAFE_METHODS))
+#
 
 # class user(ModelViewSet):
 #     queryset = User.objects.order_by()
 #     serializer_class = userReal
 #     model = User
 
-class userAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+class userAPI(ReadOnlyModelViewSet):
+    # permission_classes = [IsWhoUser]
     serializer_class = userSerializer
 
     def get_queryset(self):
         return UserData.objects.filter(id=self.request.user.id)
 
 
-class categoryApi(ModelViewSet):
+class categoryApi(ReadOnlyModelViewSet):
     # permission_classes = [IsWhoUser]
     queryset = Category.objects.all()
     serializer_class = categorySerializer
 
 
-class productsAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+class productsAPI(ReadOnlyModelViewSet):
+    # permission_classes = [IsWhoUser]
     queryset = Products.objects.filter(is_custom=False)
     serializer_class = productSerializer
 
 
-class promotionsAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+class promotionsAPI(ReadOnlyModelViewSet):
+    # permission_classes = [IsWhoUser]
     queryset = Promotions.objects.all()
     serializer_class = promotionsSerializer
 
 
 class cartProductsAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+    # permission_classes = [IsWhoUser]
     serializer_class = cartProductsSerializer
 
     def get_queryset(self):
@@ -66,7 +65,7 @@ class cartProductsAPI(ModelViewSet):
 
 
 class cartAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+    # permission_classes = [IsWhoUser]
     serializer_class = cartSerializer
 
     def get_queryset(self):
@@ -79,7 +78,7 @@ class cartAPI(ModelViewSet):
 
 
 class orderAPI(ModelViewSet):
-    permission_classes = [IsWhoUser]
+    # permission_classes = [IsWhoUser]
     serializer_class = orderSerializer
     queryset = Order.objects.order_by()
 
@@ -197,9 +196,8 @@ class AddToCartView(CartMixin, generic.View):
         if created:
             self.cart.products.add(cart_product)
         else:
-            q = CartProduct.objects.get(id=cart_product.id)
-            q.qty += 1
-            q.save()
+            cart_product.qty += 1
+            cart_product.save()
         recalc_cart(self.cart)
         return HttpResponseRedirect('/')
 
@@ -405,9 +403,8 @@ class Custom(CartMixin):
         if created:
             self.cart.products.add(cart_product)
         else:
-            q = CartProduct.objects.get(id=cart_product.id)
-            q.qty += 1
-            q.save()
+            cart_product.qty += 1
+            cart_product.save()
         recalc_cart(self.cart)
         return HttpResponseRedirect(reverse('custom'))
 
