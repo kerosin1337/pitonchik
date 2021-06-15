@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 # User = get_user_model()
@@ -25,12 +25,13 @@ class UserData(AbstractUser):
                                     related_name='related_order')
     used_coupons = models.ManyToManyField('Coupon', null=True, blank=True, verbose_name='Использованные купоны',
                                           related_name='related_coupon')
+    first_name = models.CharField(verbose_name='Имя', max_length=150)
 
     class Meta(AbstractUser.Meta):
         pass
 
     def __str__(self):
-        return 'Покупатель: {}'.format(self.username or 'anonymous{}'.format(self.id))
+        return 'Покупатель: {}'.format(self.first_name)
 
 
 class Category(models.Model):
