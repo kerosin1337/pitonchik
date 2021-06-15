@@ -93,12 +93,18 @@ class ProductToCartTest(TestCase):
         response = self.client.post(reverse('custom'),
                                     {'slug': 'test', 'description': 'test', 'price': 569, 'size': '25'})
         self.assertEqual(response.status_code, 302)
-    # def test_order(self):
-    #     if bool(random.getrandbits(1)):
-    #
-    #     else:
 
-    # def tearDown(self) -> None:
-    #     self.user.delete()
-    #     self.product.delete()
-    #     self.cart.delete()
+    def test_order(self):
+        if bool(random.getrandbits(1)):
+            order = Order.objects.create(buying_type='delivery',cart=self.cart, customer=self.user, phone=fake.phone_number(),
+                                         address=fake.address(), entrance=1, floor_number=1,
+                                         apartment_number=1, comment=fake.text())
+        else:
+            order = Order.objects.create(buying_type='self',cart=self.cart, customer=self.user, phone=fake.phone_number(),
+                                         comment=fake.text())
+        order.status = 'in_progress'
+        order.cart.in_order = True
+        self.user.orders.add(order)
+        self.assertIn(order, self.user.orders.all())
+        # TODO сделать через клиент
+    def test_coupon(self):
