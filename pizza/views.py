@@ -187,8 +187,7 @@ class AddToCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        product_slug = kwargs.get('slug')
-        product = Products.objects.get(slug=product_slug)
+        product = Products.objects.get(slug=kwargs.get('slug'))
         cart_product, created = CartProduct.objects.get_or_create(
             user=self.cart.owner, cart=self.cart,
             size=request.GET['size'], price=body['price'], product=product
@@ -207,9 +206,8 @@ class DeleteFromCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        product_slug = kwargs.get('slug')
         # content_type = ContentType.objects.get(model=ct_model)
-        product = Products.objects.get(slug=product_slug)
+        product = Products.objects.get(slug=kwargs.get('slug'))
         cart_product = CartProduct.objects.get(
             user=self.cart.owner, cart=self.cart, product=product,
             size=body['size']
@@ -225,9 +223,8 @@ class ChangeQTYView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        product_slug = kwargs.get('slug')
         # content_type = ContentType.objects.get(model=ct_model)
-        product = Products.objects.get(slug=product_slug)
+        product = Products.objects.get(slug=kwargs.get('slug'))
         cart_product = CartProduct.objects.get(
             user=self.cart.owner, cart=self.cart, product=product,
             size=body['size']
@@ -389,12 +386,16 @@ class Custom(CartMixin):
         return render(request, 'custom.html')
 
     def post(self, request, *args, **kwargs):
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        product_slug = body['slug']
+        # for test
+        try:
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+        except:
+            body = request.POST
+        # end test
         product, created = Products.objects.get_or_create(name='Моя пицца', description=body['description'],
                                                           price=body['price'],
-                                                          image='img/product/custom.png', slug=product_slug,
+                                                          image='img/product/custom.png', slug=body['slug'],
                                                           is_custom=True)
         cart_product, created = CartProduct.objects.get_or_create(
             user=self.cart.owner, cart=self.cart,
