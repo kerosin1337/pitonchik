@@ -108,3 +108,4 @@ class ProductToCartTest(TestCase):
         self.assertIn(order, self.user.orders.all())
         # TODO сделать через клиент
     def test_coupon(self):
+        coupon =
