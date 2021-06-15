@@ -185,8 +185,13 @@ class ChangePasswdView(PasswordChangeView, LoginRequiredMixin):
 
 class AddToCartView(CartMixin, generic.View):
     def post(self, request, *args, **kwargs):
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+        # for text
+        try:
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+        except:
+            body = request.POST
+        # end
         product = Products.objects.get(slug=kwargs.get('slug'))
         cart_product, created = CartProduct.objects.get_or_create(
             user=self.cart.owner, cart=self.cart,
@@ -198,7 +203,7 @@ class AddToCartView(CartMixin, generic.View):
             cart_product.qty += 1
             cart_product.save()
         recalc_cart(self.cart)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('index'))
 
 
 class DeleteFromCartView(CartMixin, generic.View):

@@ -52,7 +52,7 @@ class ProductToCartTest(TestCase):
             category=self.category,
             name='test',
             description='test',
-            image=SimpleUploadedFile('test.png', content_type='image/jpeg', content=''),
+            image='test.png',
             slug='test-slug'
         )
         self.cart = Cart.objects.create(owner=self.user)
@@ -70,6 +70,8 @@ class ProductToCartTest(TestCase):
         self.assertEqual(self.category, self.product.category)
 
     def test_cart_product(self):
+        url = '/add/{}/?size=25'.format(self.product.slug)
+        self.client.post(url, {'price': 325})
         self.assertEqual(self.cart.final_price, self.summ())
         self.assertIn(self.cart_product, self.cart.products.all())
 
@@ -90,7 +92,7 @@ class ProductToCartTest(TestCase):
     def test_custom(self):
         response = self.client.post(reverse('custom'),
                                     {'slug': 'test', 'description': 'test', 'price': 569, 'size': '25'})
-        print(response.context)
+        self.assertEqual(response.status_code, 302)
     # def test_order(self):
     #     if bool(random.getrandbits(1)):
     #

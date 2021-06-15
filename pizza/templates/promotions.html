@@ -14,13 +14,13 @@
                         <p class="card-text">{{ item.description }}</p>
                     </div>
                     <div class="p-3">
-                        <button type="button" class="btn btn-primary" @click="modal(item.product.id)"
+                        <button type="button" class="btn btn-info" @click="modal(item.product.id)"
                                 v-if="item.product"
                                 data-bs-toggle="modal" data-bs-target="#promotionModal">
                             Посмотреть
                         </button>
                         <div v-if="item.coupon">
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn btn-info"
                                     @click="basket.coupon(item.coupon.code)" v-if="!basket.status">
                                 Активировать промокод
                             </button>
