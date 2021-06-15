@@ -96,16 +96,23 @@ class ProductToCartTest(TestCase):
 
     def test_order(self):
         if bool(random.getrandbits(1)):
-            order = Order.objects.create(buying_type='delivery',cart=self.cart, customer=self.user, phone=fake.phone_number(),
+            order = Order.objects.create(buying_type='delivery', cart=self.cart, customer=self.user,
+                                         phone=fake.phone_number(),
                                          address=fake.address(), entrance=1, floor_number=1,
                                          apartment_number=1, comment=fake.text())
         else:
-            order = Order.objects.create(buying_type='self',cart=self.cart, customer=self.user, phone=fake.phone_number(),
+            order = Order.objects.create(buying_type='self', cart=self.cart, customer=self.user,
+                                         phone=fake.phone_number(),
                                          comment=fake.text())
         order.status = 'in_progress'
         order.cart.in_order = True
         self.user.orders.add(order)
         self.assertIn(order, self.user.orders.all())
         # TODO сделать через клиент
+
     def test_coupon(self):
-        coupon =
+        coupon = Coupon.objects.create(code='test', sale=40)
+        self.cart.coupon = coupon
+        self.assertEqual(coupon, self.cart.coupon)
+        self.user.used_coupons.add(coupon)
+        self.assertIn(coupon, self.user.used_coupons.all())
