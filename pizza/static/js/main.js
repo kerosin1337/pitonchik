@@ -182,7 +182,8 @@ let buy = new Vue({
         select(q) {
             app2.seen = q !== 'self';
             if (q === 'self') {
-                this.choice = false
+                this.choice = false;
+                err.seen = false;
             }
         }
     }
