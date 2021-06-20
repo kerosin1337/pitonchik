@@ -92,12 +92,12 @@ class login(LoginView):
     template_name = 'login.html'
 
     def form_valid(self, form):
-        if self.request.recaptcha_is_valid:
+        # if self.request.recaptcha_is_valid:
             Cart.objects.filter(session=self.request.session.session_key).delete()
             auth_login(self.request, form.get_user())
             return HttpResponseRedirect(self.get_redirect_url())
-        else:
-            return HttpResponseRedirect(reverse('login'))
+        # else:
+        #     return HttpResponseRedirect(reverse('login'))
 
     def get_redirect_url(self):
         if self.request.user.is_superuser or self.request.user.is_staff:
@@ -118,12 +118,12 @@ class register(generic.CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        if self.request.recaptcha_is_valid:
+        # if self.request.recaptcha_is_valid:
             Cart.objects.filter(session=self.request.session.session_key).delete()
             form.save()
             return HttpResponseRedirect(reverse('login'))
-        else:
-            return HttpResponseRedirect(reverse('register'))
+        # else:
+        #     return HttpResponseRedirect(reverse('register'))
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:

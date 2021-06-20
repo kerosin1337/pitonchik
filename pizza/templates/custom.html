@@ -80,19 +80,19 @@
                 <div class="d-flex justify-content-end mt-2">
                     <ul class="list-group list-group-horizontal">
                         <button type="button" class="btn list-group-item m-0 p-2" @click="filter = 'meat'"
-                                :class="{ 'active': filter === 'meat' }">Мясо
+                                :class="{ 'active': filter === 'meat' }" :id="filter">Мясо
                         </button>
                         <button type="button" class="btn list-group-item m-0 p-2" @click="filter = 'cheese'"
-                                :class="{ 'active': filter === 'cheese' }">Сыр
+                                :class="{ 'active': filter === 'cheese' }" :id="filter">Сыр
                         </button>
                         <button type="button" class="btn list-group-item m-0 p-2" @click="filter = 'vegetable'"
-                                :class="{ 'active': filter === 'vegetable' }">Овощи
+                                :class="{ 'active': filter === 'vegetable' }" :id="filter">Овощи
                         </button>
                     </ul>
                 </div>
                 <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
                     <div class="col-sm col-md-3" v-for="(prod, i) in ingredientsList()">
-                        <div class="card p-2 prod">
+                        <div class="card p-2 prod" :id="prod.prod">
                             <div class="filter">
                                 <img class="card-img-top" style="height: 80px" :src="prod.img"
                                      :alt="'Ингредиент: ' + prod.prod">

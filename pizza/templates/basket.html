@@ -7,7 +7,7 @@
         {% verbatim %}
         <div id="basket">
             <h4 class="mt-4 pl-3 pr-3" v-if="Object.keys(cart.products).length === 0">Добавьте что-нибудь из меню</h4>
-            <div class="border-top border-bottom" v-for="item in cart.products">
+            <div class="border-top border-bottom" v-for="(item, i) in cart.products">
                 <div class="row g-0 p-3">
                     <div class="col-md-2 align-self-center">
                         <img :src="item.product.image" width="80%" class="m-auto"
@@ -28,7 +28,7 @@
                                 <span class="input-group-btn">
                                     <button class="btn btn-outline-info btn-sm rounded-0" type="button"
                                             @click="changeQTY(item.product.slug, item.size, item.qty, -1)"
-                                            :disabled="item.qty === 1">-</button>
+                                            :disabled="item.qty === 1" :id="'minus' + i">-</button>
                                 </span>
                                 <div class="align-self-center border border-info ml-2 mr-2">
                                     <span class="input-group-btn pl-2 pr-2">
@@ -39,7 +39,8 @@
 
                                 <span class="input-group-btn">
                                     <button class="btn btn-outline-info btn-sm rounded-0" type="button"
-                                            @click="changeQTY(item.product.slug, item.size, item.qty, 1)">+</button>
+                                            @click="changeQTY(item.product.slug, item.size, item.qty, 1)"
+                                            :id="'plus' + i">+</button>
                                 </span>
                             </div>
                             <div>
@@ -50,7 +51,8 @@
                             <div>
                                 <span>
                                     <button type="button" class="btn-close" aria-label="Close"
-                                            @click="deleteProduct(item.product.slug, item.size, item.final_price)"></button>
+                                            @click="deleteProduct(item.product.slug, item.size, item.final_price)"
+                                            :id="'delProd' + i"></button>
                                 </span>
                             </div>
                         </div>
@@ -70,15 +72,15 @@
                 <h5 class="align-self-center m-0 mr-2">Промокод <b>{{ cart.coupon.code }}({{ cart.coupon.sale }}%)</b>
                     активирован</h5>
                 <button type="button" class="btn-close align-self-center" aria-label="Close"
-                        @click="delCoupon()"></button>
+                        @click="delCoupon()" id="delCoupon"></button>
             </div>
             <div class="d-flex ml-3 mr-3 mb-5">
                 <div>
-                    <a href="/basket/order" class="btn btn-outline-info" v-if="Object.keys(cart.products).length">Оформить
+                    <a href="/basket/order" id="order" class="btn btn-outline-info" v-if="Object.keys(cart.products).length">Оформить
                         заказ</a>
                     <a href="/" class="btn btn-outline-info" v-else>Вернуться на главную</a>
                     <a href="/delete-cart/" class="ml-5 text-info font-weight-700" style="text-decoration: underline"
-                       v-if="Object.keys(cart.products).length">
+                       v-if="Object.keys(cart.products).length" id="delCart">
                         Удалить корзину
                     </a>
                 </div>

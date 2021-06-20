@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from faker import Faker
-
+from .forms import *
 from .models import *
 from .utils import recalc_cart
 
@@ -15,9 +15,10 @@ class UserTest(TestCase):
 
     def setUp(self) -> None:
         self.user = UserData.objects.create_user(username='eugene', password='5338', first_name=fake.first_name())
+        self.user.set_password(self.user.password)
 
     def test_correct(self):
-        user = self.client.login(username='eugene', password='5338')
+        user = self.client.login(username=self.user.username, password='5338')
         self.assertTrue(user)
 
     def test_wrong_username(self):
@@ -33,6 +34,12 @@ class UserTest(TestCase):
         session_id = self.client.session['_auth_user_id']
         self.client.logout()
         self.assertNotIn(session_id, self.client.session)
+
+    def test_form(self):
+        form_data = {'username': 'qweqwe', 'first_name': 'вфвфы', 'phone': '123',
+                     'password1': 'https://developer.mozilla.org/ru/docs/Learn/Server-side/Django/Testing',
+                     'password2': 'https://developer.mozilla.org/ru/docs/Learn/Server-side/Django/Testing'}
+        form = RegForm(form_data)
 
     def tearDown(self):
         self.user.delete()
