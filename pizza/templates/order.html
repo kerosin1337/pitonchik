@@ -61,6 +61,7 @@
                                         <ul class="list-group w-100">
                                             <a class="list-group-item list-group-item btn btn-white border"
                                                v-for="st in streets"
+                                               :id="st.display_name"
                                                :key="st.id"
                                                @click="choiceStreet(st.display_name, st.lat, st.lon)"
                                                :class="{ 'text-danger': st.display_name === 'Ничего не найдено.' }">
@@ -113,7 +114,7 @@
                             <select class="form-select w-auto d-inline align-middle" name="buying_type" v-model="select"
                                     required>
                                 <option value="" disabled>Тип доставки</option>
-                                <option value="delivery" selected>Доставка</option>
+                                <option value="delivery" selected >Доставка</option>
                                 <option value="self">Самовывоз</option>
                             </select>
                         </div>

@@ -4,7 +4,7 @@
 {% block content %}
     {% verbatim %}
     <main id="staff" class="container-xxl mt-3 shadow-lg p-3 mb-5 bg-white rounded">
-        <div class="col-md-8" v-for="(i, id) in ordersSort()" style="transition: 1s">
+        <div class="col-md-8" v-for="(i, id) in ordersSort()" style="transition: 1s" :id="i.id">
             <div class="card mb-3">
                 <div class="alert" role="alert" style="margin-bottom: 0!important;" :class="bg(i.status)">
                     <div class="accordion" id="accordionExample">
@@ -57,12 +57,12 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li>
-                    <button type="button" class="btn btn-primary" @click="page = 0">
+                    <button type="button" class="btn btn-primary" @click="page = 0" id="start" :disabled="page === 0">
                         В начало
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="btn btn-primary" @click="page--" :disabled="page === 0">
+                    <button type="button" class="btn btn-primary" @click="page--" :disabled="page === 0" id="previous">
                         Назад
                     </button>
                 </li>
@@ -72,12 +72,14 @@
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="btn btn-primary" @click="page++" :disabled="page === pages-1">
+                    <button type="button" class="btn btn-primary" @click="page++" :disabled="page === pages-1"
+                            id="next">
                         Вперёд
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="btn btn-primary" @click="page = pages-1">
+                    <button type="button" class="btn btn-primary" @click="page = pages-1" id="end"
+                            :disabled="page === pages-1">
                         В конец
                     </button>
                 </li>

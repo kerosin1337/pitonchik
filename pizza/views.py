@@ -250,7 +250,7 @@ class deleteCart(CartMixin):
 class basket(CartMixin, generic.View):
 
     def get(self, request, *args, **kwargs):
-        if Order.objects.filter(customer_id=self.cart.owner_id, cart__in_order=False).first():
+        if Order.objects.filter(cart=self.cart, cart__in_order=False, status='new').first():
             return HttpResponseRedirect(reverse('order'))
         context = {
             'cart': self.cart,

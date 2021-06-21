@@ -510,7 +510,7 @@ let staff = new Vue({
             this.orders.filter(item => item.status === 'completed').forEach(function (item) {
                 newOrders.push(item)
             });
-            let size = 10;
+            let size = 5;
             this.pages = Math.ceil(newOrders.length / size);
             for (let i = 0; i < this.pages; i++) {
                 newOrders[i] = newOrders.slice((i * size), (i * size) + size);

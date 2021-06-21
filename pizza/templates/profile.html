@@ -33,23 +33,24 @@
                                         </button>
                                         <ul class="dropdown-menu p-0">
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'change_userdata' %}">Изменить
-                                                    данные</a>
+                                                <a class="dropdown-item" href="{% url 'change_userdata' %}" id="data">
+                                                    Изменить данные</a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item" href="{% url 'change_passwd' %}">Изменить
-                                                    пароль</a>
+                                                <a class="dropdown-item" href="{% url 'change_passwd' %}" id="password">
+                                                    Изменить пароль</a>
                                             </li>
                                             <li>
                                                 <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal">Удалить профиль
+                                                        data-bs-target="#exampleModal" id="del">Удалить профиль
                                                 </button>
                                             </li>
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
                                             <li>
-                                                <a class="dropdown-item btn-danger" href="{% url 'logout' %}">Выйти</a>
+                                                <a class="dropdown-item btn-danger" href="{% url 'logout' %}"
+                                                   id="logout">Выйти</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -101,7 +102,8 @@
                         </button>
                         <form action="{% url 'delete_user' %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Удалить
+                            <button type="submit" class="btn btn-danger" id="delAcc">
+                                Удалить
                             </button>
                         </form>
                     </div>
